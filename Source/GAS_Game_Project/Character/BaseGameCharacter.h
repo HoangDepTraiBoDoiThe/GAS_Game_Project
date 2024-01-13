@@ -12,18 +12,15 @@ class GAS_GAME_PROJECT_API ABaseGameCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ABaseGameCharacter();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+protected:
+	virtual void BeginPlay() override;
+	UPROPERTY(EditAnywhere, Category = "Components")
+	TObjectPtr<USkeletalMeshComponent> Weapon;
 
+private:
+
+	
 };
