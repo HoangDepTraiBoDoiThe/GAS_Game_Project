@@ -15,6 +15,8 @@ ABasePlayerController::ABasePlayerController()
 void ABasePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	SetupInputMode();
 }
 
 void ABasePlayerController::SetupInputComponent()
@@ -32,7 +34,6 @@ void ABasePlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(IMoveAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Move);
 	}
 
-	SetupInputMode();
 }
 
 void ABasePlayerController::SetupInputMode()
@@ -40,6 +41,7 @@ void ABasePlayerController::SetupInputMode()
 	FInputModeGameAndUI InputModeGameAndUI;
 	InputModeGameAndUI.SetHideCursorDuringCapture(false);
 	InputModeGameAndUI.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	bShowMouseCursor = true;
 	SetInputMode(InputModeGameAndUI);
 }
 
