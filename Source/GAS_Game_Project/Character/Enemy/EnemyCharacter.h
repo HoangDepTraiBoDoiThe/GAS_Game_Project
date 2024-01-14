@@ -16,6 +16,8 @@ class GAS_GAME_PROJECT_API AEnemyCharacter : public ABaseGameCharacter, public I
 	GENERATED_BODY()
 
 public:
+	AEnemyCharacter();
+	
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 	

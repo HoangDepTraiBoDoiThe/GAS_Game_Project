@@ -3,6 +3,11 @@
 
 #include "EnemyCharacter.h"
 
+AEnemyCharacter::AEnemyCharacter()
+{
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+}
+
 void AEnemyCharacter::HighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(true);
