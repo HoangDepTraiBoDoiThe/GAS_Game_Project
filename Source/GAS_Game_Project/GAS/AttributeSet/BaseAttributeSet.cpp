@@ -6,6 +6,14 @@
 #include "AbilitySystemComponent.h"
 #include "Net/UnrealNetwork.h"
 
+UBaseAttributeSet::UBaseAttributeSet()
+{
+	InitHitPoint(50.f);
+	InitMaxHitPoint(100.f);
+	InitMana(50.f);
+	InitMaxMana(100.f);
+}
+
 void UBaseAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

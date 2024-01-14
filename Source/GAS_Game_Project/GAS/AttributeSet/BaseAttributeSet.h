@@ -23,6 +23,7 @@ class GAS_GAME_PROJECT_API UBaseAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 
 public:
+	UBaseAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 protected:
