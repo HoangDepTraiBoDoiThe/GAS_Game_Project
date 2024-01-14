@@ -29,3 +29,8 @@ void ABaseGameCharacter::Tick(float DeltaTime)
 
 }
 
+UAbilitySystemComponent* ABaseGameCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+

@@ -4,35 +4,28 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
-#include "GameFramework/Character.h"
-#include "BaseGameCharacter.generated.h"
+#include "GameFramework/PlayerState.h"
+#include "MyPlayerState.generated.h"
 
-class UAttributeSet;
 class UAbilitySystemComponent;
-
+class UAttributeSet;
+/**
+ * 
+ */
 UCLASS()
-class GAS_GAME_PROJECT_API ABaseGameCharacter : public ACharacter, public IAbilitySystemInterface
+class GAS_GAME_PROJECT_API AMyPlayerState : public APlayerState, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
-	ABaseGameCharacter();
-	virtual void Tick(float DeltaTime) override;
+	AMyPlayerState();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	FORCEINLINE UAttributeSet* GetAttributeSet() const {return AttributeSet;}
 
 protected:
-	virtual void BeginPlay() override;
-
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
-	
-	UPROPERTY(EditAnywhere, Category = "Components")
-	TObjectPtr<USkeletalMeshComponent> Weapon;
-
-private:
-
 	
 };
