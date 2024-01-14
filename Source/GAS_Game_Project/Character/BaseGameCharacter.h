@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "BaseGameCharacter.generated.h"
 
+class UBaseAttributeSet;
 class UAttributeSet;
 class UAbilitySystemComponent;
 
@@ -19,7 +20,7 @@ public:
 	ABaseGameCharacter();
 	virtual void Tick(float DeltaTime) override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	FORCEINLINE UAttributeSet* GetAttributeSet() const {return AttributeSet;}
+	FORCEINLINE UBaseAttributeSet* GetAttributeSet() const {return AttributeSet;}
 
 protected:
 	virtual void BeginPlay() override;
@@ -27,7 +28,7 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UAttributeSet> AttributeSet;
+	TObjectPtr<UBaseAttributeSet> AttributeSet;
 	
 	UPROPERTY(EditAnywhere, Category = "Components")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
