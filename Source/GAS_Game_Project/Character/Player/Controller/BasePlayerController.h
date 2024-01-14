@@ -23,9 +23,11 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	void SetupInputMode();
 	virtual void SetupInputComponent() override;
+	virtual void Tick(float DeltaSeconds) override;
+	void SetupInputMode();
 	void Move(const FInputActionValue& Value);
+	void CursorTrace();
 	APlayerCharacter* GetPlayerCharacter();
 
 	TObjectPtr<APlayerCharacter> PlayerCharacter;
@@ -34,4 +36,7 @@ protected:
 	TObjectPtr<UInputMappingContext> InputMappingContext;
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> IMoveAction;
+
+	IInteractableInterface* CurrentUnderMouseTarget = nullptr;
+	IInteractableInterface* PrevUnderMouseTarget;
 };

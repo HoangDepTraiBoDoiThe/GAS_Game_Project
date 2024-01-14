@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GAS_Game_Project/Character/Player/PlayerCharacter.h"
+#include "GAS_Game_Project/Interface/InteractableInterface.h"
 
 ABasePlayerController::ABasePlayerController()
 {
@@ -36,6 +37,13 @@ void ABasePlayerController::SetupInputComponent()
 
 }
 
+void ABasePlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	CursorTrace();
+}
+
 void ABasePlayerController::SetupInputMode()
 {
 	FInputModeGameAndUI InputModeGameAndUI;
@@ -47,12 +55,27 @@ void ABasePlayerController::SetupInputMode()
 
 void ABasePlayerController::Move(const FInputActionValue& Value)
 {
-	FVector2d ScaleValue = Value.Get<FVector2d>();
+	const FVector2d ScaleValue = Value.Get<FVector2d>();
 	const FRotator rot = FRotator(0.f, GetControlRotation().Yaw, 0.f);
 	const FVector ForwardDirection = FRotationMatrix(rot).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(rot).GetUnitAxis(EAxis::Y);
 	GetPlayerCharacter()->AddMovementInput(ForwardDirection, ScaleValue.Y);
 	GetPlayerCharacter()->AddMovementInput(RightDirection, ScaleValue.X);
+}
+
+void ABasePlayerController::CursorTrace()
+{
+	FHitResult CursorHitResult;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
+
+	PrevUnderMouseTarget = CurrentUnderMouseTarget;
+	CurrentUnderMouseTarget = Cast<IInteractableInterface>(CursorHitResult.GetActor());
+
+	if (CurrentUnderMouseTarget != PrevUnderMouseTarget)
+	{
+		if (PrevUnderMouseTarget) PrevUnderMouseTarget->UnHighlightActor();
+		if (CurrentUnderMouseTarget) PrevUnderMouseTarget->HighlightActor();
+	}
 }
 
 APlayerCharacter* ABasePlayerController::GetPlayerCharacter()
