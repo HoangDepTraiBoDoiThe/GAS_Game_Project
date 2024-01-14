@@ -34,10 +34,6 @@ void ABaseEffectActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 		UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
 	if (AbilitySystemComponent)
 	{
-		FGameplayEffectContext* Context;
-		const FGameplayEffectContextHandle ContextHandle = FGameplayEffectContextHandle(Context);
-		const FGameplayEffectSpecHandle GameplayEffectSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClass, EffectLevel, ContextHandle);
-		AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*GameplayEffectSpecHandle.Data.Get());
 
 	}
 }
