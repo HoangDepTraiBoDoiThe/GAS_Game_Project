@@ -74,7 +74,7 @@ void ABasePlayerController::CursorTrace()
 	if (CurrentUnderMouseTarget != PrevUnderMouseTarget)
 	{
 		if (PrevUnderMouseTarget) PrevUnderMouseTarget->UnHighlightActor();
-		if (CurrentUnderMouseTarget) PrevUnderMouseTarget->HighlightActor();
+		if (CurrentUnderMouseTarget) CurrentUnderMouseTarget->HighlightActor();
 	}
 }
 

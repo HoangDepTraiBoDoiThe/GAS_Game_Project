@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "BasePlayerController.generated.h"
 
+class IInteractableInterface;
 class APlayerCharacter;
 class UInputAction;
 class UInputMappingContext;
