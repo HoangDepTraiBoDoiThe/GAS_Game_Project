@@ -16,4 +16,5 @@ class GAS_GAME_PROJECT_API UMyAbilitySystemComponent : public UAbilitySystemComp
 
 public:
 	void InitOwnerAndAvatarActor(AActor* OwnerActor, AActor* AvatarActor);
+
 };

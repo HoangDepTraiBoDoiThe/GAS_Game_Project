@@ -4,6 +4,8 @@
 #include "PlayerCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "Controller/BasePlayerController.h"
+#include "GAS_Game_Project/UserInterface/HUD/MyHUD.h"
 #include "PlayerState/MyPlayerState.h"
 
 void APlayerCharacter::BeginPlay()
@@ -21,6 +23,18 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
+
+	ABasePlayerController* PlayerController = Cast<ABasePlayerController>(NewController);
+	HUD = PlayerController->GetHUD<AMyHUD>();
+	if (HUD)
+	{
+		FWidgetControllerStruct WidgetControllerStruct;
+		WidgetControllerStruct.AbilitySystemComponent = AbilitySystemComponent;
+		WidgetControllerStruct.AttributeSet = AttributeSet;
+		WidgetControllerStruct.PlayerController = PlayerController;
+		WidgetControllerStruct.PlayerState = GetPlayerState<AMyPlayerState>();
+		HUD->SetupWidget(WidgetControllerStruct);
+	}
 }
 
 void APlayerCharacter::OnRep_Controller()

@@ -6,6 +6,7 @@
 #include "GAS_Game_Project/Character/BaseGameCharacter.h"
 #include "PlayerCharacter.generated.h"
 
+class AMyHUD;
 /**
  * 
  */
@@ -23,5 +24,8 @@ protected:
 	virtual void OnRep_Controller() override;
 
 	void InitAbilityActorInfo();
+
+	UPROPERTY()
+	TObjectPtr<AMyHUD> HUD;
 	
 };
