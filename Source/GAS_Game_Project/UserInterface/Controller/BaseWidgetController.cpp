@@ -9,12 +9,10 @@ UBaseWidgetController::UBaseWidgetController()
 {
 }
 
-void UBaseWidgetController::SetupWidgetController(const FWidgetControllerStruct& NewWidgetControllerStruct)
+void UBaseWidgetController::SetupWidgetControllerParams(const FWidgetControllerParamsStruct& NewFWidgetControllerParamsStruct)
 {
-	WidgetControllerStruct = NewWidgetControllerStruct;
-
-}
-
-void UBaseWidgetController::GameplayEffectApplyToSelf(UAbilitySystemComponent* Target, const FGameplayEffectSpec& SpecApplied, FActiveGameplayEffectHandle ActiveHandle)
-{
+	AttributeSet = NewFWidgetControllerParamsStruct.AttributeSet;
+	AbilitySystemComponent = NewFWidgetControllerParamsStruct.AbilitySystemComponent;
+	PlayerController = NewFWidgetControllerParamsStruct.PlayerController;
+	PlayerState = NewFWidgetControllerParamsStruct.PlayerState;
 }

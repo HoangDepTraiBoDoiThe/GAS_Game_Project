@@ -28,7 +28,7 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	HUD = PlayerController->GetHUD<AMyHUD>();
 	if (HUD)
 	{
-		FWidgetControllerStruct WidgetControllerStruct;
+		FWidgetControllerParamsStruct WidgetControllerStruct;
 		WidgetControllerStruct.AbilitySystemComponent = AbilitySystemComponent;
 		WidgetControllerStruct.AttributeSet = AttributeSet;
 		WidgetControllerStruct.PlayerController = PlayerController;

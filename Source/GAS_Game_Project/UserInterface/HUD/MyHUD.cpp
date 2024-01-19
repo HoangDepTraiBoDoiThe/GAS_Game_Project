@@ -4,6 +4,8 @@
 #include "MyHUD.h"
 
 #include "Blueprint/UserWidget.h"
+#include "GAS_Game_Project/Character/Player/Controller/BasePlayerController.h"
+#include "GAS_Game_Project/UserInterface/Controller/OverlayWidgetController.h"
 #include "GAS_Game_Project/UserInterface/UsreWidget/BaseUserWidget.h"
 
 AMyHUD::AMyHUD()
@@ -17,19 +19,21 @@ void AMyHUD::BeginPlay()
 
 }
 
-void AMyHUD::SetupWidget(const FWidgetControllerStruct& NewWidgetControllerStruct)
+void AMyHUD::SetupWidget(const FWidgetControllerParamsStruct& NewWidgetControllerStruct)
 {
-	OverlayWidget = Cast<UBaseUserWidget>(CreateWidget(GetOwningPlayerController(), OverlayWidgetClass));
+	OverlayWidget = Cast<UBaseUserWidget>(CreateWidget(GetWorld(), OverlayWidgetClass));
 	OverlayWidget->AddToViewport();
 	if (OverlayWidget) OverlayWidget->SetWidgetController(GetOverlayWidgetController(NewWidgetControllerStruct));
+	if (NewWidgetControllerStruct.PlayerController && NewWidgetControllerStruct.PlayerController.Get()->IsLocalPlayerController())
+		GetOverlayWidgetController(NewWidgetControllerStruct)->BroadCastInitialValue();
 }
 
-UBaseWidgetController* AMyHUD::GetOverlayWidgetController(const FWidgetControllerStruct& NewWidgetControllerStruct)
+UOverlayWidgetController* AMyHUD::GetOverlayWidgetController(const FWidgetControllerParamsStruct& NewWidgetControllerStruct)
 {
 	if (!OverlayWidgetController)
 	{
-		OverlayWidgetController = NewObject<UBaseWidgetController>();
-		OverlayWidgetController->SetupWidgetController(NewWidgetControllerStruct);		
+		OverlayWidgetController = NewObject<UOverlayWidgetController>();
+		OverlayWidgetController->SetupWidgetControllerParams(NewWidgetControllerStruct);		
 	}
 	return OverlayWidgetController;
 }

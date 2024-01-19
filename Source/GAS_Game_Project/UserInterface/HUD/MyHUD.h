@@ -7,6 +7,7 @@
 #include "GAS_Game_Project/UserInterface/Controller/BaseWidgetController.h"
 #include "MyHUD.generated.h"
 
+class UOverlayWidgetController;
 class UBaseUserWidget;
 /**
  * 
@@ -18,9 +19,9 @@ class GAS_GAME_PROJECT_API AMyHUD : public AHUD
 
 public:
 	AMyHUD();
-	void SetupWidget(const FWidgetControllerStruct&);
+	void SetupWidget(const FWidgetControllerParamsStruct&);
 
-	UBaseWidgetController* GetOverlayWidgetController(const FWidgetControllerStruct& NewWidgetControllerStruct);
+	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParamsStruct& NewWidgetControllerStruct);
 	
 protected:
 	virtual void BeginPlay() override;
@@ -32,7 +33,7 @@ protected:
 	TObjectPtr<UBaseUserWidget> OverlayWidget;
 
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UBaseWidgetController> OverlayWidgetController;
+	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
 
 private:
 	

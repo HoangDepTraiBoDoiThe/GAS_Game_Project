@@ -25,23 +25,23 @@ class GAS_GAME_PROJECT_API UBaseAttributeSet : public UAttributeSet
 public:
 	UBaseAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	ATTRIBUTE_ACCESSORS(ThisClass, HitPoint)
+	ATTRIBUTE_ACCESSORS(ThisClass, MaxHitPoint);
+	ATTRIBUTE_ACCESSORS(ThisClass, Mana)
+	ATTRIBUTE_ACCESSORS(ThisClass, MaxMana)
 	
 protected:
 	UPROPERTY(Replicated, ReplicatedUsing = OnRep_HitPoint, BlueprintReadOnly, VisibleAnywhere)
 	FGameplayAttributeData HitPoint;
-	ATTRIBUTE_ACCESSORS(ThisClass, HitPoint)
 
 	UPROPERTY(Replicated, ReplicatedUsing = OnRep_MaxHitPoint, BlueprintReadOnly, VisibleAnywhere)
 	FGameplayAttributeData MaxHitPoint;
-	ATTRIBUTE_ACCESSORS(ThisClass, MaxHitPoint);
 
 	UPROPERTY(Replicated, ReplicatedUsing = OnRep_MaxHitPoint, BlueprintReadOnly, VisibleAnywhere)
 	FGameplayAttributeData Mana;
-	ATTRIBUTE_ACCESSORS(ThisClass, Mana)
 	
 	UPROPERTY(Replicated, ReplicatedUsing = OnRep_MaxHitPoint, BlueprintReadOnly, VisibleAnywhere)
 	FGameplayAttributeData MaxMana;
-	ATTRIBUTE_ACCESSORS(ThisClass, MaxMana)
 	
 private:
 	UFUNCTION()

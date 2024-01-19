@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffect.h"
+#include "GAS_Game_Project/Character/Player/PlayerState/MyPlayerState.h"
 #include "UObject/NoExportTypes.h"
 #include "BaseWidgetController.generated.h"
 
@@ -15,14 +16,22 @@ class UAbilitySystemComponent;
 /**
  * 
  */
-USTRUCT()
-struct FWidgetControllerStruct
+USTRUCT(BlueprintType)
+struct FWidgetControllerParamsStruct
 {
 	GENERATED_BODY()
-	
+
+	FWidgetControllerParamsStruct () {}
+	FWidgetControllerParamsStruct (UAbilitySystemComponent* ASC, UBaseAttributeSet* AS, ABasePlayerController* PC, AMyPlayerState* PS)
+		: PlayerController(PC), AbilitySystemComponent(ASC), AttributeSet(AS), PlayerState(PS) {}
+
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UBaseAttributeSet> AttributeSet;
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ABasePlayerController> PlayerController;
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<AMyPlayerState> PlayerState;
 };
 
@@ -34,13 +43,19 @@ class GAS_GAME_PROJECT_API UBaseWidgetController : public UObject
 public:
 	UBaseWidgetController();
 
-	void SetupWidgetController(const FWidgetControllerStruct& NewWidgetControllerStruct);
+	UFUNCTION(BlueprintCallable)
+	void SetupWidgetControllerParams(const FWidgetControllerParamsStruct& FWidgetControllerParamsStruct);
 
 protected:
-	void GameplayEffectApplyToSelf(UAbilitySystemComponent* Target, const FGameplayEffectSpec& SpecApplied, FActiveGameplayEffectHandle ActiveHandle);
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UBaseAttributeSet> AttributeSet;
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<ABasePlayerController> PlayerController;
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<AMyPlayerState> PlayerState;
 	
-	FWidgetControllerStruct WidgetControllerStruct;
-
 private:
 	
 };
