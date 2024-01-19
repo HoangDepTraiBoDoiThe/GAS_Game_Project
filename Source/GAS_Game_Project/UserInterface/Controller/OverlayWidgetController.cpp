@@ -10,4 +10,5 @@ void UOverlayWidgetController::BroadCastInitialValue()
 {
 	check (AttributeSet)
 	OnHealthAttributeDelegate.Broadcast(AttributeSet->GetHitPoint());
+	OnMaxHealthAttributeDelegate.Broadcast(AttributeSet->GetMaxHitPoint());
 }

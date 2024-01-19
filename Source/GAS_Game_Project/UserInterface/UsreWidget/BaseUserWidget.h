@@ -16,7 +16,10 @@ class GAS_GAME_PROJECT_API UBaseUserWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetWidgetController(UBaseWidgetController* NewWidgetController);
+
+	UFUNCTION(BlueprintImplementableEvent)
 	void WidgetControllerSet();
 	
 protected:

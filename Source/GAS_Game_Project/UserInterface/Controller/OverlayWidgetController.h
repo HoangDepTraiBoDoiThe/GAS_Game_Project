@@ -12,7 +12,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameplayAttributeDataChangeSignature, const float, NewValue);
 
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class GAS_GAME_PROJECT_API UOverlayWidgetController : public UBaseWidgetController
 {
 	GENERATED_BODY()
@@ -25,7 +25,13 @@ public:
 	FOnGameplayAttributeDataChangeSignature OnHealthAttributeDelegate;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FOnGameplayAttributeDataChangeSignature OnMaxHealthAttributeDelegate; 
+	FOnGameplayAttributeDataChangeSignature OnMaxHealthAttributeDelegate;
+	
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnGameplayAttributeDataChangeSignature OnManaAttributeDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnGameplayAttributeDataChangeSignature OnMaxManaAttributeDelegate; 
 
 protected:
 	

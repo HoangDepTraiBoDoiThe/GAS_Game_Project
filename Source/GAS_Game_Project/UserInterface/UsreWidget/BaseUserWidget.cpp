@@ -8,8 +8,3 @@ void UBaseUserWidget::SetWidgetController(UBaseWidgetController* NewWidgetContro
 	WidgetController = NewWidgetController;
 	WidgetControllerSet();
 }
-
-void UBaseUserWidget::WidgetControllerSet()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("WidgetControllerSet"));
-}
