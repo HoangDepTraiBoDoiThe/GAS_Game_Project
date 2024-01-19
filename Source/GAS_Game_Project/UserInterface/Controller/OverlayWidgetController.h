@@ -10,7 +10,7 @@
  * 
  */
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameplayAttributeDataChangeSignature, const float, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameplayAttributeInitValuesSignature, const float, NewValue, FGameplayAttribute, Attribute);
 
 UCLASS(Blueprintable, BlueprintType)
 class GAS_GAME_PROJECT_API UOverlayWidgetController : public UBaseWidgetController
@@ -22,16 +22,7 @@ public:
 	virtual void BroadCastInitialValue();
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FOnGameplayAttributeDataChangeSignature OnHealthAttributeDelegate;
-
-	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FOnGameplayAttributeDataChangeSignature OnMaxHealthAttributeDelegate;
-	
-	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FOnGameplayAttributeDataChangeSignature OnManaAttributeDelegate;
-
-	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FOnGameplayAttributeDataChangeSignature OnMaxManaAttributeDelegate; 
+	FOnGameplayAttributeInitValuesSignature OnAttributeInitialValuesSignature;
 
 protected:
 	

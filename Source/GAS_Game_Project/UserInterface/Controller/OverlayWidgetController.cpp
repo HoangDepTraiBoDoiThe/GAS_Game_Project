@@ -9,6 +9,8 @@
 void UOverlayWidgetController::BroadCastInitialValue()
 {
 	check (AttributeSet)
-	OnHealthAttributeDelegate.Broadcast(AttributeSet->GetHitPoint());
-	OnMaxHealthAttributeDelegate.Broadcast(AttributeSet->GetMaxHitPoint());
+	OnAttributeInitialValuesSignature.Broadcast(AttributeSet->GetHitPoint(), AttributeSet->GetHitPointAttribute());
+	OnAttributeInitialValuesSignature.Broadcast(AttributeSet->GetMaxHitPoint(), AttributeSet->GetMaxHitPointAttribute());
+	OnAttributeInitialValuesSignature.Broadcast(AttributeSet->GetMana(), AttributeSet->GetManaAttribute());
+	OnAttributeInitialValuesSignature.Broadcast(AttributeSet->GetMaxMana(), AttributeSet->GetMaxManaAttribute());
 }
