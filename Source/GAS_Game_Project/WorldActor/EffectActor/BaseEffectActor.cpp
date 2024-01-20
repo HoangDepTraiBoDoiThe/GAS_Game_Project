@@ -7,11 +7,15 @@
 #include "AbilitySystemComponent.h"
 #include "GameplayAbilityBlueprint.h"
 #include "Components/SphereComponent.h"
+#include "GAS_Game_Project/Character/BaseGameCharacter.h"
+#include "GAS_Game_Project/Character/Player/PlayerCharacter.h"
+#include "GAS_Game_Project/Character/Player/PlayerState/MyPlayerState.h"
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
 
 ABaseEffectActor::ABaseEffectActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	bReplicates = true;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Mesh"));
 	SetRootComponent(Mesh);
@@ -34,7 +38,9 @@ void ABaseEffectActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 		UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
 	if (AbilitySystemComponent)
 	{
-
+		const FGameplayEffectContextHandle ContextHandle;
+		const FGameplayEffectSpecHandle Spec = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClass, EffectLevel, ContextHandle);
+		AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*Spec.Data.Get(), Cast<APlayerCharacter>(OtherActor)->GetAbilitySystemComponent());
 	}
 }
 
