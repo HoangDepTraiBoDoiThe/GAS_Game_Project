@@ -2,7 +2,6 @@
 
 
 #include "MyAbilitySystemComponent.h"
-
 #include "GAS_Game_Project/UserInterface/Controller/OverlayWidgetController.h"
 
 void UMyAbilitySystemComponent::InitOwnerAndAvatarActor(AActor* NewOwnerActor, AActor* NewAvatarActor)
@@ -19,7 +18,7 @@ void UMyAbilitySystemComponent::BindCallBackToDependencies()
 	for (const FGameplayAttribute& Attribute : AllAttributes)
 	{
 		GetGameplayAttributeValueChangeDelegate(Attribute).AddLambda(
-			[this, Attribute] (const FOnAttributeChangeData& NewAttributeData)
+			[this] (const FOnAttributeChangeData& NewAttributeData)
 			{
 				OnNewAttributeValueChangeToControllerDelegate.Broadcast(NewAttributeData);
 			});

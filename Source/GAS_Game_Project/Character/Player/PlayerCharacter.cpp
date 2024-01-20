@@ -24,14 +24,6 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
-
-	ABasePlayerController* PlayerController = Cast<ABasePlayerController>(NewController);
-	HUD = PlayerController->GetHUD<AMyHUD>();
-	if (HUD)
-	{
-		FWidgetControllerParamsStruct WidgetControllerStruct(AbilitySystemComponent, AttributeSet, PlayerController, GetPlayerState<AMyPlayerState>());
-		HUD->SetupWidget(WidgetControllerStruct);
-	}
 }
 
 void APlayerCharacter::OnRep_Controller()
@@ -43,10 +35,32 @@ void APlayerCharacter::OnRep_Controller()
 
 void APlayerCharacter::InitAbilityActorInfo()
 {
-	AMyPlayerState* MyPlayerState = Cast<AMyPlayerState>(GetPlayerState());
-	if (!MyPlayerState) return;
+	if (!IsPlayerStateValid()) return;
 	AbilitySystemComponent = Cast<UMyAbilitySystemComponent>(MyPlayerState->GetAbilitySystemComponent());
 	AbilitySystemComponent->BindCallBackToDependencies();
 	AttributeSet = MyPlayerState->GetAttributeSet();
 	if (HasAuthority() && AbilitySystemComponent) AbilitySystemComponent->InitAbilityActorInfo(Cast<AActor>(MyPlayerState), this);
+	if (IsPlayerControllerValid() && IsHudValid())
+	{
+		const FWidgetControllerParamsStruct WidgetControllerStruct(AbilitySystemComponent, AttributeSet, PlayerController, GetPlayerState<AMyPlayerState>());
+		HUD->SetupWidget(WidgetControllerStruct);
+	}
+}
+
+bool APlayerCharacter::IsHudValid()
+{
+	if (!HUD) HUD = PlayerController->GetHUD<AMyHUD>();
+	return HUD != nullptr;
+}
+
+bool APlayerCharacter::IsPlayerControllerValid()
+{
+	if (!PlayerController) PlayerController = Cast<ABasePlayerController>(GetController());
+	return PlayerController != nullptr;
+}
+
+bool APlayerCharacter::IsPlayerStateValid()
+{
+	if (!MyPlayerState) MyPlayerState = Cast<AMyPlayerState>(GetPlayerState());
+	return MyPlayerState != nullptr;
 }

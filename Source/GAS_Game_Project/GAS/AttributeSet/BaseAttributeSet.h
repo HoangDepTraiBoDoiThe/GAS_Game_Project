@@ -37,10 +37,10 @@ protected:
 	UPROPERTY(Replicated, ReplicatedUsing = OnRep_MaxHitPoint, BlueprintReadOnly, VisibleAnywhere)
 	FGameplayAttributeData MaxHitPoint;
 
-	UPROPERTY(Replicated, ReplicatedUsing = OnRep_MaxHitPoint, BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(Replicated, ReplicatedUsing = OnRep_Mana, BlueprintReadOnly, VisibleAnywhere)
 	FGameplayAttributeData Mana;
 	
-	UPROPERTY(Replicated, ReplicatedUsing = OnRep_MaxHitPoint, BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(Replicated, ReplicatedUsing = OnRep_MaxMana, BlueprintReadOnly, VisibleAnywhere)
 	FGameplayAttributeData MaxMana;
 	
 private:

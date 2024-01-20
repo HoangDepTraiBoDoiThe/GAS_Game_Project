@@ -10,7 +10,7 @@ UBaseAttributeSet::UBaseAttributeSet()
 {
 	InitHitPoint(50.f);
 	InitMaxHitPoint(100.f);
-	InitMana(90.f);
+	InitMana(50.f);
 	InitMaxMana(100.f);
 }
 
