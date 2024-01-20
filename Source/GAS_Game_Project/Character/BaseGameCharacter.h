@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "BaseGameCharacter.generated.h"
 
+class UMyAbilitySystemComponent;
 class UBaseAttributeSet;
 class UAttributeSet;
 class UAbilitySystemComponent;
@@ -26,7 +27,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	TObjectPtr<UMyAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UBaseAttributeSet> AttributeSet;
 	

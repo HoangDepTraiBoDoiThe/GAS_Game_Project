@@ -8,11 +8,11 @@
 #include "UObject/NoExportTypes.h"
 #include "BaseWidgetController.generated.h"
 
+class UMyAbilitySystemComponent;
 class UBaseAttributeSet;
 class ABasePlayerController;
 class AMyPlayerState;
 class UAttributeSet;
-class UAbilitySystemComponent;
 /**
  * 
  */
@@ -22,11 +22,11 @@ struct FWidgetControllerParamsStruct
 	GENERATED_BODY()
 
 	FWidgetControllerParamsStruct () {}
-	FWidgetControllerParamsStruct (UAbilitySystemComponent* ASC, UBaseAttributeSet* AS, ABasePlayerController* PC, AMyPlayerState* PS)
+	FWidgetControllerParamsStruct (UMyAbilitySystemComponent* ASC, UBaseAttributeSet* AS, ABasePlayerController* PC, AMyPlayerState* PS)
 		: PlayerController(PC), AbilitySystemComponent(ASC), AttributeSet(AS), PlayerState(PS) {}
 
 	UPROPERTY(BlueprintReadOnly)
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	TObjectPtr<UMyAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UBaseAttributeSet> AttributeSet;
 	UPROPERTY(BlueprintReadOnly)
@@ -48,7 +48,7 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	TObjectPtr<UMyAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UBaseAttributeSet> AttributeSet;
 	UPROPERTY(BlueprintReadOnly)

@@ -20,6 +20,8 @@ class GAS_GAME_PROJECT_API UOverlayWidgetController : public UBaseWidgetControll
 
 public:
 	virtual void BroadCastInitialValue();
+	virtual void BroadCastValueChange();
+	void OnNewAttributeValueChangeToController(const FOnAttributeChangeData& NewAttributeData) const;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnGameplayAttributeInitValuesSignature OnAttributeInitialValuesSignature;

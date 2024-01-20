@@ -3,6 +3,7 @@
 
 #include "BaseGameCharacter.h"
 
+#include "AbilitySystemComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 
 // Sets default values
@@ -31,6 +32,6 @@ void ABaseGameCharacter::Tick(float DeltaTime)
 
 UAbilitySystemComponent* ABaseGameCharacter::GetAbilitySystemComponent() const
 {
-	return AbilitySystemComponent;
+	return Cast<UAbilitySystemComponent>(AbilitySystemComponent);
 }
 

@@ -25,6 +25,7 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
+	static bool IsLocallyControlledPlayer(const FWidgetControllerParamsStruct& NewWidgetControllerStruct);
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;

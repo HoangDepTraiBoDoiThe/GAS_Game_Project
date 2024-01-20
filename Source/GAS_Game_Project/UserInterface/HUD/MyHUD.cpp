@@ -24,8 +24,13 @@ void AMyHUD::SetupWidget(const FWidgetControllerParamsStruct& NewWidgetControlle
 	OverlayWidget = Cast<UBaseUserWidget>(CreateWidget(GetWorld(), OverlayWidgetClass));
 	OverlayWidget->AddToViewport();
 	if (OverlayWidget) OverlayWidget->SetWidgetController(GetOverlayWidgetController(NewWidgetControllerStruct));
-	if (NewWidgetControllerStruct.PlayerController && NewWidgetControllerStruct.PlayerController.Get()->IsLocalPlayerController())
-		GetOverlayWidgetController(NewWidgetControllerStruct)->BroadCastInitialValue();
+	if (IsLocallyControlledPlayer(NewWidgetControllerStruct))
+	{
+		GetOverlayWidgetController(NewWidgetControllerStruct);
+		check(OverlayWidgetController)
+		OverlayWidgetController->BroadCastInitialValue();
+		OverlayWidgetController->BroadCastValueChange();
+	}
 }
 
 UOverlayWidgetController* AMyHUD::GetOverlayWidgetController(const FWidgetControllerParamsStruct& NewWidgetControllerStruct)
@@ -36,4 +41,10 @@ UOverlayWidgetController* AMyHUD::GetOverlayWidgetController(const FWidgetContro
 		OverlayWidgetController->SetupWidgetControllerParams(NewWidgetControllerStruct);		
 	}
 	return OverlayWidgetController;
+}
+
+bool AMyHUD::IsLocallyControlledPlayer(const FWidgetControllerParamsStruct& NewWidgetControllerStruct)
+{
+	return NewWidgetControllerStruct.PlayerController && NewWidgetControllerStruct.PlayerController.Get()->
+		IsLocalPlayerController();
 }

@@ -4,6 +4,7 @@
 #include "OverlayWidgetController.h"
 
 #include "AbilitySystemComponent.h"
+#include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
 
 void UOverlayWidgetController::BroadCastInitialValue()
@@ -13,4 +14,14 @@ void UOverlayWidgetController::BroadCastInitialValue()
 	OnAttributeInitialValuesSignature.Broadcast(AttributeSet->GetMaxHitPoint(), AttributeSet->GetMaxHitPointAttribute());
 	OnAttributeInitialValuesSignature.Broadcast(AttributeSet->GetMana(), AttributeSet->GetManaAttribute());
 	OnAttributeInitialValuesSignature.Broadcast(AttributeSet->GetMaxMana(), AttributeSet->GetMaxManaAttribute());
+}
+
+void UOverlayWidgetController::BroadCastValueChange()
+{
+	AbilitySystemComponent->OnNewAttributeValueChangeToControllerDelegate.AddUObject(this, &UOverlayWidgetController::OnNewAttributeValueChangeToController);
+}
+
+void UOverlayWidgetController::OnNewAttributeValueChangeToController(const FOnAttributeChangeData& NewAttributeData) const
+{
+	OnAttributeInitialValuesSignature.Broadcast(NewAttributeData.NewValue, NewAttributeData.Attribute);
 }
