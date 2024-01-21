@@ -11,6 +11,28 @@
  * 
  */
 
+USTRUCT()
+struct FGameplayEffectPropertiesStruct
+{
+	GENERATED_BODY()
+	
+	UPROPERTY()
+	FActiveGameplayEffectHandle EffectHandle;
+	UPROPERTY()
+	TObjectPtr<AController> SourceActorController;
+	UPROPERTY()
+	TObjectPtr<AActor> SourceAvatarActor;
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> SourceASC;
+
+	UPROPERTY()
+	TObjectPtr<AController> TargetActorController;
+	UPROPERTY()
+	TObjectPtr<AActor> TargetAvatarActor;
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> TargetASC;
+};
+
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
@@ -31,6 +53,8 @@ public:
 	ATTRIBUTE_ACCESSORS(ThisClass, MaxHitPoint);
 	ATTRIBUTE_ACCESSORS(ThisClass, Mana)
 	ATTRIBUTE_ACCESSORS(ThisClass, MaxMana)
+
+	FGameplayEffectPropertiesStruct GameplayEffectPropertiesStruct;
 	
 protected:
 	UPROPERTY(Replicated, ReplicatedUsing = OnRep_HitPoint, BlueprintReadOnly, VisibleAnywhere)

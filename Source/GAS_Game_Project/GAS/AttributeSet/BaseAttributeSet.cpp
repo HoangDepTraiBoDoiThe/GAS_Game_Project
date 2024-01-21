@@ -38,6 +38,24 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 {
 	Super::PostGameplayEffectExecute(Data);
 
+	GameplayEffectPropertiesStruct.EffectHandle = Data.EvaluatedData.Handle;
+	if (GameplayEffectPropertiesStruct.EffectHandle.IsValid())
+		GameplayEffectPropertiesStruct.SourceASC = GameplayEffectPropertiesStruct.EffectHandle.GetOwningAbilitySystemComponent();
+
+	if (GameplayEffectPropertiesStruct.SourceASC)
+		GameplayEffectPropertiesStruct.SourceAvatarActor = GameplayEffectPropertiesStruct.SourceASC->GetAvatarActor();
+
+	if (GameplayEffectPropertiesStruct.SourceAvatarActor)
+		GameplayEffectPropertiesStruct.SourceActorController = GameplayEffectPropertiesStruct.SourceASC->AbilityActorInfo->AvatarActor->GetInstigatorController();
+
+	GameplayEffectPropertiesStruct.TargetASC = Data.Target;
+	if (GameplayEffectPropertiesStruct.TargetASC)
+	{
+		GameplayEffectPropertiesStruct.TargetAvatarActor = GameplayEffectPropertiesStruct.TargetASC->GetAvatarActor();
+		GameplayEffectPropertiesStruct.TargetActorController = GameplayEffectPropertiesStruct.TargetASC->GetAvatarActor()->GetInstigatorController();
+		if (!GameplayEffectPropertiesStruct.TargetActorController)
+			UE_LOG(LogTemp, Warning, TEXT("GameplayEffectPropertiesStruct.TargetActorController is null"))
+	}
 }
 
 void UBaseAttributeSet::OnRep_HitPoint(const FGameplayAttributeData& LastVal) const
