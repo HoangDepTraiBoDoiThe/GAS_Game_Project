@@ -8,21 +8,26 @@ void UMyAbilitySystemComponent::InitOwnerAndAvatarActor(AActor* NewOwnerActor, A
 {
 	SetOwnerActor(NewOwnerActor);
 	SetAvatarActor(NewAvatarActor);
-
-	
 }
 
 void UMyAbilitySystemComponent::BindCallBackToDependencies()
 {
+	OnGameplayEffectAppliedDelegateToSelf.AddLambda(
+		[this] (UAbilitySystemComponent* ASC, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle Handle)
+		{
+			FGameplayTagContainer TagContainer;
+			EffectSpec.GetAllAssetTags(TagContainer);
+			GameplayEffectTagsBroadcastToControllerSignature.Broadcast(TagContainer);
+		});
+	
 	TArray<FGameplayAttribute> AllAttributes;
 	GetAllAttributes(AllAttributes);
-
 	for (const FGameplayAttribute& Attribute : AllAttributes)
 	{
 		GetGameplayAttributeValueChangeDelegate(Attribute).AddLambda(
 			[this] (const FOnAttributeChangeData& NewAttributeData)
 			{
-				OnNewAttributeValueChangeToControllerDelegate.Broadcast(NewAttributeData);
+				OnNewAttributeValueChangeBroadcastToControllerDelegate.Broadcast(NewAttributeData);
 			});
 	}
 }

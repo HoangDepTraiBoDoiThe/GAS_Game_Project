@@ -18,7 +18,7 @@ void UOverlayWidgetController::BroadCastInitialValue()
 
 void UOverlayWidgetController::BroadCastValueChange()
 {
-	AbilitySystemComponent->OnNewAttributeValueChangeToControllerDelegate.AddUObject(this, &UOverlayWidgetController::OnNewAttributeValueChangeToController);
+	AbilitySystemComponent->OnNewAttributeValueChangeBroadcastToControllerDelegate.AddUObject(this, &UOverlayWidgetController::OnNewAttributeValueChangeToController);
 }
 
 void UOverlayWidgetController::OnNewAttributeValueChangeToController(const FOnAttributeChangeData& NewAttributeData) const

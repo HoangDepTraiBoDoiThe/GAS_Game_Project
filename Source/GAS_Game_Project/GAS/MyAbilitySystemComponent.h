@@ -10,7 +10,9 @@
  * 
  */
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FGameplayAttributevalueChangeToControllerSignature, const FOnAttributeChangeData&)
+DECLARE_MULTICAST_DELEGATE_OneParam(FGameplayAttributevalueChangeBroadcastToControllerSignature, const FOnAttributeChangeData&)
+DECLARE_MULTICAST_DELEGATE_OneParam(FGameplayEffectTagsBroadcastToControllerSignature, const FGameplayTagContainer&)
+
 
 UCLASS()
 class GAS_GAME_PROJECT_API UMyAbilitySystemComponent : public UAbilitySystemComponent
@@ -22,6 +24,7 @@ public:
 	void InitOwnerAndAvatarActor(AActor* OwnerActor, AActor* AvatarActor);
 	void BindCallBackToDependencies();
 
-	FGameplayAttributevalueChangeToControllerSignature OnNewAttributeValueChangeToControllerDelegate;
+	FGameplayAttributevalueChangeBroadcastToControllerSignature OnNewAttributeValueChangeBroadcastToControllerDelegate;
+	FGameplayEffectTagsBroadcastToControllerSignature GameplayEffectTagsBroadcastToControllerSignature;
 
 };
