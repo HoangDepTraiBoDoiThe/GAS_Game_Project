@@ -18,6 +18,7 @@ class GAS_GAME_PROJECT_API UMyAbilitySystemComponent : public UAbilitySystemComp
 	GENERATED_BODY()
 
 public:
+	
 	void InitOwnerAndAvatarActor(AActor* OwnerActor, AActor* AvatarActor);
 	void BindCallBackToDependencies();
 

@@ -8,6 +8,8 @@ void UMyAbilitySystemComponent::InitOwnerAndAvatarActor(AActor* NewOwnerActor, A
 {
 	SetOwnerActor(NewOwnerActor);
 	SetAvatarActor(NewAvatarActor);
+
+	
 }
 
 void UMyAbilitySystemComponent::BindCallBackToDependencies()

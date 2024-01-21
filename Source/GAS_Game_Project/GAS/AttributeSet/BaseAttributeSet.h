@@ -25,6 +25,8 @@ class GAS_GAME_PROJECT_API UBaseAttributeSet : public UAttributeSet
 public:
 	UBaseAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override; 
 	ATTRIBUTE_ACCESSORS(ThisClass, HitPoint)
 	ATTRIBUTE_ACCESSORS(ThisClass, MaxHitPoint);
 	ATTRIBUTE_ACCESSORS(ThisClass, Mana)
