@@ -18,6 +18,7 @@ class GAS_GAME_PROJECT_API APlayerCharacter : public ABaseGameCharacter
 	GENERATED_BODY()
 
 public:
+	FORCEINLINE UDataTable* GetUIWidgetDataTable() const { return UIDataTable; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -38,5 +39,8 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<AMyPlayerState> MyPlayerState;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UDataTable> UIDataTable;
 	
 };

@@ -6,7 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "GAS_Game_Project/Character/Player/Controller/BasePlayerController.h"
 #include "GAS_Game_Project/UserInterface/Controller/OverlayWidgetController.h"
-#include "GAS_Game_Project/UserInterface/UsreWidget/BaseUserWidget.h"
+#include "GAS_Game_Project/UserInterface/UserWidget/BaseUserWidget.h"
 
 AMyHUD::AMyHUD()
 {
@@ -29,7 +29,8 @@ void AMyHUD::SetupWidget(const FWidgetControllerParamsStruct& NewWidgetControlle
 		GetOverlayWidgetController(NewWidgetControllerStruct);
 		check(OverlayWidgetController)
 		OverlayWidgetController->BroadCastInitialValue();
-		OverlayWidgetController->BroadCastValueChange();
+		OverlayWidgetController->BroadCastToDependencies();
+		
 	}
 }
 

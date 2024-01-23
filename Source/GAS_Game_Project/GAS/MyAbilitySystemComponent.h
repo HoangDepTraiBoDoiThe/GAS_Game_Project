@@ -25,6 +25,6 @@ public:
 	void BindCallBackToDependencies();
 
 	FGameplayAttributevalueChangeBroadcastToControllerSignature OnNewAttributeValueChangeBroadcastToControllerDelegate;
-	FGameplayEffectTagsBroadcastToControllerSignature GameplayEffectTagsBroadcastToControllerSignature;
+	FGameplayEffectTagsBroadcastToControllerSignature GameplayEffectTagsBroadcastToControllerDelegate;
 
 };

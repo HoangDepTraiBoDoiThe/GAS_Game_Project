@@ -17,7 +17,7 @@ void UMyAbilitySystemComponent::BindCallBackToDependencies()
 		{
 			FGameplayTagContainer TagContainer;
 			EffectSpec.GetAllAssetTags(TagContainer);
-			GameplayEffectTagsBroadcastToControllerSignature.Broadcast(TagContainer);
+			GameplayEffectTagsBroadcastToControllerDelegate.Broadcast(TagContainer);
 		});
 	
 	TArray<FGameplayAttribute> AllAttributes;
