@@ -12,6 +12,21 @@ class UBaseUserWidget;
 /**
  * 
  */
+USTRUCT(BlueprintType)
+struct FUIWidgetRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FGameplayTag MessageGameplayTag = FGameplayTag();
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FText Message = FText();
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<UBaseUserWidget> MessageWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UTexture2D* MessageTexture2D;
+};
+
 UCLASS()
 class GAS_GAME_PROJECT_API AMyHUD : public AHUD
 {
@@ -38,6 +53,8 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UDataTable> UIWidgetRow;
 
 private:
 	
