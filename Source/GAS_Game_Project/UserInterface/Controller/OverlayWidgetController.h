@@ -19,8 +19,8 @@ struct FUIWidgetRow : public FTableRowBase
 	FGameplayTag MessageGameplayTag = FGameplayTag();
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FText Message = FText();
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<UBaseUserWidget> MessageWidget;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	//TSubclassOf<UBaseUserWidget> MessageWidget;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UTexture2D* MessageTexture2D;
 };

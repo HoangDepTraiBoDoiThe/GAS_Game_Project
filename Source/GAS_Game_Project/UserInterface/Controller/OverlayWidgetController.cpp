@@ -31,6 +31,6 @@ void UOverlayWidgetController::OnWidgetMessageDataToView(const FGameplayTagConta
 {
 	for (const FGameplayTag& Tag : GameplayTagContainer)
 	{
-		OnGameplayEffectWidgetMessageStructToViewDelegate.Broadcast(*GetUIWidgetRowData<FUIWidgetRow>(Tag));
+		if (const FUIWidgetRow* UIWidgetRow = GetUIWidgetRowData<FUIWidgetRow>(Tag)) OnGameplayEffectWidgetMessageStructToViewDelegate.Broadcast(*UIWidgetRow);
 	}
 }
