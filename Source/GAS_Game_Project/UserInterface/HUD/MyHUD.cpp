@@ -46,6 +46,5 @@ UOverlayWidgetController* AMyHUD::GetOverlayWidgetController(const FWidgetContro
 
 bool AMyHUD::IsLocallyControlledPlayer(const FWidgetControllerParamsStruct& NewWidgetControllerStruct)
 {
-	return NewWidgetControllerStruct.PlayerController && NewWidgetControllerStruct.PlayerController.Get()->
-		IsLocalPlayerController();
+	return NewWidgetControllerStruct.PlayerController && NewWidgetControllerStruct.PlayerController.Get()->IsLocalPlayerController();
 }

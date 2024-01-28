@@ -41,11 +41,8 @@ class GAS_GAME_PROJECT_API UOverlayWidgetController : public UBaseWidgetControll
 public:
 	virtual void BroadCastInitialValue();
 	virtual void BroadCastToDependencies();
-	void OnNewAttributeValueChangeToView(const FOnAttributeChangeData& NewAttributeData) const;
 	template <class T>
 	T* GetUIWidgetRowData(const FGameplayTag& MessageTag);
-	UFUNCTION()
-	void OnWidgetMessageDataToView(const FGameplayTagContainer& GameplayTagContainer);
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnGameplayAttributeInitValuesSignature OnAttributeInitialValuesSignature;

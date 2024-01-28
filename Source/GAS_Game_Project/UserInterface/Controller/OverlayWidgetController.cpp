@@ -18,20 +18,19 @@ void UOverlayWidgetController::BroadCastInitialValue()
 
 void UOverlayWidgetController::BroadCastToDependencies()
 {
-	AbilitySystemComponent->OnNewAttributeValueChangeBroadcastToControllerDelegate.AddUObject(this, &UOverlayWidgetController::OnNewAttributeValueChangeToView);
-	AbilitySystemComponent->GameplayEffectTagsBroadcastToControllerDelegate.AddUObject(this, &ThisClass::OnWidgetMessageDataToView);
-}
-
-void UOverlayWidgetController::OnNewAttributeValueChangeToView(const FOnAttributeChangeData& NewAttributeData) const
-{
-	OnAttributeInitialValuesSignature.Broadcast(NewAttributeData.NewValue, NewAttributeData.Attribute);
-}
-
-void UOverlayWidgetController::OnWidgetMessageDataToView(const FGameplayTagContainer& GameplayTagContainer)
-{
-	for (const FGameplayTag& Tag : GameplayTagContainer)
-	{
-		if (const FUIWidgetRow* UIWidgetRow = GetUIWidgetRowData<FUIWidgetRow>(Tag)) OnGameplayEffectWidgetMessageStructToViewDelegate.Broadcast(*UIWidgetRow);
-		else UE_LOG(LogTemp, Error, TEXT("UIWidgetRow was not found. Check row name again."))
-	}
+	AbilitySystemComponent->OnNewAttributeValueChangeBroadcastToControllerDelegate.AddLambda(
+		[this] (const FOnAttributeChangeData& NewAttributeData)
+		{
+			OnAttributeInitialValuesSignature.Broadcast(NewAttributeData.NewValue, NewAttributeData.Attribute);
+		});
+	
+	AbilitySystemComponent->GameplayEffectTagsBroadcastToControllerDelegate.AddLambda(
+		[this] (const FGameplayTagContainer& GameplayTagContainer)
+		{
+			for (const FGameplayTag& Tag : GameplayTagContainer)
+			{
+				if (const FUIWidgetRow* UIWidgetRow = GetUIWidgetRowData<FUIWidgetRow>(Tag)) OnGameplayEffectWidgetMessageStructToViewDelegate.Broadcast(*UIWidgetRow);
+				else UE_LOG(LogTemp, Error, TEXT("UIWidgetRow was not found. Check row name again."))
+			}
+		});
 }
