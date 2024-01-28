@@ -34,12 +34,9 @@ protected:
 	TSubclassOf<UUserWidget> OverlayWidgetClass;
 
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UBaseUserWidget> OverlayWidget;
-
-	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<UDataTable> UIWidgetRow;
+	TObjectPtr<UBaseUserWidget> OverlayWidget;
 
 private:
 	
