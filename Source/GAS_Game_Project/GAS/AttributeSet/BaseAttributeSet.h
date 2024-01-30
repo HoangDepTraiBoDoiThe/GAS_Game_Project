@@ -49,33 +49,115 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override; 
-	ATTRIBUTE_ACCESSORS(ThisClass, HitPoint)
-	ATTRIBUTE_ACCESSORS(ThisClass, MaxHitPoint);
-	ATTRIBUTE_ACCESSORS(ThisClass, Mana)
-	ATTRIBUTE_ACCESSORS(ThisClass, MaxMana)
+
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Strength)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Intelligent);
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Vigor)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Resilience)
+
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, MaxHitPoint)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, HitPoint)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Mana)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, MaxMana)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Armor)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, ArmorPenetration)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, BlockChance)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, CriticalHitChance)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, CriticalHitDamage)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, CriticalHitResistance)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, HealthRegeneration)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, ManaRegeneration)
 
 	FGameplayEffectPropertiesStruct GameplayEffectPropertiesStruct;
 	
 protected:
-	UPROPERTY(Replicated, ReplicatedUsing = OnRep_HitPoint, BlueprintReadOnly, VisibleAnywhere)
-	FGameplayAttributeData HitPoint;
+	#pragma region Primary attributes
 
-	UPROPERTY(Replicated, ReplicatedUsing = OnRep_MaxHitPoint, BlueprintReadOnly, VisibleAnywhere)
-	FGameplayAttributeData MaxHitPoint;
+	UPROPERTY(ReplicatedUsing = OnRep_Strength, BlueprintReadOnly, EditAnywhere)
+	FGameplayAttributeData Strength;
 
-	UPROPERTY(Replicated, ReplicatedUsing = OnRep_Mana, BlueprintReadOnly, VisibleAnywhere)
-	FGameplayAttributeData Mana;
+	UPROPERTY(ReplicatedUsing = OnRep_Intelligent, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData Intelligent;
+
+	UPROPERTY(ReplicatedUsing = OnRep_Vigor, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData Vigor;
+
+	UPROPERTY(ReplicatedUsing = OnRep_Resilience, EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayAttributeData Resilience;
+
+	UFUNCTION()
+	void OnRep_Strength(const FGameplayAttributeData& OldStrength) const;
+	UFUNCTION()
+	void OnRep_Intelligent(const FGameplayAttributeData& OldIntelligent) const;
+	UFUNCTION()
+	void OnRep_Vigor(const FGameplayAttributeData& OldVigor) const;
+	UFUNCTION()
+	void OnRep_Resilience(const FGameplayAttributeData& OldResilience) const;
 	
-	UPROPERTY(Replicated, ReplicatedUsing = OnRep_MaxMana, BlueprintReadOnly, VisibleAnywhere)
+#pragma endregion Primary attributes
+	
+#pragma region Secondary attributes
+	UPROPERTY(ReplicatedUsing = OnRep_HitPoint, BlueprintReadOnly, Category = Attribute)
+	FGameplayAttributeData HitPoint;
+	
+	UPROPERTY(ReplicatedUsing = OnRep_MaxHitPoint)
+	FGameplayAttributeData MaxHitPoint;	
+
+	UPROPERTY(ReplicatedUsing = OnRep_Mana)
+	FGameplayAttributeData Mana;	
+
+	UPROPERTY(ReplicatedUsing = OnRep_MaxMana)
 	FGameplayAttributeData MaxMana;
 	
+	UPROPERTY(ReplicatedUsing = OnRep_Armor, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData Armor;
+
+	UPROPERTY(ReplicatedUsing = OnRep_ArmorPenetration, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData ArmorPenetration;
+
+	UPROPERTY(ReplicatedUsing = OnRep_BlockChance, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData BlockChance;
+
+	UPROPERTY(ReplicatedUsing = OnRep_CriticalHitChance, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData CriticalHitChance;
+
+	UPROPERTY(ReplicatedUsing = OnRep_CriticalHitDamage, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData CriticalHitDamage;
+
+	UPROPERTY(ReplicatedUsing = OnRep_CriticalHitResistance, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData CriticalHitResistance;
+
+	UPROPERTY(ReplicatedUsing = OnRep_HealthRegeneration, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData HealthRegeneration;
+
+	UPROPERTY(ReplicatedUsing = OnRep_ManaRegeneration, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData ManaRegeneration;
+	
+	UFUNCTION()
+	void OnRep_HitPoint(const FGameplayAttributeData& OldHitPoint) const;
+	UFUNCTION()
+	void OnRep_MaxHitPoint(const FGameplayAttributeData& OldMaxHitPoint) const;
+	UFUNCTION()
+	void OnRep_Mana(const FGameplayAttributeData& OldMana) const;
+	UFUNCTION()
+	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const;
+	UFUNCTION()
+	void OnRep_Armor(const FGameplayAttributeData& OldArmor) const;
+	UFUNCTION()
+	void OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const;
+	UFUNCTION()
+	void OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const;
+	UFUNCTION()
+	void OnRep_CriticalHitChance(const FGameplayAttributeData& OldCriticalHitChance) const;
+	UFUNCTION()
+	void OnRep_CriticalHitDamage(const FGameplayAttributeData& OldCriticalHitDamage) const;
+	UFUNCTION()
+	void OnRep_CriticalHitResistance(const FGameplayAttributeData& OlCriticalHitResistance) const;
+	UFUNCTION()
+	void OnRep_HealthRegeneration(const FGameplayAttributeData& OldHealthRegeneration) const;
+	UFUNCTION()
+	void OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration) const;
+	
 private:
-	UFUNCTION()
-	void OnRep_HitPoint(const FGameplayAttributeData& LastVal) const;
-	UFUNCTION()
-	void OnRep_MaxHitPoint(const FGameplayAttributeData& LastVal) const;
-	UFUNCTION()
-	void OnRep_Mana(const FGameplayAttributeData& LastVal) const;
-	UFUNCTION()
-	void OnRep_MaxMana(const FGameplayAttributeData& LastVal) const;
+
 };
