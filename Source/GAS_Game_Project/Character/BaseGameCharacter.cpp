@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 
 // Sets default values
 ABaseGameCharacter::ABaseGameCharacter()
@@ -30,8 +31,25 @@ void ABaseGameCharacter::Tick(float DeltaTime)
 
 }
 
+void ABaseGameCharacter::InitAttributeValue()
+{
+	Cus_ApplyGameplayEffectToSelf(DefaultPrimaryAttributesClass);
+	Cus_ApplyGameplayEffectToSelf(DefaultSecondaryAttributesClass);
+	Cus_ApplyGameplayEffectToSelf(DefaultVitalAttributesClass);
+}
+
+void ABaseGameCharacter::Cus_ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const
+{
+	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
+	ContextHandle.AddSourceObject(this);
+	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClassToApply, CharacterLevel, ContextHandle);
+	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+}
+
 UAbilitySystemComponent* ABaseGameCharacter::GetAbilitySystemComponent() const
 {
 	return Cast<UAbilitySystemComponent>(AbilitySystemComponent);
 }
+
+float ABaseGameCharacter::GetCharacterLevel() { return CharacterLevel; }
 

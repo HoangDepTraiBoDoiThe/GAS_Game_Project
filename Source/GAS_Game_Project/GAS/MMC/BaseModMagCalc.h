@@ -15,9 +15,12 @@ class GAS_GAME_PROJECT_API UBaseModMagCalc : public UGameplayModMagnitudeCalcula
 	GENERATED_BODY()
 
 public:
+	UBaseModMagCalc();
 	virtual float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
 
 protected:
+	UPROPERTY(EditAnywhere)
+	FGameplayAttribute AttributeToCapture;
 	FGameplayEffectAttributeCaptureDefinition AttCapDef;
 
 	/**The init value of this attribute without any mod.*/

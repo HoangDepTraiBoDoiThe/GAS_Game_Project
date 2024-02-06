@@ -1,10 +1,18 @@
-// Cu Nhat Hoang 
+// Cu Nhat Hoang
 
 
 #include "BaseModMagCalc.h"
 
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
 #include "GAS_Game_Project/Interface/CombatInterface.h"
+
+UBaseModMagCalc::UBaseModMagCalc()
+{
+	AttCapDef.bSnapshot = bShouldSnapShot;
+	AttCapDef.AttributeSource = EGameplayEffectAttributeCaptureSource::Source;
+	AttCapDef.AttributeToCapture = UBaseAttributeSet::GetVigorAttribute();
+	RelevantAttributesToCapture.Add(AttCapDef);
+}
 
 float UBaseModMagCalc::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const
 {
@@ -15,7 +23,10 @@ float UBaseModMagCalc::CalculateBaseMagnitude_Implementation(const FGameplayEffe
 	GetCapturedAttributeMagnitude(AttCapDef, Spec, AggregatorEvaluateParameters, OUT_Mag);
 
 	checkf(Spec.GetEffectContext().GetSourceObject(), TEXT("GameplayEffect's Source object is null"))
-	const float CharacterLevel = Cast<ICombatInterface>(Spec.GetEffectContext().GetSourceObject())->GetCharacterLevel();
+	checkf(Spec.Def, TEXT("GameplayEffect's is null"))
+	ICombatInterface* Character = Cast<ICombatInterface>(Spec.GetEffectContext().GetSourceObject());
+	checkf(Character, TEXT("GameplayEffect's is null"))
+	const float CharacterLevel = Character->GetCharacterLevel();
 	
 	return BaseAttributeValue + (OUT_Mag * ScaleValuePerModMaCalc) + (CharacterLevel * ScaleValuePerCharacterLevel);
 }

@@ -39,7 +39,11 @@ void APlayerCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = Cast<UMyAbilitySystemComponent>(MyPlayerState->GetAbilitySystemComponent());
 	AbilitySystemComponent->BindCallBackToDependencies();
 	AttributeSet = MyPlayerState->GetAttributeSet();
-	if (HasAuthority() && AbilitySystemComponent) AbilitySystemComponent->InitAbilityActorInfo(Cast<AActor>(MyPlayerState), this);
+	if (HasAuthority() && AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(Cast<AActor>(MyPlayerState), this);
+		InitAttributeValue();
+	}
 	if (IsPlayerControllerValid() && IsHudValid())
 	{
 		const FWidgetControllerParamsStruct WidgetControllerStruct(AbilitySystemComponent, AttributeSet, PlayerController, GetPlayerState<AMyPlayerState>());
