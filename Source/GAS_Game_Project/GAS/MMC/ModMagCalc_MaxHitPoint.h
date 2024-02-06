@@ -4,32 +4,33 @@
 
 #include "CoreMinimal.h"
 #include "GameplayModMagnitudeCalculation.h"
-#include "BaseModMagCalc.generated.h"
+#include "ModMagCalc_MaxHitPoint.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GAS_GAME_PROJECT_API UBaseModMagCalc : public UGameplayModMagnitudeCalculation
+class GAS_GAME_PROJECT_API UModMagCalc_MaxHitPoint : public UGameplayModMagnitudeCalculation
 {
 	GENERATED_BODY()
 
 public:
-	UBaseModMagCalc();
+	UModMagCalc_MaxHitPoint();
 	virtual float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
 
 protected:
-	UPROPERTY(EditAnywhere)
+	// Important: Remember to set this
+	UPROPERTY(VisibleAnywhere)
 	FGameplayAttribute AttributeToCapture;
 	FGameplayEffectAttributeCaptureDefinition AttCapDef;
 
 	/**The init value of this attribute without any mod.*/
 	UPROPERTY(EditAnywhere)
-	float BaseAttributeValue {0};
+	float BaseAttributeValue = 100;
 	UPROPERTY(EditAnywhere)
-	float ScaleValuePerModMaCalc {1};
+	float ScaleValuePerModMaCalc = 1;
 	UPROPERTY(EditAnywhere)
-	float ScaleValuePerCharacterLevel {1};
-	UPROPERTY(EditAnywhere)
+	float ScaleValuePerCharacterLevel = 1;
+	UPROPERTY(VisibleAnywhere)
 	bool bShouldSnapShot {false};
 };

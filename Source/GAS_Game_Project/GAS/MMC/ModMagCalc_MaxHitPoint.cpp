@@ -1,20 +1,22 @@
 // Cu Nhat Hoang
 
 
-#include "BaseModMagCalc.h"
+#include "ModMagCalc_MaxHitPoint.h"
 
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
 #include "GAS_Game_Project/Interface/CombatInterface.h"
 
-UBaseModMagCalc::UBaseModMagCalc()
+UModMagCalc_MaxHitPoint::UModMagCalc_MaxHitPoint()
 {
+	AttributeToCapture = UBaseAttributeSet::GetVigorAttribute();
+
 	AttCapDef.bSnapshot = bShouldSnapShot;
 	AttCapDef.AttributeSource = EGameplayEffectAttributeCaptureSource::Source;
-	AttCapDef.AttributeToCapture = UBaseAttributeSet::GetVigorAttribute();
+	AttCapDef.AttributeToCapture = AttributeToCapture;
 	RelevantAttributesToCapture.Add(AttCapDef);
 }
 
-float UBaseModMagCalc::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const
+float UModMagCalc_MaxHitPoint::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const
 {
 	float OUT_Mag;
 	FAggregatorEvaluateParameters AggregatorEvaluateParameters;
