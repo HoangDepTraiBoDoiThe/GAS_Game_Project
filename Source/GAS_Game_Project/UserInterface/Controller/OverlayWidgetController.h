@@ -32,15 +32,15 @@ struct FUIWidgetRow : public FTableRowBase
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameplayAttributeInitValuesSignature, const float, NewValue, FGameplayAttribute, Attribute);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameplayEffectWidgetMessageStructToViewSignature, const FUIWidgetRow&, UIWidgetRow);
 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS()
 class GAS_GAME_PROJECT_API UOverlayWidgetController : public UBaseWidgetController
 {
 	GENERATED_BODY()
 
 
 public:
-	virtual void BroadCastInitialValue();
-	virtual void BroadCastToDependencies();
+	virtual void BroadCastInitialValue() override;
+	virtual void BroadCastToDependencies() override;
 	template <class T>
 	T* GetUIWidgetRowData(const FGameplayTag& MessageTag);
 

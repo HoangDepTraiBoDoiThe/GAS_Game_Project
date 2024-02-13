@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "GAS_Game_Project/UserInterface/Controller/AttributeMenuWidgetController.h"
 #include "GAS_Game_Project/UserInterface/Controller/BaseWidgetController.h"
 #include "MyHUD.generated.h"
 
@@ -22,6 +23,7 @@ public:
 	void SetupWidget(const FWidgetControllerParamsStruct&);
 
 	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParamsStruct& NewWidgetControllerStruct);
+	UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const FWidgetControllerParamsStruct& NewWidgetControllerStruct);
 	
 protected:
 	virtual void BeginPlay() override;
@@ -29,13 +31,17 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> OverlayWidgetClass;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UAttributeMenuWidgetController> AttributeMenuWidgetController;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBaseUserWidget> OverlayWidget;
 
 private:

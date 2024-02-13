@@ -44,6 +44,17 @@ UOverlayWidgetController* AMyHUD::GetOverlayWidgetController(const FWidgetContro
 	return OverlayWidgetController;
 }
 
+UAttributeMenuWidgetController* AMyHUD::GetAttributeMenuWidgetController(
+	const FWidgetControllerParamsStruct& NewWidgetControllerStruct)
+{
+	if (!AttributeMenuWidgetController)
+	{
+		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(AttributeMenuWidgetControllerClass);
+		AttributeMenuWidgetController->SetupWidgetControllerParams(NewWidgetControllerStruct);		
+	}
+	return AttributeMenuWidgetController;
+}
+
 bool AMyHUD::IsLocallyControlledPlayer(const FWidgetControllerParamsStruct& NewWidgetControllerStruct)
 {
 	return NewWidgetControllerStruct.PlayerController && NewWidgetControllerStruct.PlayerController.Get()->IsLocalPlayerController();

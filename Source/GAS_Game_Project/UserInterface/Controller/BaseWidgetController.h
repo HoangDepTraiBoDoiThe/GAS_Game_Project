@@ -35,7 +35,7 @@ struct FWidgetControllerParamsStruct
 	TObjectPtr<AMyPlayerState> PlayerState;
 };
 
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class GAS_GAME_PROJECT_API UBaseWidgetController : public UObject
 {
 	GENERATED_BODY()
@@ -43,6 +43,8 @@ class GAS_GAME_PROJECT_API UBaseWidgetController : public UObject
 public:
 	UBaseWidgetController();
 
+	virtual void BroadCastInitialValue() {};
+	virtual void BroadCastToDependencies() {};
 	UFUNCTION(BlueprintCallable)
 	void SetupWidgetControllerParams(const FWidgetControllerParamsStruct& FWidgetControllerParamsStruct);
 
