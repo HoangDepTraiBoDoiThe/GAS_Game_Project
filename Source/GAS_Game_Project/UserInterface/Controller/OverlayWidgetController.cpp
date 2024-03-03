@@ -10,10 +10,10 @@
 void UOverlayWidgetController::BroadCastInitialValue()
 {
 	check (AttributeSet)
-	OnAttributeInitialValuesSignature.Broadcast(AttributeSet->GetHitPoint(), AttributeSet->GetHitPointAttribute());
-	OnAttributeInitialValuesSignature.Broadcast(AttributeSet->GetMaxHitPoint(), AttributeSet->GetMaxHitPointAttribute());
-	OnAttributeInitialValuesSignature.Broadcast(AttributeSet->GetMana(), AttributeSet->GetManaAttribute());
-	OnAttributeInitialValuesSignature.Broadcast(AttributeSet->GetMaxMana(), AttributeSet->GetMaxManaAttribute());
+	OnAttributeValuesSignature.Broadcast(AttributeSet->GetHitPoint(), AttributeSet->GetHitPointAttribute());
+	OnAttributeValuesSignature.Broadcast(AttributeSet->GetMaxHitPoint(), AttributeSet->GetMaxHitPointAttribute());
+	OnAttributeValuesSignature.Broadcast(AttributeSet->GetMana(), AttributeSet->GetManaAttribute());
+	OnAttributeValuesSignature.Broadcast(AttributeSet->GetMaxMana(), AttributeSet->GetMaxManaAttribute());
 }
 
 void UOverlayWidgetController::BroadCastToDependencies()
@@ -21,7 +21,7 @@ void UOverlayWidgetController::BroadCastToDependencies()
 	AbilitySystemComponent->OnNewAttributeValueChangeBroadcastToControllerDelegate.AddLambda(
 		[this] (const FOnAttributeChangeData& NewAttributeData)
 		{
-			OnAttributeInitialValuesSignature.Broadcast(NewAttributeData.NewValue, NewAttributeData.Attribute);
+			OnAttributeValuesSignature.Broadcast(NewAttributeData.NewValue, NewAttributeData.Attribute);
 		});
 	
 	AbilitySystemComponent->GameplayEffectTagsBroadcastToControllerDelegate.AddLambda(
@@ -30,7 +30,7 @@ void UOverlayWidgetController::BroadCastToDependencies()
 			for (const FGameplayTag& Tag : GameplayTagContainer)
 			{
 				if (const FUIWidgetRow* UIWidgetRow = GetUIWidgetRowData<FUIWidgetRow>(Tag)) OnGameplayEffectWidgetMessageStructToViewDelegate.Broadcast(*UIWidgetRow);
-				else UE_LOG(LogTemp, Error, TEXT("Me | UIWidgetRow was not found. Check row name again."))
+				else UE_LOG(LogTemp, Error, TEXT("My Message | UIWidgetRow was not found. Check row name again."))
 			}
 		});
 }

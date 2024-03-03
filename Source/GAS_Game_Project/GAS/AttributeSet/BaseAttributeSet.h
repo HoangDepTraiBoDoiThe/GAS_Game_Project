@@ -39,6 +39,9 @@ struct FGameplayEffectPropertiesStruct
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+template<typename T>
+using TStaticFunctionPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+
 UCLASS()
 class GAS_GAME_PROJECT_API UBaseAttributeSet : public UAttributeSet
 {
@@ -48,10 +51,12 @@ public:
 	UBaseAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
-	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override; 
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+	FORCEINLINE TMap<FGameplayTag, TStaticFunctionPtr<FGameplayAttribute()>> GetAttributeTagMap() {return AttributeTagMap;}
 
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Strength)
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Intelligent);
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Intelligence);
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Vigor)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Resilience)
 
@@ -76,8 +81,8 @@ protected:
 	UPROPERTY(ReplicatedUsing = OnRep_Strength, BlueprintReadOnly, EditAnywhere)
 	FGameplayAttributeData Strength;
 
-	UPROPERTY(ReplicatedUsing = OnRep_Intelligent, EditAnywhere, BlueprintReadOnly)
-	FGameplayAttributeData Intelligent;
+	UPROPERTY(ReplicatedUsing = OnRep_Intelligence, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData Intelligence;
 
 	UPROPERTY(ReplicatedUsing = OnRep_Vigor, EditAnywhere, BlueprintReadOnly)
 	FGameplayAttributeData Vigor;
@@ -88,7 +93,7 @@ protected:
 	UFUNCTION()
 	void OnRep_Strength(const FGameplayAttributeData& OldStrength) const;
 	UFUNCTION()
-	void OnRep_Intelligent(const FGameplayAttributeData& OldIntelligent) const;
+	void OnRep_Intelligence(const FGameplayAttributeData& OldIntelligent) const;
 	UFUNCTION()
 	void OnRep_Vigor(const FGameplayAttributeData& OldVigor) const;
 	UFUNCTION()
@@ -132,6 +137,7 @@ protected:
 
 	UPROPERTY(ReplicatedUsing = OnRep_ManaRegeneration, EditAnywhere, BlueprintReadOnly)
 	FGameplayAttributeData ManaRegeneration;
+#pragma endregion 
 	
 	UFUNCTION()
 	void OnRep_HitPoint(const FGameplayAttributeData& OldHitPoint) const;
@@ -157,7 +163,10 @@ protected:
 	void OnRep_HealthRegeneration(const FGameplayAttributeData& OldHealthRegeneration) const;
 	UFUNCTION()
 	void OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration) const;
-	
+
+protected:
+	TMap<FGameplayTag, TStaticFunctionPtr<FGameplayAttribute()>> AttributeTagMap;
+
 private:
 
 };

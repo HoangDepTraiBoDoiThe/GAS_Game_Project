@@ -2,6 +2,8 @@
 
 
 #include "MyAbilitySystemComponent.h"
+
+#include "GameplayEffectExtension.h"
 #include "GAS_Game_Project/UserInterface/Controller/OverlayWidgetController.h"
 
 void UMyAbilitySystemComponent::InitOwnerAndAvatarActor(AActor* NewOwnerActor, AActor* NewAvatarActor)

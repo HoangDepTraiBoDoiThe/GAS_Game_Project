@@ -5,10 +5,25 @@
 
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
+#include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
 #include "Net/UnrealNetwork.h"
 
 UBaseAttributeSet::UBaseAttributeSet()
 {
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Primary_Strength, GetStrengthAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Primary_Intelligence, GetIntelligenceAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Primary_Vigor, GetVigorAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Primary_Resilience, GetResilienceAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_Armor, GetArmorAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_ArmorPenetration, GetArmorPenetrationAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_BlockChance, GetBlockChanceAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_HealthRegeneration, GetHealthRegenerationAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_ManaRegeneration, GetManaAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_MaxMana, GetMaxManaAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_CriticalHitChance, GetCriticalHitChanceAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_CriticalHitDamage, GetCriticalHitDamageAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_CriticalHitResistance, GetCriticalHitResistanceAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_MaxHitPoint, GetMaxHitPointAttribute);
 }
 
 void UBaseAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -21,7 +36,7 @@ void UBaseAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Mana, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxMana, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Strength, COND_None, REPNOTIFY_Always)
-	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Intelligent, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Intelligence, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Vigor, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Resilience, COND_None, REPNOTIFY_Always)
 }
@@ -92,9 +107,9 @@ void UBaseAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, Strength, OldStrength)
 }
 
-void UBaseAttributeSet::OnRep_Intelligent(const FGameplayAttributeData& OldIntelligent) const
+void UBaseAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldIntelligent) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, Intelligent, OldIntelligent)
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, Intelligence, OldIntelligent)
 }
 
 void UBaseAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) const

@@ -6,6 +6,7 @@
 #include "GAS_Game_Project/Character/BaseGameCharacter.h"
 #include "PlayerCharacter.generated.h"
 
+class UAttributeInfo;
 class AMyPlayerState;
 class ABasePlayerController;
 class AMyHUD;

@@ -29,7 +29,7 @@ struct FUIWidgetRow : public FTableRowBase
  * 
  */
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameplayAttributeInitValuesSignature, const float, NewValue, FGameplayAttribute, Attribute);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameplayAttributeValuesSignature, const float, NewValue, FGameplayAttribute, Attribute);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameplayEffectWidgetMessageStructToViewSignature, const FUIWidgetRow&, UIWidgetRow);
 
 UCLASS()
@@ -45,7 +45,7 @@ public:
 	T* GetUIWidgetRowData(const FGameplayTag& MessageTag);
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FOnGameplayAttributeInitValuesSignature OnAttributeInitialValuesSignature;
+	FOnGameplayAttributeValuesSignature OnAttributeValuesSignature;
 	
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnGameplayEffectWidgetMessageStructToViewSignature OnGameplayEffectWidgetMessageStructToViewDelegate;

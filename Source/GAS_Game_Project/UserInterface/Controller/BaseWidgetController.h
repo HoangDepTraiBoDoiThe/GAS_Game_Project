@@ -43,8 +43,11 @@ class GAS_GAME_PROJECT_API UBaseWidgetController : public UObject
 public:
 	UBaseWidgetController();
 
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadCastInitialValue() {};
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadCastToDependencies() {};
+	
 	UFUNCTION(BlueprintCallable)
 	void SetupWidgetControllerParams(const FWidgetControllerParamsStruct& FWidgetControllerParamsStruct);
 

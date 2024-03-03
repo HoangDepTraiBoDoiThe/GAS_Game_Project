@@ -27,10 +27,10 @@ void AMyHUD::SetupWidget(const FWidgetControllerParamsStruct& NewWidgetControlle
 	if (IsLocallyControlledPlayer(NewWidgetControllerStruct))
 	{
 		GetOverlayWidgetController(NewWidgetControllerStruct);
+		GetAttributeMenuWidgetController(NewWidgetControllerStruct);
 		check(OverlayWidgetController)
 		OverlayWidgetController->BroadCastInitialValue();
 		OverlayWidgetController->BroadCastToDependencies();
-		
 	}
 }
 
