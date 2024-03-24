@@ -46,6 +46,12 @@ void ABaseGameCharacter::Cus_ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffe
 	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 }
 
+void ABaseGameCharacter::ActiveAbilities()
+{
+	if (!HasAuthority()) return;
+	AbilitySystemComponent->AddAbilities(AbilitiesToActive, CharacterLevel);
+}
+
 UAbilitySystemComponent* ABaseGameCharacter::GetAbilitySystemComponent() const
 {
 	return Cast<UAbilitySystemComponent>(AbilitySystemComponent);

@@ -24,6 +24,7 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
+	ActiveAbilities();
 }
 
 void APlayerCharacter::OnRep_Controller()

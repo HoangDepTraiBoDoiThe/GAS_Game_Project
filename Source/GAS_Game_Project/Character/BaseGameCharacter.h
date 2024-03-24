@@ -13,6 +13,7 @@ class UMyAbilitySystemComponent;
 class UBaseAttributeSet;
 class UAttributeSet;
 class UAbilitySystemComponent;
+class UGameplayAbility;
 
 UCLASS()
 class GAS_GAME_PROJECT_API ABaseGameCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
@@ -30,7 +31,10 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void InitAttributeValue();
 	void Cus_ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const;
+	void ActiveAbilities();
 
+	UPROPERTY(EditAnywhere)
+	TArray<TSubclassOf<UGameplayAbility>> AbilitiesToActive;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributesClass;
 	UPROPERTY(EditAnywhere)

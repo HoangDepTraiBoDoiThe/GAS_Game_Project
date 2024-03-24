@@ -23,6 +23,7 @@ public:
 	
 	void InitOwnerAndAvatarActor(AActor* OwnerActor, AActor* AvatarActor);
 	void BindCallBackToDependencies();
+	void AddAbilities(TArray<TSubclassOf<UGameplayAbility>>, float);
 
 	FGameplayAttributevalueChangeBroadcastToControllerSignature OnNewAttributeValueChangeBroadcastToControllerDelegate;
 	FGameplayEffectTagsBroadcastToControllerSignature GameplayEffectTagsBroadcastToControllerDelegate;

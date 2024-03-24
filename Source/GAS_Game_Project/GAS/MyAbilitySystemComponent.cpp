@@ -33,3 +33,12 @@ void UMyAbilitySystemComponent::BindCallBackToDependencies()
 			});
 	}
 }
+
+void UMyAbilitySystemComponent::AddAbilities(TArray<TSubclassOf<UGameplayAbility>> Abilities, const float Level)
+{
+	for (const TSubclassOf<UGameplayAbility>& Ability : Abilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, Level);
+		GiveAbility(AbilitySpec);
+	}
+}
