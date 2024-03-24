@@ -90,12 +90,12 @@ void MyGameplayTags::InitNativeGameplayTags()
 	 * Ability Input Tags 
 	 */
 	MyGameplayTags::GameplayTags.Test_Ability_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attribute.AbilityInput.Testing"),
+		FName("Input.Testing"),
 		FString("Test_Ability_1"));
 	MyGameplayTags::GameplayTags.Control_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attribute.AbilityInput.Control_LMB"),
+		FName("Input.Control_LMB"),
 		FString("Left mouse button"));
 	MyGameplayTags::GameplayTags.Control_RMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attribute.AbilityInput.Control_RMB"),
+		FName("Input.Control_RMB"),
 		FString("Right mouse button"));
 }
