@@ -43,7 +43,7 @@ public:
  FGameplayTag Attribute_Secondary_MaxMana;
 
  /*
-  * Input Tags 
+  * Ability Input Tags 
   */
  FGameplayTag Control_Movement;
  FGameplayTag Control_LMB;
