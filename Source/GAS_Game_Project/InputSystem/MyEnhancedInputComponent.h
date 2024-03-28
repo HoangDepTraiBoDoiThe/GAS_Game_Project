@@ -30,8 +30,8 @@ void UMyEnhancedInputComponent::BindAbilityInputActions(const UInputDataAsset* I
 	for (const auto& [InputAction, InputTag] : InputDataAsset->AbilityInputActions)
 	{
 		if (!InputAction || !InputTag.IsValid()) continue;
-		if (PressedFunc) BindAction(InputAction, ETriggerEvent::Started, Object, InputTag);
-		if (ReleasedFunc) BindAction(InputAction, ETriggerEvent::Completed, Object, InputTag);
-		if (HeldFunc) BindAction(InputAction, ETriggerEvent::Triggered, Object, InputTag);
+		if (PressedFunc) BindAction(InputAction, ETriggerEvent::Started, Object, PressedFunc, InputTag);
+		if (ReleasedFunc) BindAction(InputAction, ETriggerEvent::Completed, Object, ReleasedFunc, InputTag);
+		if (HeldFunc) BindAction(InputAction, ETriggerEvent::Triggered, Object, HeldFunc, InputTag);
 	}
 }

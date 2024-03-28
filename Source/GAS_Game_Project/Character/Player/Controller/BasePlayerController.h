@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerController.h"
 #include "BasePlayerController.generated.h"
 
+class USplineComponent;
 class UMyAbilitySystemComponent;
 class UInputDataAsset;
 class IInteractableInterface;
@@ -40,6 +41,8 @@ protected:
 
 	UMyAbilitySystemComponent* GetASC();
 
+	USplineComponent* SplineComponent;
+
 	UMyAbilitySystemComponent* ASC;
 	
 	UPROPERTY(EditAnywhere)
@@ -54,4 +57,11 @@ protected:
 
 	IInteractableInterface* CurrentUnderMouseTarget = nullptr;
 	IInteractableInterface* PrevUnderMouseTarget;
+
+	UPROPERTY(EditAnywhere)
+	float AutoRunAcceptanceRadius = 50.f;
+	float ShortPressThreshold = 0.5f;
+	float FollowTime = 0.f;
+	bool bShouldRunning = false;
+	FVector CacheDirection = FVector::ZeroVector;
 };

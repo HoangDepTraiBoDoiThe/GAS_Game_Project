@@ -5,6 +5,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Components/SplineComponent.h"
 #include "GAS_Game_Project/Character/Player/PlayerCharacter.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 #include "GAS_Game_Project/InputSystem/MyEnhancedInputComponent.h"
@@ -13,12 +14,14 @@
 ABasePlayerController::ABasePlayerController()
 {
 	bReplicates = true;
+
+	SplineComponent = CreateDefaultSubobject<USplineComponent>(FName("Spline component"));
 }
 
 void ABasePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	SetupInputMode();
 }
 
@@ -26,7 +29,8 @@ void ABasePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
+		GetLocalPlayer());
 	checkf(InputMappingContext, TEXT("DAWG! InputMappingContext is null"));
 	if (Subsystem)
 		Subsystem->AddMappingContext(InputMappingContext, 0);
@@ -34,18 +38,34 @@ void ABasePlayerController::SetupInputComponent()
 	UMyEnhancedInputComponent* MyEnhancedInputComponent = Cast<UMyEnhancedInputComponent>(InputComponent);
 	check(MyEnhancedInputComponent)
 	MyEnhancedInputComponent->BindAction(IMoveAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Move);
-	MyEnhancedInputComponent->BindAbilityInputActions(InputConfig, this, &ThisClass::OnInputPress,
-	                                                  &ThisClass::OnInputHeld, &ThisClass::OnInputRelease);
+	MyEnhancedInputComponent->BindAbilityInputActions(InputConfig, this, &ThisClass::OnInputPress, &ThisClass::OnInputRelease, &ThisClass::OnInputHeld);
 }
 
 void ABasePlayerController::OnInputPress(FGameplayTag InputTag)
 {
-	GetASC()->AbilityInputTagHeld(InputTag);
+	bShouldRunning = CurrentUnderMouseTarget == nullptr;
 }
 
 void ABasePlayerController::OnInputHeld(FGameplayTag InputTag)
 {
 	GetASC()->AbilityInputTagHeld(InputTag);
+	if (CurrentUnderMouseTarget)
+		GetASC()->AbilityInputTagHeld(InputTag);
+	else
+	{
+		FollowTime += GetWorld()->GetDeltaSeconds();
+
+		FHitResult HitResult;
+		GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
+
+		APawn* ControlledPawn = GetPawn();
+		if (ControlledPawn && HitResult.bBlockingHit)
+		{
+			CacheDirection = HitResult.ImpactPoint;
+			const FVector WorldDirection = (CacheDirection - ControlledPawn->GetActorLocation()).GetSafeNormal();
+			ControlledPawn->AddMovementInput(WorldDirection);
+		}
+	}
 }
 
 void ABasePlayerController::OnInputRelease(FGameplayTag InputTag)
