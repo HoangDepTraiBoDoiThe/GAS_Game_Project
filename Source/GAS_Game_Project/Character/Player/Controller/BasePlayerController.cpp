@@ -5,6 +5,8 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "NavigationPath.h"
+#include "NavigationSystem.h"
 #include "Components/SplineComponent.h"
 #include "GAS_Game_Project/Character/Player/PlayerCharacter.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
@@ -46,22 +48,19 @@ void ABasePlayerController::OnInputPress(FGameplayTag InputTag)
 {
 	if (MyGameplayTags::Get().Control_LMB.MatchesTagExact(InputTag))
 	{
-		bTargeting = CurrentUnderMouseTarget == nullptr;
+		bTargeting = CurrentUnderMouseTarget != nullptr;
 		bShouldAutoRunning = false;
 	}
 }
 
 void ABasePlayerController::OnInputHeld(FGameplayTag InputTag)
 {
-	GetASC()->AbilityInputTagHeld(InputTag);
-	if (CurrentUnderMouseTarget)
-		GetASC()->AbilityInputTagHeld(InputTag);
+	if (!MyGameplayTags::Get().Control_LMB.MatchesTagExact(InputTag)) GetASC()->AbilityInputTagHeld(InputTag);
+	if (bTargeting) GetASC()->AbilityInputTagHeld(InputTag);
 	else
 	{
 		FollowTime += GetWorld()->GetDeltaSeconds();
-
-		FHitResult HitResult;
-		GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
+		const FHitResult HitResult = TakeHitResultUnderCursor(ECC_Visibility, false);
 
 		APawn* ControlledPawn = GetPawn();
 		if (ControlledPawn && HitResult.bBlockingHit)
@@ -75,7 +74,30 @@ void ABasePlayerController::OnInputHeld(FGameplayTag InputTag)
 
 void ABasePlayerController::OnInputRelease(FGameplayTag InputTag)
 {
-	GetASC()->AbilityInputTagReleased(InputTag);
+	if (!MyGameplayTags::Get().Control_LMB.MatchesTagExact(InputTag)) GetASC()->AbilityInputTagReleased(InputTag);
+	if (bTargeting) GetASC()->AbilityInputTagReleased(InputTag);
+	else if (FollowTime <= ShortPressThreshold)
+	{
+		const FHitResult HitResult = TakeHitResultUnderCursor(ECC_Visibility, false);
+
+		const APawn* ControlledPawn = GetPawn();
+		if (ControlledPawn && HitResult.bBlockingHit)
+		{
+			 if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(), ControlledPawn->GetActorLocation(), CacheDirection))
+			 {
+			 	SplineComponent->ClearSplinePoints();
+			 	bShouldAutoRunning = true;
+			 	for (auto& Point : NavPath->PathPoints)
+			    {
+			 		SplineComponent->AddSplineWorldPoint(Point);
+			 		DrawDebugSphere(GetWorld(), Point, 16.f, 16, FColor::Red, false, 5.f);
+			    }
+			 	//SplineComponent->SetSplinePoints(NavPath->PathPoints, ESplineCoordinateSpace::World);
+			 }
+		}
+	}
+	FollowTime = 0.f;
+	bTargeting = false;
 }
 
 UMyAbilitySystemComponent* ABasePlayerController::GetASC()
@@ -112,8 +134,7 @@ void ABasePlayerController::Move(const FInputActionValue& Value)
 
 void ABasePlayerController::CursorTrace()
 {
-	FHitResult CursorHitResult;
-	GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
+	const FHitResult CursorHitResult = TakeHitResultUnderCursor(ECC_Visibility, false);
 
 	PrevUnderMouseTarget = CurrentUnderMouseTarget;
 	CurrentUnderMouseTarget = Cast<IInteractableInterface>(CursorHitResult.GetActor());
@@ -132,4 +153,11 @@ APlayerCharacter* ABasePlayerController::GetPlayerCharacter()
 		PlayerCharacter = Cast<APlayerCharacter>(GetPawn());
 	}
 	return PlayerCharacter;
+}
+
+FHitResult ABasePlayerController::TakeHitResultUnderCursor(ECollisionChannel Channel, bool bTraceComplex) const
+{
+	FHitResult HitResult;
+	GetHitResultUnderCursor(Channel, bTraceComplex, HitResult);
+	return HitResult;
 }

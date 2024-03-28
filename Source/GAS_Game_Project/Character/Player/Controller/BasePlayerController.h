@@ -38,6 +38,7 @@ protected:
 	void OnInputPress(FGameplayTag InputTag);
 	void OnInputHeld(FGameplayTag InputTag);
 	void OnInputRelease(FGameplayTag InputTag);
+	FHitResult TakeHitResultUnderCursor(ECollisionChannel Channel, bool bTraceComplex) const;
 
 	UMyAbilitySystemComponent* GetASC();
 
