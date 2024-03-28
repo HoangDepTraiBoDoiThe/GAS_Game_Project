@@ -62,6 +62,7 @@ protected:
 	float AutoRunAcceptanceRadius = 50.f;
 	float ShortPressThreshold = 0.5f;
 	float FollowTime = 0.f;
-	bool bShouldRunning = false;
+	bool bShouldAutoRunning = false;
+	bool bTargeting = false;
 	FVector CacheDirection = FVector::ZeroVector;
 };

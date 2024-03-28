@@ -8,6 +8,7 @@
 #include "Components/SplineComponent.h"
 #include "GAS_Game_Project/Character/Player/PlayerCharacter.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
+#include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
 #include "GAS_Game_Project/InputSystem/MyEnhancedInputComponent.h"
 #include "GAS_Game_Project/Interface/InteractableInterface.h"
 
@@ -43,7 +44,11 @@ void ABasePlayerController::SetupInputComponent()
 
 void ABasePlayerController::OnInputPress(FGameplayTag InputTag)
 {
-	bShouldRunning = CurrentUnderMouseTarget == nullptr;
+	if (MyGameplayTags::Get().Control_LMB.MatchesTagExact(InputTag))
+	{
+		bTargeting = CurrentUnderMouseTarget == nullptr;
+		bShouldAutoRunning = false;
+	}
 }
 
 void ABasePlayerController::OnInputHeld(FGameplayTag InputTag)
