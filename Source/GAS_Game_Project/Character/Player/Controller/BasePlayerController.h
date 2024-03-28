@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerController.h"
 #include "BasePlayerController.generated.h"
 
+class UMyAbilitySystemComponent;
 class UInputDataAsset;
 class IInteractableInterface;
 class APlayerCharacter;
@@ -37,6 +38,10 @@ protected:
 	void OnInputHeld(FGameplayTag InputTag);
 	void OnInputRelease(FGameplayTag InputTag);
 
+	UMyAbilitySystemComponent* GetASC();
+
+	UMyAbilitySystemComponent* ASC;
+	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UInputDataAsset> InputConfig;
 	

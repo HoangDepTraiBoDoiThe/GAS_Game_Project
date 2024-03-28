@@ -4,6 +4,7 @@
 #include "MyAbilitySystemComponent.h"
 
 #include "GameplayEffectExtension.h"
+#include "Ability/BaseGameplayAbility.h"
 #include "GAS_Game_Project/UserInterface/Controller/OverlayWidgetController.h"
 
 void UMyAbilitySystemComponent::InitOwnerAndAvatarActor(AActor* NewOwnerActor, AActor* NewAvatarActor)
@@ -39,6 +40,30 @@ void UMyAbilitySystemComponent::AddAbilities(TArray<TSubclassOf<UGameplayAbility
 	for (const TSubclassOf<UGameplayAbility>& Ability : Abilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, Level);
+		if (const UBaseGameplayAbility* BaseGameplayAbility = CastChecked<UBaseGameplayAbility>(AbilitySpec.Ability.Get()); BaseGameplayAbility->AbilityStartupTag.IsValid())
+			AbilitySpec.DynamicAbilityTags.AddTag(BaseGameplayAbility->AbilityStartupTag);
+
 		GiveAbility(AbilitySpec);
+	}
+}
+
+void UMyAbilitySystemComponent::AbilityInputTagHeld(FGameplayTag& InputTag)
+{
+	for (auto& Ability2Active : GetActivatableAbilities())
+	{
+		if (Ability2Active.IsActive()) continue;
+		if (Ability2Active.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			TryActivateAbility(Ability2Active.Handle);
+			AbilitySpecInputPressed(Ability2Active);
+		}
+	}
+}
+
+void UMyAbilitySystemComponent::AbilityInputTagReleased(FGameplayTag& InputTag)
+{
+	for (auto& Ability2Active : GetActivatableAbilities())
+	{
+		AbilitySpecInputReleased(Ability2Active);
 	}
 }

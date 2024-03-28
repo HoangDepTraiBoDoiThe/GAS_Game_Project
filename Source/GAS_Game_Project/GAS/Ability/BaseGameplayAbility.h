@@ -13,5 +13,9 @@ UCLASS()
 class GAS_GAME_PROJECT_API UBaseGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere)
+	FGameplayTag AbilityStartupTag;
 	
 };

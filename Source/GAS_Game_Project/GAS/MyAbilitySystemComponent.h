@@ -20,7 +20,8 @@ class GAS_GAME_PROJECT_API UMyAbilitySystemComponent : public UAbilitySystemComp
 	GENERATED_BODY()
 
 public:
-	
+	void AbilityInputTagHeld(FGameplayTag& InputTag);
+	void AbilityInputTagReleased(FGameplayTag& InputTag);
 	void InitOwnerAndAvatarActor(AActor* OwnerActor, AActor* AvatarActor);
 	void BindCallBackToDependencies();
 	void AddAbilities(TArray<TSubclassOf<UGameplayAbility>>, float);
