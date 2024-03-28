@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GAS_Game_Project/Character/Player/PlayerCharacter.h"
+#include "GAS_Game_Project/InputSystem/MyEnhancedInputComponent.h"
 #include "GAS_Game_Project/Interface/InteractableInterface.h"
 
 ABasePlayerController::ABasePlayerController()
@@ -29,12 +30,23 @@ void ABasePlayerController::SetupInputComponent()
 	if (Subsystem)
 		Subsystem->AddMappingContext(InputMappingContext, 0);
 
-	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
-	if (EnhancedInputComponent)
-	{
-		EnhancedInputComponent->BindAction(IMoveAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Move);
-	}
+	UMyEnhancedInputComponent* MyEnhancedInputComponent = Cast<UMyEnhancedInputComponent>(InputComponent);
+	check(MyEnhancedInputComponent)
+	MyEnhancedInputComponent->BindAction(IMoveAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Move);
+	MyEnhancedInputComponent->BindAbilityInputActions(InputConfig, this, &ThisClass::OnInputPress,
+	                                                  &ThisClass::OnInputHeld, &ThisClass::OnInputRelease);
+}
 
+void ABasePlayerController::OnInputPress(FGameplayTag InputTag)
+{
+}
+
+void ABasePlayerController::OnInputHeld(FGameplayTag InputTag)
+{
+}
+
+void ABasePlayerController::OnInputRelease(FGameplayTag InputTag)
+{
 }
 
 void ABasePlayerController::Tick(float DeltaSeconds)

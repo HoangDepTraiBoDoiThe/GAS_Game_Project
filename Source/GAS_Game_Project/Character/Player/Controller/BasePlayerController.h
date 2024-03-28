@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "InputActionValue.h"
 #include "GameFramework/PlayerController.h"
 #include "BasePlayerController.generated.h"
 
+class UInputDataAsset;
 class IInteractableInterface;
 class APlayerCharacter;
 class UInputAction;
@@ -29,8 +31,15 @@ protected:
 	void SetupInputMode();
 	void Move(const FInputActionValue& Value);
 	void CursorTrace();
-	APlayerCharacter* GetPlayerCharacter();
 
+	APlayerCharacter* GetPlayerCharacter();
+	void OnInputPress(FGameplayTag InputTag);
+	void OnInputHeld(FGameplayTag InputTag);
+	void OnInputRelease(FGameplayTag InputTag);
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UInputDataAsset> InputConfig;
+	
 	TObjectPtr<APlayerCharacter> PlayerCharacter;
 
 	UPROPERTY(EditAnywhere, Category = "Components")
