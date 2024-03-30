@@ -28,6 +28,30 @@ void ABasePlayerController::BeginPlay()
 	SetupInputMode();
 }
 
+void ABasePlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	CursorTrace();
+	AutoRun();
+}
+
+void ABasePlayerController::AutoRun()
+{
+	if (!bShouldAutoRunning) return;
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		const FVector LocationOnSpline = SplineComponent->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+		const FVector Direction = SplineComponent->FindDirectionClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+		ControlledPawn->AddMovementInput(Direction);
+		const float DistanceToDestination = FMath::Abs((CacheDestination - LocationOnSpline).Length());
+		if (DistanceToDestination <= AutoRunAcceptanceRadius)
+		{
+			bShouldAutoRunning = false;
+		}
+	}
+}
+
 void ABasePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -65,8 +89,8 @@ void ABasePlayerController::OnInputHeld(FGameplayTag InputTag)
 		APawn* ControlledPawn = GetPawn();
 		if (ControlledPawn && HitResult.bBlockingHit)
 		{
-			CacheDirection = HitResult.ImpactPoint;
-			const FVector WorldDirection = (CacheDirection - ControlledPawn->GetActorLocation()).GetSafeNormal();
+			CacheDestination = HitResult.ImpactPoint;
+			const FVector WorldDirection = (CacheDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
 			ControlledPawn->AddMovementInput(WorldDirection);
 		}
 	}
@@ -83,16 +107,12 @@ void ABasePlayerController::OnInputRelease(FGameplayTag InputTag)
 		const APawn* ControlledPawn = GetPawn();
 		if (ControlledPawn && HitResult.bBlockingHit)
 		{
-			 if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(), ControlledPawn->GetActorLocation(), CacheDirection))
+			 if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(), ControlledPawn->GetActorLocation(), CacheDestination))
 			 {
-			 	SplineComponent->ClearSplinePoints();
+			 	CacheDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 			 	bShouldAutoRunning = true;
-			 	for (auto& Point : NavPath->PathPoints)
-			    {
-			 		SplineComponent->AddSplineWorldPoint(Point);
-			 		DrawDebugSphere(GetWorld(), Point, 16.f, 16, FColor::Red, false, 5.f);
-			    }
-			 	//SplineComponent->SetSplinePoints(NavPath->PathPoints, ESplineCoordinateSpace::World);
+			 	SplineComponent->ClearSplinePoints();
+			 	SplineComponent->SetSplinePoints(NavPath->PathPoints, ESplineCoordinateSpace::World);
 			 }
 		}
 	}
@@ -104,13 +124,6 @@ UMyAbilitySystemComponent* ABasePlayerController::GetASC()
 {
 	if (!ASC) ASC = CastChecked<UMyAbilitySystemComponent>(GetPlayerCharacter()->GetAbilitySystemComponent());
 	return ASC;
-}
-
-void ABasePlayerController::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-
-	CursorTrace();
 }
 
 void ABasePlayerController::SetupInputMode()

@@ -28,6 +28,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	void AutoRun();
 	virtual void SetupInputComponent() override;
 	virtual void Tick(float DeltaSeconds) override;
 	void SetupInputMode();
@@ -65,5 +66,5 @@ protected:
 	float FollowTime = 0.f;
 	bool bShouldAutoRunning = false;
 	bool bTargeting = false;
-	FVector CacheDirection = FVector::ZeroVector;
+	FVector CacheDestination = FVector::ZeroVector;
 };
