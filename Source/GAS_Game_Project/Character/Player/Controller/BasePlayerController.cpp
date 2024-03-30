@@ -83,16 +83,7 @@ void ABasePlayerController::OnInputHeld(FGameplayTag InputTag)
 	if (bTargeting) GetASC()->AbilityInputTagHeld(InputTag);
 	else
 	{
-		FollowTime += GetWorld()->GetDeltaSeconds();
-		const FHitResult HitResult = TakeHitResultUnderCursor(ECC_Visibility, false);
-
-		APawn* ControlledPawn = GetPawn();
-		if (ControlledPawn && HitResult.bBlockingHit)
-		{
-			CacheDestination = HitResult.ImpactPoint;
-			const FVector WorldDirection = (CacheDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
-			ControlledPawn->AddMovementInput(WorldDirection);
-		}
+		ActivateHoldingRun();
 	}
 }
 
@@ -102,19 +93,7 @@ void ABasePlayerController::OnInputRelease(FGameplayTag InputTag)
 	if (bTargeting) GetASC()->AbilityInputTagReleased(InputTag);
 	else if (FollowTime <= ShortPressThreshold)
 	{
-		const FHitResult HitResult = TakeHitResultUnderCursor(ECC_Visibility, false);
-
-		const APawn* ControlledPawn = GetPawn();
-		if (ControlledPawn && HitResult.bBlockingHit)
-		{
-			 if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(), ControlledPawn->GetActorLocation(), CacheDestination))
-			 {
-			 	CacheDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
-			 	bShouldAutoRunning = true;
-			 	SplineComponent->ClearSplinePoints();
-			 	SplineComponent->SetSplinePoints(NavPath->PathPoints, ESplineCoordinateSpace::World);
-			 }
-		}
+		ActivateAutoRun();
 	}
 	FollowTime = 0.f;
 	bTargeting = false;
@@ -143,6 +122,36 @@ void ABasePlayerController::Move(const FInputActionValue& Value)
 	const FVector RightDirection = FRotationMatrix(rot).GetUnitAxis(EAxis::Y);
 	GetPlayerCharacter()->AddMovementInput(ForwardDirection, ScaleValue.Y);
 	GetPlayerCharacter()->AddMovementInput(RightDirection, ScaleValue.X);
+}
+
+void ABasePlayerController::ActivateHoldingRun()
+{
+	FollowTime += GetWorld()->GetDeltaSeconds();
+	const FHitResult HitResult = TakeHitResultUnderCursor(ECC_Visibility, false);
+
+	APawn* ControlledPawn = GetPawn();
+	if (ControlledPawn && HitResult.bBlockingHit)
+	{
+		CacheDestination = HitResult.ImpactPoint;
+		const FVector WorldDirection = (CacheDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+		ControlledPawn->AddMovementInput(WorldDirection);
+	}
+}
+
+void ABasePlayerController::ActivateAutoRun()
+{
+	const FHitResult HitResult = TakeHitResultUnderCursor(ECC_Visibility, false);
+	const APawn* ControlledPawn = GetPawn();
+	if (ControlledPawn && HitResult.bBlockingHit)
+	{
+		if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(), ControlledPawn->GetActorLocation(), CacheDestination))
+		{
+			CacheDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
+			bShouldAutoRunning = true;
+			SplineComponent->ClearSplinePoints();
+			SplineComponent->SetSplinePoints(NavPath->PathPoints, ESplineCoordinateSpace::World);
+		}
+	}
 }
 
 void ABasePlayerController::CursorTrace()

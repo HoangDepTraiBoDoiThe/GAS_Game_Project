@@ -37,7 +37,9 @@ protected:
 
 	APlayerCharacter* GetPlayerCharacter();
 	void OnInputPress(FGameplayTag InputTag);
+	void ActivateHoldingRun();
 	void OnInputHeld(FGameplayTag InputTag);
+	void ActivateAutoRun();
 	void OnInputRelease(FGameplayTag InputTag);
 	FHitResult TakeHitResultUnderCursor(ECollisionChannel Channel, bool bTraceComplex) const;
 
