@@ -12,7 +12,12 @@ void UProjectileGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandl
                                                  const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	if (!HasAuthority(&ActivationInfo)) return;
+
+}
+
+void UProjectileGameplayAbility::SpawnProjectile()
+{
+	if (!GetOwningActorFromActorInfo()->HasAuthority()) return;
 
 	ABaseGameCharacter* BaseGameCharacter = Cast<ABaseGameCharacter>(GetAvatarActorFromActorInfo());
 	FTransform ProjectileTransform;
