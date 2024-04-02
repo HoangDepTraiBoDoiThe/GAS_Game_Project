@@ -21,5 +21,6 @@ class GAS_GAME_PROJECT_API ICombatInterface
 	GENERATED_BODY()
 
 public:
-	virtual float GetCharacterLevel() = 0; 
+	virtual float GetCharacterLevel() = 0;
+	virtual FVector WeaponLocation() = 0;
 };

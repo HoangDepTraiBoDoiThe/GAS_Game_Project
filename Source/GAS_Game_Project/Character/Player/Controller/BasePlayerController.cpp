@@ -70,7 +70,7 @@ void ABasePlayerController::SetupInputComponent()
 
 void ABasePlayerController::OnInputPress(FGameplayTag InputTag)
 {
-	if (MyGameplayTags::Get().Control_LMB.MatchesTagExact(InputTag))
+	if (MyGameplayTags::Get().Control_RMB.MatchesTagExact(InputTag))
 	{
 		bTargeting = CurrentUnderMouseTarget != nullptr;
 		bShouldAutoRunning = false;
@@ -79,7 +79,7 @@ void ABasePlayerController::OnInputPress(FGameplayTag InputTag)
 
 void ABasePlayerController::OnInputHeld(FGameplayTag InputTag)
 {
-	if (!MyGameplayTags::Get().Control_LMB.MatchesTagExact(InputTag)) GetASC()->AbilityInputTagHeld(InputTag);
+	if (!MyGameplayTags::Get().Control_RMB.MatchesTagExact(InputTag)) GetASC()->AbilityInputTagHeld(InputTag);
 	if (bTargeting) GetASC()->AbilityInputTagHeld(InputTag);
 	else
 	{
@@ -89,7 +89,7 @@ void ABasePlayerController::OnInputHeld(FGameplayTag InputTag)
 
 void ABasePlayerController::OnInputRelease(FGameplayTag InputTag)
 {
-	if (!MyGameplayTags::Get().Control_LMB.MatchesTagExact(InputTag)) GetASC()->AbilityInputTagReleased(InputTag);
+	if (!MyGameplayTags::Get().Control_RMB.MatchesTagExact(InputTag)) GetASC()->AbilityInputTagReleased(InputTag);
 	if (bTargeting) GetASC()->AbilityInputTagReleased(InputTag);
 	else if (FollowTime <= ShortPressThreshold)
 	{

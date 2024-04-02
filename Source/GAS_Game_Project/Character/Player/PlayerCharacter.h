@@ -32,6 +32,7 @@ protected:
 	bool IsPlayerControllerValid();
 	bool IsPlayerStateValid();
 
+	
 	UPROPERTY()
 	TObjectPtr<AMyHUD> HUD;
 

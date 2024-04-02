@@ -9,6 +9,7 @@
 ABaseProjectile::ABaseProjectile()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = true;
 
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(FName("Sphere component"));
 	SetRootComponent(SphereComponent);

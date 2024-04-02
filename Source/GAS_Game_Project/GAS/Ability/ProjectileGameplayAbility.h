@@ -6,6 +6,7 @@
 #include "BaseGameplayAbility.h"
 #include "ProjectileGameplayAbility.generated.h"
 
+class ABaseProjectile;
 /**
  * 
  */
@@ -15,6 +16,8 @@ class GAS_GAME_PROJECT_API UProjectileGameplayAbility : public UBaseGameplayAbil
 	GENERATED_BODY()
 
 protected:
-	void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
-	
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<ABaseProjectile> AbilityProjectileClass;
 };

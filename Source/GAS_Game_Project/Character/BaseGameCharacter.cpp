@@ -4,6 +4,7 @@
 #include "BaseGameCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 
@@ -29,6 +30,11 @@ void ABaseGameCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+FVector ABaseGameCharacter::WeaponLocation()
+{
+	return GetMesh()->GetSocketByName(WeaponSocketName)->GetSocketLocation(GetMesh());
 }
 
 void ABaseGameCharacter::InitAttributeValue()

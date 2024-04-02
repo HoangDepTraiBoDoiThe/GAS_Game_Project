@@ -26,6 +26,7 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual float GetCharacterLevel() override;
 	FORCEINLINE UBaseAttributeSet* GetAttributeSet() const {return AttributeSet;}
+	virtual FVector WeaponLocation() override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -33,6 +34,8 @@ protected:
 	void Cus_ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const;
 	void ActiveAbilities();
 
+	UPROPERTY(EditAnywhere)
+	FName WeaponSocketName;
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<UGameplayAbility>> AbilitiesToActive;
 	UPROPERTY(EditAnywhere)
