@@ -36,22 +36,6 @@ void ABasePlayerController::Tick(float DeltaSeconds)
 	AutoRun();
 }
 
-void ABasePlayerController::AutoRun()
-{
-	if (!bShouldAutoRunning) return;
-	if (APawn* ControlledPawn = GetPawn())
-	{
-		const FVector LocationOnSpline = SplineComponent->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
-		const FVector Direction = SplineComponent->FindDirectionClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
-		ControlledPawn->AddMovementInput(Direction);
-		const float DistanceToDestination = FMath::Abs((CacheDestination - LocationOnSpline).Length());
-		if (DistanceToDestination <= AutoRunAcceptanceRadius)
-		{
-			bShouldAutoRunning = false;
-		}
-	}
-}
-
 void ABasePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -146,6 +130,22 @@ void ABasePlayerController::ActivateAutoRun()
 			bShouldAutoRunning = true;
 			SplineComponent->ClearSplinePoints();
 			SplineComponent->SetSplinePoints(NavPath->PathPoints, ESplineCoordinateSpace::World);
+		}
+	}
+}
+
+void ABasePlayerController::AutoRun()
+{
+	if (!bShouldAutoRunning) return;
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		const FVector LocationOnSpline = SplineComponent->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+		const FVector Direction = SplineComponent->FindDirectionClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+		ControlledPawn->AddMovementInput(Direction);
+		const float DistanceToDestination = FMath::Abs((CacheDestination - LocationOnSpline).Length());
+		if (DistanceToDestination <= AutoRunAcceptanceRadius)
+		{
+			bShouldAutoRunning = false;
 		}
 	}
 }
