@@ -66,6 +66,8 @@ void ABasePlayerController::SetupInputComponent()
 	check(MyEnhancedInputComponent)
 	MyEnhancedInputComponent->BindAction(IMoveAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Move);
 	MyEnhancedInputComponent->BindAbilityInputActions(InputConfig, this, &ThisClass::OnInputPress, &ThisClass::OnInputRelease, &ThisClass::OnInputHeld);
+	MyEnhancedInputComponent->BindAction(ILeftShift, ETriggerEvent::Started, this, &ABasePlayerController::OnLeftShiftPressed);
+	MyEnhancedInputComponent->BindAction(ILeftShift, ETriggerEvent::Completed, this, &ABasePlayerController::OnLeftShiftReleased);
 }
 
 void ABasePlayerController::OnInputPress(FGameplayTag InputTag)
@@ -80,7 +82,7 @@ void ABasePlayerController::OnInputPress(FGameplayTag InputTag)
 void ABasePlayerController::OnInputHeld(FGameplayTag InputTag)
 {
 	if (!MyGameplayTags::Get().Control_RMB.MatchesTagExact(InputTag)) GetASC()->AbilityInputTagHeld(InputTag);
-	if (bTargeting) GetASC()->AbilityInputTagHeld(InputTag);
+	if (bTargeting || bLeftShiftPressing) GetASC()->AbilityInputTagHeld(InputTag);
 	else ActivateHoldingRun();
 }
 

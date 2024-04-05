@@ -41,10 +41,13 @@ protected:
 	void OnInputHeld(FGameplayTag InputTag);
 	void ActivateAutoRun();
 	void OnInputRelease(FGameplayTag InputTag);
+	FORCEINLINE void OnLeftShiftPressed() {bLeftShiftPressing = true;}
+	FORCEINLINE void OnLeftShiftReleased() {bLeftShiftPressing = false;}
 	FHitResult TakeHitResultUnderCursor(ECollisionChannel Channel, bool bTraceComplex) const;
 
 	UMyAbilitySystemComponent* GetASC();
 
+	bool bLeftShiftPressing = false;
 	USplineComponent* SplineComponent;
 
 	UMyAbilitySystemComponent* ASC;
@@ -56,6 +59,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Components")
 	TObjectPtr<UInputMappingContext> InputMappingContext;
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> ILeftShift;
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> IMoveAction;
 
