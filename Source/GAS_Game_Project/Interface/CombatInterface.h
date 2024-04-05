@@ -7,7 +7,7 @@
 #include "CombatInterface.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
+UINTERFACE(MinimalAPI, BlueprintType)
 class UCombatInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -23,4 +23,7 @@ class GAS_GAME_PROJECT_API ICombatInterface
 public:
 	virtual float GetCharacterLevel() = 0;
 	virtual FVector WeaponLocation() = 0;
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void StartMotionWarping(FVector TargetLocation);
 };

@@ -90,7 +90,7 @@ void ABasePlayerController::OnInputRelease(FGameplayTag InputTag)
 {
 	if (!MyGameplayTags::Get().Control_RMB.MatchesTagExact(InputTag)) GetASC()->AbilityInputTagReleased(InputTag);
 	GetASC()->AbilityInputTagReleased(InputTag);
-	if (FollowTime <= ShortPressThreshold) ActivateAutoRun();
+	if (FollowTime <= ShortPressThreshold && !bLeftShiftPressing && !bTargeting) ActivateAutoRun();
 	FollowTime = 0.f;
 	bTargeting = false;
 }
