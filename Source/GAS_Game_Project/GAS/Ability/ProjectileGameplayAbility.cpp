@@ -15,13 +15,16 @@ void UProjectileGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandl
 
 }
 
-void UProjectileGameplayAbility::SpawnProjectile()
+void UProjectileGameplayAbility::SpawnProjectile(FVector TargetLocation)
 {
 	if (!GetOwningActorFromActorInfo()->HasAuthority()) return;
 
 	ABaseGameCharacter* BaseGameCharacter = Cast<ABaseGameCharacter>(GetAvatarActorFromActorInfo());
 	FTransform ProjectileTransform;
+	FRotator ProjectileRotator = (TargetLocation - BaseGameCharacter->WeaponLocation()).Rotation();
+	ProjectileRotator.Pitch = 0.f;
 	ProjectileTransform.SetLocation(BaseGameCharacter->WeaponLocation());
+	ProjectileTransform.SetRotation(ProjectileRotator.Quaternion());
 	APawn* Instigator = Cast<APawn>(BaseGameCharacter);
 	
 	ABaseProjectile* Projectile = GetWorld()->SpawnActorDeferred<ABaseProjectile>(

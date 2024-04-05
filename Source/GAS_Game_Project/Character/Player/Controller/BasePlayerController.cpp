@@ -81,20 +81,14 @@ void ABasePlayerController::OnInputHeld(FGameplayTag InputTag)
 {
 	if (!MyGameplayTags::Get().Control_RMB.MatchesTagExact(InputTag)) GetASC()->AbilityInputTagHeld(InputTag);
 	if (bTargeting) GetASC()->AbilityInputTagHeld(InputTag);
-	else
-	{
-		ActivateHoldingRun();
-	}
+	else ActivateHoldingRun();
 }
 
 void ABasePlayerController::OnInputRelease(FGameplayTag InputTag)
 {
 	if (!MyGameplayTags::Get().Control_RMB.MatchesTagExact(InputTag)) GetASC()->AbilityInputTagReleased(InputTag);
-	if (bTargeting) GetASC()->AbilityInputTagReleased(InputTag);
-	else if (FollowTime <= ShortPressThreshold)
-	{
-		ActivateAutoRun();
-	}
+	GetASC()->AbilityInputTagReleased(InputTag);
+	if (FollowTime <= ShortPressThreshold) ActivateAutoRun();
 	FollowTime = 0.f;
 	bTargeting = false;
 }
