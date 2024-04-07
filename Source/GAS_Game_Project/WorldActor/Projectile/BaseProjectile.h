@@ -7,6 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "BaseProjectile.generated.h"
 
+class UNiagaraSystem;
 class USphereComponent;
 class UProjectileMovementComponent;
 
@@ -22,6 +23,8 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
 	virtual void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UPROPERTY()
@@ -30,4 +33,7 @@ protected:
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> SphereComponent;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UNiagaraSystem> DestroyFX;
 };

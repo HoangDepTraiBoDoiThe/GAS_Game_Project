@@ -66,15 +66,14 @@ void ABasePlayerController::OnInputPress(FGameplayTag InputTag)
 void ABasePlayerController::OnInputHeld(FGameplayTag InputTag)
 {
 	if (!MyGameplayTags::Get().Control_RMB.MatchesTagExact(InputTag)) GetASC()->AbilityInputTagHeld(InputTag);
-	if (bTargeting || bLeftShiftPressing) GetASC()->AbilityInputTagHeld(InputTag);
+	else if (bTargeting || bLeftShiftPressing) GetASC()->AbilityInputTagHeld(InputTag);
 	else ActivateHoldingRun();
 }
 
 void ABasePlayerController::OnInputRelease(FGameplayTag InputTag)
 {
 	if (!MyGameplayTags::Get().Control_RMB.MatchesTagExact(InputTag)) GetASC()->AbilityInputTagReleased(InputTag);
-	GetASC()->AbilityInputTagReleased(InputTag);
-	if (FollowTime <= ShortPressThreshold && !bLeftShiftPressing && !bTargeting) ActivateAutoRun();
+	else if (FollowTime <= ShortPressThreshold && !bLeftShiftPressing && !bTargeting) ActivateAutoRun();
 	FollowTime = 0.f;
 	bTargeting = false;
 }
@@ -126,6 +125,7 @@ void ABasePlayerController::ActivateAutoRun()
 	{
 		if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(), ControlledPawn->GetActorLocation(), CacheDestination))
 		{
+			if (NavPath->PathPoints.Num() == 0) return; 
 			CacheDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 			bShouldAutoRunning = true;
 			SplineComponent->ClearSplinePoints();
