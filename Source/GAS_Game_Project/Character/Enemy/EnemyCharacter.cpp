@@ -3,8 +3,10 @@
 
 #include "EnemyCharacter.h"
 
+#include "Components/WidgetComponent.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
+#include "GAS_Game_Project/UserInterface/UserWidget/BaseUserWidget.h"
 
 
 AEnemyCharacter::AEnemyCharacter()
@@ -15,7 +17,8 @@ AEnemyCharacter::AEnemyCharacter()
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	AttributeSet = CreateDefaultSubobject<UBaseAttributeSet>(FName("Attribute Set"));
-
+	HitPointBar = CreateDefaultSubobject<UWidgetComponent>("Hit point bar");
+	HitPointBar->SetupAttachment(GetRootComponent());
 }
 
 void AEnemyCharacter::BeginPlay()

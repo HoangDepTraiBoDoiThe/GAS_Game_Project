@@ -7,6 +7,7 @@
 #include "GAS_Game_Project/Interface/InteractableInterface.h"
 #include "EnemyCharacter.generated.h"
 
+class UWidgetComponent;
 /**
  * 
  */
@@ -20,5 +21,9 @@ public:
 	virtual void BeginPlay() override;
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+
+protected:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UWidgetComponent> HitPointBar;
 	
 };
