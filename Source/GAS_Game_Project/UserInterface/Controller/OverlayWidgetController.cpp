@@ -30,7 +30,7 @@ void UOverlayWidgetController::BroadCastToDependencies()
 			for (const FGameplayTag& Tag : GameplayTagContainer)
 			{
 				if (const FUIWidgetRow* UIWidgetRow = GetUIWidgetRowData<FUIWidgetRow>(Tag)) OnGameplayEffectWidgetMessageStructToViewDelegate.Broadcast(*UIWidgetRow);
-				else UE_LOG(LogTemp, Error, TEXT("My Message | UIWidgetRow was not found. Check row name again."))
+				else UE_LOG(LogTemp, Error, TEXT("My Message | UOverlayWidgetController | None crucial | UIWidgetRow was not found. Add row name for all the attributes to fix the issue"))
 			}
 		});
 }

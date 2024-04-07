@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffectTypes.h"
 #include "GameFramework/Actor.h"
 #include "BaseProjectile.generated.h"
 
@@ -17,11 +18,14 @@ class GAS_GAME_PROJECT_API ABaseProjectile : public AActor
 public:	
 	ABaseProjectile();
 	virtual void Tick(float DeltaTime) override;
+	FORCEINLINE void SetProjectileEffectSpecHandle(FGameplayEffectSpecHandle& Handle) {ProjectileEffectSpecHandle = Handle;}
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UPROPERTY()
+	FGameplayEffectSpecHandle ProjectileEffectSpecHandle; 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 	UPROPERTY(VisibleAnywhere)

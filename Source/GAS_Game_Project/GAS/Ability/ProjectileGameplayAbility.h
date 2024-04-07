@@ -23,4 +23,6 @@ protected:
 	void SpawnProjectile(FVector TargetLocation);
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<ABaseProjectile> AbilityProjectileClass;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UGameplayEffect> AbililyEffectClass;
 };

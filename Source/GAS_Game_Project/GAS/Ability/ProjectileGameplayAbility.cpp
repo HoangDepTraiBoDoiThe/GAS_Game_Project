@@ -3,6 +3,8 @@
 
 #include "ProjectileGameplayAbility.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "GAS_Game_Project/Character/BaseGameCharacter.h"
 #include "GAS_Game_Project/WorldActor/Projectile/BaseProjectile.h"
 
@@ -27,8 +29,12 @@ void UProjectileGameplayAbility::SpawnProjectile(FVector TargetLocation)
 	ProjectileTransform.SetRotation(ProjectileRotator.Quaternion());
 	APawn* Instigator = Cast<APawn>(BaseGameCharacter);
 	
-	ABaseProjectile* Projectile = GetWorld()->SpawnActorDeferred<ABaseProjectile>(
-		AbilityProjectileClass, ProjectileTransform, GetOwningActorFromActorInfo(), Instigator);
+	ABaseProjectile* Projectile = GetWorld()->SpawnActorDeferred<ABaseProjectile>(AbilityProjectileClass, ProjectileTransform, GetOwningActorFromActorInfo(), Instigator);
 
+	FGameplayEffectContextHandle EffectContextHandle = GetAbilitySystemComponentFromActorInfo_Checked()->MakeEffectContext();
+	EffectContextHandle.AddInstigator(GetAvatarActorFromActorInfo(), Cast<ICombatInterface>(GetAvatarActorFromActorInfo())->GetWeapon());
+	FGameplayEffectSpecHandle EffectSpecHandle = GetAbilitySystemComponentFromActorInfo_Checked()->MakeOutgoingSpec(AbililyEffectClass,GetAbilityLevel(), EffectContextHandle);
+	Projectile->SetProjectileEffectSpecHandle(EffectSpecHandle);
+	
 	Projectile->FinishSpawning(ProjectileTransform);
 }

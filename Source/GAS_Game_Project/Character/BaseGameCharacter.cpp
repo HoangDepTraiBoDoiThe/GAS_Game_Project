@@ -44,6 +44,12 @@ void ABaseGameCharacter::InitAttributeValue()
 	Cus_ApplyGameplayEffectToSelf(DefaultVitalAttributesClass);
 }
 
+AActor* ABaseGameCharacter::GetWeapon()
+{
+	if (!Weapon) return this;
+	return Cast<AActor>(Weapon);
+}
+
 void ABaseGameCharacter::Cus_ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const
 {
 	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();

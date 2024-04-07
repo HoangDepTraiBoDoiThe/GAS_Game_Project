@@ -31,6 +31,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAttributeValue();
+	virtual AActor* GetWeapon() override;
 	void Cus_ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const;
 	void ActiveAbilities();
 
