@@ -25,7 +25,19 @@ void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (AbilitySystemComponent) AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UBaseUserWidget>(HitPointBar->GetWidget())->SetWidgetController(this);
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->BindGameplayAttrValChangeCallback();
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+		AbilitySystemComponent->OnNewAttributeValueChangeBroadcastToControllerDelegate.AddLambda(
+			[this] (const FOnAttributeChangeData& NewAttributeData)
+			{
+				OnAttributeValuesSignature.Broadcast(NewAttributeData.NewValue, NewAttributeData.Attribute);
+			}
+		);
+		InitAttributeValue();
+	}
 }
 
 void AEnemyCharacter::HighlightActor()

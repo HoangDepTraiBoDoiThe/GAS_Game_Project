@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GAS_Game_Project/Character/BaseGameCharacter.h"
 #include "GAS_Game_Project/Interface/InteractableInterface.h"
+#include "GAS_Game_Project/UserInterface/Controller/OverlayWidgetController.h"
 #include "EnemyCharacter.generated.h"
 
 class UWidgetComponent;
@@ -25,5 +26,8 @@ public:
 protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UWidgetComponent> HitPointBar;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnGameplayAttributeValuesSignature OnAttributeValuesSignature;
 	
 };
