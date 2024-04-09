@@ -3,11 +3,14 @@
 
 #include "BaseProjectile.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "NiagaraEmitter.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GAS_Game_Project/GAS_Game_Project.h"
+#include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 ABaseProjectile::ABaseProjectile()
@@ -44,10 +47,25 @@ void ABaseProjectile::Tick(float DeltaTime)
 void ABaseProjectile::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	bIsOverlappedOnClient = true;
 	if (DestroyFX) UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), DestroyFX, GetActorLocation());
 	if (HasAuthority())
 	{
+		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+		{
+			checkf(ProjectileEffectSpecHandle.IsValid(), TEXT("My Message | ABaseProjectile | CRITICAL | Projectile's EffectSpecHandle is not constructed"))
+			TargetASC->ApplyGameplayEffectSpecToSelf(*ProjectileEffectSpecHandle.Data.Get());
+		}
 		Destroy();
 	}
+}
+
+void ABaseProjectile::Destroyed()
+{
+	if (!bIsOverlappedOnClient)
+	{
+		//TODO:
+	}
+	Super::Destroyed();
 }
 

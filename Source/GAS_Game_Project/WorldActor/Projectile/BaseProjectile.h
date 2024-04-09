@@ -36,4 +36,9 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UNiagaraSystem> DestroyFX;
+
+private:
+	void Destroyed() override;
+	
+	bool bIsOverlappedOnClient = false;
 };
