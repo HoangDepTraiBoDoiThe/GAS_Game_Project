@@ -17,14 +17,14 @@ class GAS_GAME_PROJECT_API UBaseUserWidget : public UUserWidget
 
 public:
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetWidgetController(UBaseWidgetController* NewWidgetController);
+	FORCEINLINE void SetWidgetController(UObject* NewWidgetController);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void WidgetControllerSet();
 	
 protected:
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UBaseWidgetController> WidgetController;
+	TObjectPtr<UObject> WidgetController;
 
 
 private:
