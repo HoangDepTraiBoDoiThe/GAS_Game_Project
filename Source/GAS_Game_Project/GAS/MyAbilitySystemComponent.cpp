@@ -15,24 +15,8 @@ void UMyAbilitySystemComponent::InitOwnerAndAvatarActor(AActor* NewOwnerActor, A
 
 void UMyAbilitySystemComponent::BindCallBackToDependencies()
 {
-	OnGameplayEffectAppliedDelegateToSelf.AddLambda(
-		[this] (UAbilitySystemComponent* ASC, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle Handle)
-		{
-			FGameplayTagContainer TagContainer;
-			EffectSpec.GetAllAssetTags(TagContainer);
-			GameplayEffectTagsBroadcastToControllerDelegate.Broadcast(TagContainer);
-		});
-	
-	TArray<FGameplayAttribute> AllAttributes;
-	GetAllAttributes(AllAttributes);
-	for (const FGameplayAttribute& Attribute : AllAttributes)
-	{
-		GetGameplayAttributeValueChangeDelegate(Attribute).AddLambda(
-			[this] (const FOnAttributeChangeData& NewAttributeData)
-			{
-				OnNewAttributeValueChangeBroadcastToControllerDelegate.Broadcast(NewAttributeData);
-			});
-	}
+	BindGameplayEffectCallback();
+	BindGameplayAttrValChangeCallback();
 }
 
 void UMyAbilitySystemComponent::AddAbilities(TArray<TSubclassOf<UGameplayAbility>> Abilities, const float Level)
@@ -44,6 +28,31 @@ void UMyAbilitySystemComponent::AddAbilities(TArray<TSubclassOf<UGameplayAbility
 			AbilitySpec.DynamicAbilityTags.AddTag(BaseGameplayAbility->AbilityStartupTag);
 
 		GiveAbility(AbilitySpec);
+	}
+}
+
+void UMyAbilitySystemComponent::BindGameplayEffectCallback()
+{
+	OnGameplayEffectAppliedDelegateToSelf.AddLambda(
+		[this] (UAbilitySystemComponent* ASC, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle Handle)
+		{
+			FGameplayTagContainer TagContainer;
+			EffectSpec.GetAllAssetTags(TagContainer);
+			GameplayEffectTagsBroadcastToControllerDelegate.Broadcast(TagContainer);
+		});
+}
+
+void UMyAbilitySystemComponent::BindGameplayAttrValChangeCallback()
+{
+	TArray<FGameplayAttribute> AllAttributes;
+	GetAllAttributes(AllAttributes);
+	for (const FGameplayAttribute& Attribute : AllAttributes)
+	{
+		GetGameplayAttributeValueChangeDelegate(Attribute).AddLambda(
+			[this] (const FOnAttributeChangeData& NewAttributeData)
+			{
+				OnNewAttributeValueChangeBroadcastToControllerDelegate.Broadcast(NewAttributeData);
+			});
 	}
 }
 
