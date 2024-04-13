@@ -15,6 +15,7 @@ ABaseGameCharacter::ABaseGameCharacter()
 
 	ACharacter::GetMovementComponent()->bConstrainToPlane = true;
 	ACharacter::GetMovementComponent()->bSnapToPlaneAtStart = true;
+	ACharacter::GetMovementComponent()->SetIsReplicated(true);
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;

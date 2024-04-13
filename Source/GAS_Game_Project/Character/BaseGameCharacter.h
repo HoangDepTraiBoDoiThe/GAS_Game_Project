@@ -30,6 +30,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	UFUNCTION(BlueprintCallable)
 	virtual void InitAttributeValue();
 	virtual AActor* GetWeapon() override;
 	void Cus_ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const;

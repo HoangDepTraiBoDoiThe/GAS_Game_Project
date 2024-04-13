@@ -37,6 +37,8 @@ void AEnemyCharacter::BeginPlay()
 			}
 		);
 		InitAttributeValue();
+		OnAttributeValuesSignature.Broadcast(UBaseAttributeSet::GetHitPointAttribute().GetNumericValue(AttributeSet), UBaseAttributeSet::GetHitPointAttribute());
+		OnAttributeValuesSignature.Broadcast(UBaseAttributeSet::GetMaxHitPointAttribute().GetNumericValue(AttributeSet), UBaseAttributeSet::GetMaxHitPointAttribute());
 	}
 }
 
