@@ -27,7 +27,7 @@ struct FCharacterClassDefaultMainInfosStruct
 
 	
 	UPROPERTY(EditAnywhere, Category=CharacterPrimary)
-	TObjectPtr<UGameplayEffect> PrimaryDefaultAttributes;
+	TSubclassOf<UGameplayEffect> PrimaryDefaultAttributes;
 };
 
 UCLASS()
@@ -42,8 +42,8 @@ public:
 	TMap<ECharacterClass, FCharacterClassDefaultMainInfosStruct> CharacterDefaultInfoMap;
 
 	UPROPERTY(EditAnywhere, Category=CharacterCommon)
-	TObjectPtr<UGameplayEffect> SecondaryDefaultAttribute;
+	TSubclassOf<UGameplayEffect> SecondaryDefaultAttribute;
 	
 	UPROPERTY(EditAnywhere, Category=CharacterCommon)
-	TObjectPtr<UGameplayEffect> VitalDefaultAttribute;
+	TSubclassOf<UGameplayEffect> VitalDefaultAttribute;
 };
