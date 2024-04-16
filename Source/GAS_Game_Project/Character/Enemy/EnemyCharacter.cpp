@@ -26,20 +26,11 @@ void AEnemyCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	Cast<UBaseUserWidget>(HitPointBar->GetWidget())->SetWidgetController(this);
-	if (AbilitySystemComponent)
-	{
-		AbilitySystemComponent->BindGameplayAttrValChangeCallback();
-		AbilitySystemComponent->InitAbilityActorInfo(this, this);
-		AbilitySystemComponent->OnNewAttributeValueChangeBroadcastToControllerDelegate.AddLambda(
-			[this] (const FOnAttributeChangeData& NewAttributeData)
-			{
-				OnAttributeValuesSignature.Broadcast(NewAttributeData.NewValue, NewAttributeData.Attribute);
-			}
-		);
-		InitAttributeValue();
-		OnAttributeValuesSignature.Broadcast(UBaseAttributeSet::GetHitPointAttribute().GetNumericValue(AttributeSet), UBaseAttributeSet::GetHitPointAttribute());
-		OnAttributeValuesSignature.Broadcast(UBaseAttributeSet::GetMaxHitPointAttribute().GetNumericValue(AttributeSet), UBaseAttributeSet::GetMaxHitPointAttribute());
-	}
+	AbilitySystemComponent->BindGameplayAttrValChangeCallback();
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	BindBroadCastToWidgetOnAttChange();
+	InitBroadCastVitalAttValue();
+	InitAttributeValue();
 }
 
 void AEnemyCharacter::HighlightActor()
@@ -51,4 +42,22 @@ void AEnemyCharacter::HighlightActor()
 void AEnemyCharacter::UnHighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(false);
+}
+
+void AEnemyCharacter::BindBroadCastToWidgetOnAttChange() const
+{
+	AbilitySystemComponent->OnNewAttributeValueChangeBroadcastToControllerDelegate.AddLambda(
+		[this](const FOnAttributeChangeData& NewAttributeData)
+		{
+			OnAttributeValuesSignature.Broadcast(NewAttributeData.NewValue, NewAttributeData.Attribute);
+		}
+	);
+}
+
+void AEnemyCharacter::InitBroadCastVitalAttValue() const
+{
+	OnAttributeValuesSignature.Broadcast(UBaseAttributeSet::GetHitPointAttribute().GetNumericValue(AttributeSet),
+								 UBaseAttributeSet::GetHitPointAttribute());
+	OnAttributeValuesSignature.Broadcast(UBaseAttributeSet::GetMaxHitPointAttribute().GetNumericValue(AttributeSet),
+										 UBaseAttributeSet::GetMaxHitPointAttribute());
 }

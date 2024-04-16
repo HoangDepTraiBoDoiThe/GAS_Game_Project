@@ -29,5 +29,8 @@ protected:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnGameplayAttributeValuesSignature OnAttributeValuesSignature;
+
+	void BindBroadCastToWidgetOnAttChange() const;
+	void InitBroadCastVitalAttValue() const;
 	
 };
