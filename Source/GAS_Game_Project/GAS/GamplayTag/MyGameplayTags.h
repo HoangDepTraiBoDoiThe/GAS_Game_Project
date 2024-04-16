@@ -43,6 +43,11 @@ public:
  FGameplayTag Attribute_Secondary_MaxMana;
 
  /*
+  *	Meta attributes
+  */
+ FGameplayTag Attribute_Meta_HitPoint;
+ 
+ /*
   * Ability Input Tags 
   */
  FGameplayTag Control_Movement;

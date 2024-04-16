@@ -87,6 +87,13 @@ void MyGameplayTags::InitNativeGameplayTags()
 		FString("Impacted by 'Vigor'. Maximum amount of 'Hit Point' obtainable"));
 
 	/*
+	 *	Meta attributes
+	 */
+	MyGameplayTags::GameplayTags.Attribute_Meta_HitPoint = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Attribute.Meta.HitPoint"),
+	FString(""));
+	
+	/*
 	 * Ability Input Tags 
 	 */
 	MyGameplayTags::GameplayTags.Test_Ability_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(

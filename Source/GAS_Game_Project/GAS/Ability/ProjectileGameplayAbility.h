@@ -15,6 +15,9 @@ class GAS_GAME_PROJECT_API UProjectileGameplayAbility : public UBaseGameplayAbil
 {
 	GENERATED_BODY()
 
+public:
+	FORCEINLINE FScalableFloat GetAbilityDamage() {return AbilityDamage;}
+	
 protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	                             const FGameplayAbilityActivationInfo ActivationInfo,
@@ -25,4 +28,7 @@ protected:
 	TSubclassOf<ABaseProjectile> AbilityProjectileClass;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UGameplayEffect> AbililyEffectClass;
+
+	UPROPERTY(EditAnywhere)
+	FScalableFloat AbilityDamage;
 };

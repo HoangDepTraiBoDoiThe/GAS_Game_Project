@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "GAS_Game_Project/Character/BaseGameCharacter.h"
+#include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
 #include "GAS_Game_Project/WorldActor/Projectile/BaseProjectile.h"
 
 void UProjectileGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -32,7 +33,11 @@ void UProjectileGameplayAbility::SpawnProjectile(FVector TargetLocation)
 
 	FGameplayEffectContextHandle EffectContextHandle = GetAbilitySystemComponentFromActorInfo_Checked()->MakeEffectContext();
 	EffectContextHandle.AddInstigator(GetAvatarActorFromActorInfo(), Cast<ICombatInterface>(GetAvatarActorFromActorInfo())->GetWeapon());
+
+	const float Damage = AbilityDamage.GetValueAtLevel(GetAbilityLevel());
 	FGameplayEffectSpecHandle EffectSpecHandle = GetAbilitySystemComponentFromActorInfo_Checked()->MakeOutgoingSpec(AbililyEffectClass,GetAbilityLevel(), EffectContextHandle);
+		
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, MyGameplayTags::Get().Attribute_Meta_HitPoint, Damage);
 	Projectile->SetProjectileEffectSpecHandle(EffectSpecHandle);
 	
 	Projectile->FinishSpawning(ProjectileTransform);
