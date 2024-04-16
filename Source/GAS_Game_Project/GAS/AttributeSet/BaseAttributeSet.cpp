@@ -30,7 +30,6 @@ void UBaseAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, HitPoint, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxHitPoint, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Mana, COND_None, REPNOTIFY_Always)
@@ -75,8 +74,15 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			UE_LOG(LogTemp, Warning, TEXT("GameplayEffectPropertiesStruct.TargetActorController is null"))
 	}
 
-	if (Data.EvaluatedData.Attribute == GetHitPointAttribute())
-		SetHitPoint(FMath::Clamp(GetHitPoint(), 0.f, GetMaxHitPoint()));
+	if (Data.EvaluatedData.Attribute == GetHitPointMetaAttribute())
+	{
+		const float CacheDamage = GetHitPointMeta();
+		SetHitPointMeta(0.f);
+		if (CacheDamage > 0.f)
+		{
+			SetHitPoint(FMath::Clamp(GetHitPoint() - CacheDamage, 0.f, GetMaxHitPoint()));
+		}
+	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
 }

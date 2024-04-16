@@ -72,11 +72,13 @@ public:
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, CriticalHitResistance)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, HealthRegeneration)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, ManaRegeneration)
+	
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, HitPointMeta)
 
 	FGameplayEffectPropertiesStruct GameplayEffectPropertiesStruct;
 	
 protected:
-	#pragma region Primary attributes
+#pragma region Primary attributes
 
 	UPROPERTY(ReplicatedUsing = OnRep_Strength, BlueprintReadOnly, EditAnywhere)
 	FGameplayAttributeData Strength;
@@ -137,7 +139,11 @@ protected:
 
 	UPROPERTY(ReplicatedUsing = OnRep_ManaRegeneration, EditAnywhere, BlueprintReadOnly)
 	FGameplayAttributeData ManaRegeneration;
-#pragma endregion 
+#pragma endregion
+
+#pragma region Meta Attributes
+	UPROPERTY(VisibleAnywhere, Category="Meta Attributes")
+	FGameplayAttributeData HitPointMeta;
 	
 	UFUNCTION()
 	void OnRep_HitPoint(const FGameplayAttributeData& OldHitPoint) const;
