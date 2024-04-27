@@ -40,9 +40,9 @@ FVector ABaseGameCharacter::WeaponLocation()
 
 void ABaseGameCharacter::InitAttributeValue()
 {
-	Cus_ApplyGameplayEffectToSelf(DefaultPrimaryAttributesClass);
-	Cus_ApplyGameplayEffectToSelf(DefaultSecondaryAttributesClass);
-	Cus_ApplyGameplayEffectToSelf(DefaultVitalAttributesClass);
+	ApplyGameplayEffectToSelf(DefaultPrimaryAttributesClass);
+	ApplyGameplayEffectToSelf(DefaultSecondaryAttributesClass);
+	ApplyGameplayEffectToSelf(DefaultVitalAttributesClass);
 }
 
 AActor* ABaseGameCharacter::GetWeapon()
@@ -51,18 +51,12 @@ AActor* ABaseGameCharacter::GetWeapon()
 	return Cast<AActor>(Weapon);
 }
 
-void ABaseGameCharacter::Cus_ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const
+void ABaseGameCharacter::ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const
 {
 	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
 	ContextHandle.AddSourceObject(this);
 	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClassToApply, CharacterLevel, ContextHandle);
 	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-}
-
-void ABaseGameCharacter::ActiveAbilities()
-{
-	if (!HasAuthority()) return;
-	AbilitySystemComponent->AddAbilities(AbilitiesToActive, CharacterLevel);
 }
 
 UAbilitySystemComponent* ABaseGameCharacter::GetAbilitySystemComponent() const

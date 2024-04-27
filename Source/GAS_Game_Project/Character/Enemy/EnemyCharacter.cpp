@@ -8,9 +8,8 @@
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
 #include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
+#include "GAS_Game_Project/Global/MyBlueprintFunctionLibrary.h"
 #include "GAS_Game_Project/UserInterface/UserWidget/BaseUserWidget.h"
-#include "Kismet/KismetSystemLibrary.h"
-
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -29,17 +28,26 @@ void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (HasAuthority())
+	{
+		UMyBlueprintFunctionLibrary::InitAttributeValue(this, this);
+		UMyBlueprintFunctionLibrary::AddAbilities(GetAbilitySystemComponent(), this);
+	}
+
 	Cast<UBaseUserWidget>(HitPointBar->GetWidget())->SetWidgetController(this);
 	AbilitySystemComponent->BindGameplayAttrValChangeCallback();
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	BindBroadCastToWidgetOnAttChange();
 	InitBroadCastVitalAttValue();
-	InitAttributeValue();
 
 	AbilitySystemComponent->RegisterGameplayTagEvent(MyGameplayTags::Get().Effects_OnHitReact, EGameplayTagEventType::NewOrRemoved)
 		.AddUObject(this, &AEnemyCharacter::OnEventGameplayTagChange);
 }
 
+void AEnemyCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+}
 void AEnemyCharacter::OnEventGameplayTagChange(const FGameplayTag Tag, int32 NewCount)
 {
 	bHitReacting = NewCount > 0;
@@ -55,6 +63,11 @@ void AEnemyCharacter::HighlightActor()
 void AEnemyCharacter::UnHighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(false);
+}
+
+UAnimMontage* AEnemyCharacter::GetHitReactMontage_Implementation()
+{
+	return HitReactMontage;
 }
 
 void AEnemyCharacter::BindBroadCastToWidgetOnAttChange() const

@@ -2,11 +2,12 @@
 
 
 #include "MyBlueprintFunctionLibrary.h"
-
+#include "GAS_Game_Project/GameRules/MyGameModeBase.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
+#include "GAS_Game_Project/GAS/Ability/BaseGameplayAbility.h"
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
 #include "GAS_Game_Project/UserInterface/HUD/MyHUD.h"
-
+#include "Kismet/GameplayStatics.h"
 
 UOverlayWidgetController* UMyBlueprintFunctionLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
 {
@@ -21,6 +22,32 @@ UAttributeMenuWidgetController* UMyBlueprintFunctionLibrary::GetAttributeMenuWid
 	AMyHUD* MyHUD = Cast<AMyHUD>(WidgetControllerParamsStruct.PlayerController->GetHUD());
 	checkf(MyHUD, TEXT("Cant get MyHUD"))
 	return MyHUD->GetAttributeMenuWidgetController(WidgetControllerParamsStruct);
+}
+
+void UMyBlueprintFunctionLibrary::InitAttributeValue(const ABaseGameCharacter* GameCharacter, const UObject* WorldContextObject)
+{
+	AMyGameModeBase* GameModeBase = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (!GameModeBase) return;
+	
+	GameCharacter->ApplyGameplayEffectToSelf(GameModeBase->CharacterClassInfoDataAsset->SecondaryDefaultAttribute);
+	GameCharacter->ApplyGameplayEffectToSelf(GameModeBase->CharacterClassInfoDataAsset->VitalDefaultAttribute);
+	for (TTuple<ECharacterClass, FCharacterClassDefaultMainInfosStruct>& CharacterDefaultClass : GameModeBase->CharacterClassInfoDataAsset->CharacterDefaultInfoMap)
+	{
+		if (GameCharacter->GetCharacterClass() == CharacterDefaultClass.Key)
+			GameCharacter->ApplyGameplayEffectToSelf(CharacterDefaultClass.Value.PrimaryDefaultAttributes);
+	}
+}
+
+void UMyBlueprintFunctionLibrary::AddAbilities(UAbilitySystemComponent* ASC, const UObject* WorldContextObject)
+{
+	AMyGameModeBase* GameModeBase = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (!GameModeBase) return;
+	ABaseGameCharacter* GameCharacter = Cast<ABaseGameCharacter>(ASC->GetAvatarActor());
+	for (const TSubclassOf<UGameplayAbility> AbilityClass : GameModeBase->CharacterClassInfoDataAsset->CommonAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, GameCharacter->GetCharacterLevel());
+		ASC->GiveAbility(AbilitySpec);
+	}
 }
 
 FWidgetControllerParamsStruct UMyBlueprintFunctionLibrary::MakeWidgetControllerParamsStruct(const UObject* WorldContextObject)

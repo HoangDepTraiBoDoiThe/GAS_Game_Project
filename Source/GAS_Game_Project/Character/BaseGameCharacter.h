@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
+#include "GAS_Game_Project/Data/CharacterClassInfoDataAsset.h"
 #include "GAS_Game_Project/Interface/CombatInterface.h"
 #include "BaseGameCharacter.generated.h"
 
@@ -27,14 +28,14 @@ public:
 	virtual float GetCharacterLevel() override;
 	FORCEINLINE UBaseAttributeSet* GetAttributeSet() const {return AttributeSet;}
 	virtual FVector WeaponLocation() override;
-
+	FORCEINLINE ECharacterClass GetCharacterClass() const {return CharacterClass;}
+	void ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const;
+	
 protected:
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable)
 	virtual void InitAttributeValue();
 	virtual AActor* GetWeapon() override;
-	void Cus_ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const;
-	void ActiveAbilities();
 
 	UPROPERTY(EditAnywhere)
 	FName WeaponSocketName;
@@ -47,6 +48,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributesClass;
 
+	UPROPERTY(EditAnywhere)
+	ECharacterClass CharacterClass = ECharacterClass::ECC_None;
+	
 	UPROPERTY(EditAnywhere)
 	float CharacterLevel = 1;
 	
