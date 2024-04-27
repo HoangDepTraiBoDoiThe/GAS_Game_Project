@@ -78,13 +78,24 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		const float CacheDamage = GetHitPointMeta();
 		SetHitPointMeta(0.f);
+		UE_LOG(LogTemp, Warning, TEXT("CacheDamage: %f"), CacheDamage)
+
 		if (CacheDamage > 0.f)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("CacheDamage: %f"), CacheDamage)
 			SetHitPoint(FMath::Clamp(GetHitPoint() - CacheDamage, 0.f, GetMaxHitPoint()));
+			if (GetHitPoint() > 0.f)
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(MyGameplayTags::Get().Effects_OnHitReact);
+				GetOwningAbilitySystemComponent()->TryActivateAbilitiesByTag(TagContainer);
+			}
 		}
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+	if (Data.EvaluatedData.Attribute == GetHitPointAttribute())
+		SetHitPoint(FMath::Clamp(GetHitPoint(), 0.f, GetMaxHitPoint()));
 }
 
 void UBaseAttributeSet::OnRep_HitPoint(const FGameplayAttributeData& LastVal) const

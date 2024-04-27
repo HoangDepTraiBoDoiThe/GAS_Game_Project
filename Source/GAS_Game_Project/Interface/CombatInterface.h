@@ -25,6 +25,9 @@ public:
 	virtual FVector WeaponLocation() = 0;
 	virtual AActor* GetWeapon() = 0;
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UAnimMontage* GetHitReactMontage();
+
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void StartMotionWarping(FVector TargetLocation);
 };

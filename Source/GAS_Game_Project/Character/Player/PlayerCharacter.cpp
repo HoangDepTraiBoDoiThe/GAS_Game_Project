@@ -24,7 +24,7 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
-	ActiveAbilities();
+	if (HasAuthority()) AbilitySystemComponent->AddAbilities(AbilitiesToActive, CharacterLevel);
 }
 
 void APlayerCharacter::OnRep_Controller()

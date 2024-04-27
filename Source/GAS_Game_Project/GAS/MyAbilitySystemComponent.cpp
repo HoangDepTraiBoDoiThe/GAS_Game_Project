@@ -24,8 +24,11 @@ void UMyAbilitySystemComponent::AddAbilities(TArray<TSubclassOf<UGameplayAbility
 	for (const TSubclassOf<UGameplayAbility>& Ability : Abilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, Level);
-		if (const UBaseGameplayAbility* BaseGameplayAbility = CastChecked<UBaseGameplayAbility>(AbilitySpec.Ability.Get()); BaseGameplayAbility->AbilityStartupTag.IsValid())
+		if (const UBaseGameplayAbility* BaseGameplayAbility = CastChecked<
+			UBaseGameplayAbility>(AbilitySpec.Ability.Get()); BaseGameplayAbility->AbilityStartupTag.IsValid())
+		{
 			AbilitySpec.DynamicAbilityTags.AddTag(BaseGameplayAbility->AbilityStartupTag);
+		}
 
 		GiveAbility(AbilitySpec);
 	}
