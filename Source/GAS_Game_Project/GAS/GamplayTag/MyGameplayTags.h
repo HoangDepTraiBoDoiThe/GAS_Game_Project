@@ -54,6 +54,11 @@ public:
  FGameplayTag Control_LMB;
  FGameplayTag Control_RMB;
  FGameplayTag Test_Ability_1;
+
+ /*
+ * Other 
+ */
+ FGameplayTag Effects_OnHitReact;
  
 protected:
 
