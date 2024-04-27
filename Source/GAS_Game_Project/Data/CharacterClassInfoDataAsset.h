@@ -10,6 +10,7 @@
  * 
  */
 
+class UBaseGameplayAbility;
 class UGameplayEffect;
 
 UENUM(BlueprintType)
@@ -18,13 +19,13 @@ enum class ECharacterClass : uint8
 	ECC_Warrior,
 	ECC_Ranger,
 	ECC_Witch,
+	ECC_None
 };
 
 USTRUCT()
 struct FCharacterClassDefaultMainInfosStruct
 {
 	GENERATED_BODY()
-
 	
 	UPROPERTY(EditAnywhere, Category=CharacterPrimary)
 	TSubclassOf<UGameplayEffect> PrimaryDefaultAttributes;
@@ -46,4 +47,7 @@ public:
 	
 	UPROPERTY(EditAnywhere, Category=CharacterCommon)
 	TSubclassOf<UGameplayEffect> VitalDefaultAttribute;
+
+	UPROPERTY(EditAnywhere, Category=CharacterCommon)
+	TArray<TSubclassOf<UBaseGameplayAbility>> CommonAbilities;
 };
