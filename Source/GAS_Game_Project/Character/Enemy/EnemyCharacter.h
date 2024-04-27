@@ -30,7 +30,10 @@ protected:
 	UPROPERTY(BlueprintAssignable)
 	FOnGameplayAttributeValuesSignature OnAttributeValuesSignature;
 
+	UPROPERTY(EditAnywhere)
+	float InitialWalkSpeed = 500.f;
+
 	void BindBroadCastToWidgetOnAttChange() const;
 	void InitBroadCastVitalAttValue() const;
-	
+	void OnEventGameplayTagChange(const FGameplayTag, int32);
 };

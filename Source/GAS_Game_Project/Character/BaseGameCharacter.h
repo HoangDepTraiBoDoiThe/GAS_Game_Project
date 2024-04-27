@@ -58,6 +58,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Components")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	bool bHitReacting;
+
 private:
 
 	

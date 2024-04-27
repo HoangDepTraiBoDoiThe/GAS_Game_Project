@@ -4,9 +4,12 @@
 #include "EnemyCharacter.h"
 
 #include "Components/WidgetComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
+#include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
 #include "GAS_Game_Project/UserInterface/UserWidget/BaseUserWidget.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 AEnemyCharacter::AEnemyCharacter()
@@ -19,6 +22,7 @@ AEnemyCharacter::AEnemyCharacter()
 	AttributeSet = CreateDefaultSubobject<UBaseAttributeSet>(FName("Attribute Set"));
 	HitPointBar = CreateDefaultSubobject<UWidgetComponent>("Hit point bar");
 	HitPointBar->SetupAttachment(GetRootComponent());
+	GetCharacterMovement()->MaxWalkSpeed = InitialWalkSpeed;
 }
 
 void AEnemyCharacter::BeginPlay()
@@ -31,6 +35,15 @@ void AEnemyCharacter::BeginPlay()
 	BindBroadCastToWidgetOnAttChange();
 	InitBroadCastVitalAttValue();
 	InitAttributeValue();
+
+	AbilitySystemComponent->RegisterGameplayTagEvent(MyGameplayTags::Get().Effects_OnHitReact, EGameplayTagEventType::NewOrRemoved)
+		.AddUObject(this, &AEnemyCharacter::OnEventGameplayTagChange);
+}
+
+void AEnemyCharacter::OnEventGameplayTagChange(const FGameplayTag Tag, int32 NewCount)
+{
+	bHitReacting = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : InitialWalkSpeed;
 }
 
 void AEnemyCharacter::HighlightActor()
