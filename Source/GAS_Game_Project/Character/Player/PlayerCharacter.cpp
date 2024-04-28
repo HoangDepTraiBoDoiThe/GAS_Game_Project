@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "Controller/BasePlayerController.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
+#include "GAS_Game_Project/Interface/DamageTextWidgetComponent.h"
 #include "GAS_Game_Project/UserInterface/HUD/MyHUD.h"
 #include "PlayerState/MyPlayerState.h"
 

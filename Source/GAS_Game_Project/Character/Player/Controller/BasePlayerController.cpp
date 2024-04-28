@@ -7,18 +7,30 @@
 #include "EnhancedInputSubsystems.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/SplineComponent.h"
 #include "GAS_Game_Project/Character/Player/PlayerCharacter.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 #include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
 #include "GAS_Game_Project/InputSystem/MyEnhancedInputComponent.h"
+#include "GAS_Game_Project/Interface/DamageTextWidgetComponent.h"
 #include "GAS_Game_Project/Interface/InteractableInterface.h"
+
+class UDamageTextWidgetComponent;
 
 ABasePlayerController::ABasePlayerController()
 {
 	bReplicates = true;
 
 	SplineComponent = CreateDefaultSubobject<USplineComponent>(FName("Spline component"));
+}
+
+void ABasePlayerController::Client_ShowDamageText_Implementation(float DamageTextValue, AActor* Target)
+{
+	UDamageTextWidgetComponent* DamageTextWidgetComponent = NewObject<UDamageTextWidgetComponent>(Target, DamageWidgetComponentClass);
+	DamageTextWidgetComponent->RegisterComponent();
+	DamageTextWidgetComponent->AttachToComponent(Cast<ABaseGameCharacter>(Target)->GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+	DamageTextWidgetComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 }
 
 void ABasePlayerController::BeginPlay()

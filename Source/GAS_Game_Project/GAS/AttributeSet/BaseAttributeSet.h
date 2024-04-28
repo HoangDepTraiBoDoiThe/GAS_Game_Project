@@ -17,7 +17,7 @@ struct FGameplayEffectPropertiesStruct
 	GENERATED_BODY()
 	
 	UPROPERTY()
-	FActiveGameplayEffectHandle EffectHandle;
+	FGameplayEffectContextHandle EffectContextHandle;
 	UPROPERTY()
 	TObjectPtr<AController> SourceActorController;
 	UPROPERTY()

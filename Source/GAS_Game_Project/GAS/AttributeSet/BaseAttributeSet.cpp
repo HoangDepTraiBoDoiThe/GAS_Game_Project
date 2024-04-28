@@ -5,8 +5,10 @@
 
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
+#include "GAS_Game_Project/Character/Player/Controller/BasePlayerController.h"
 #include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
 #include "GAS_Game_Project/Interface/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 
 UBaseAttributeSet::UBaseAttributeSet()
@@ -53,10 +55,10 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 {
 	Super::PostGameplayEffectExecute(Data);
 
-	GameplayEffectPropertiesStruct.EffectHandle = Data.EvaluatedData.Handle;
-	if (GameplayEffectPropertiesStruct.EffectHandle.IsValid())
-		GameplayEffectPropertiesStruct.SourceASC = GameplayEffectPropertiesStruct.EffectHandle.
-			GetOwningAbilitySystemComponent();
+	GameplayEffectPropertiesStruct.EffectContextHandle = Data.EffectSpec.GetEffectContext();
+	if (GameplayEffectPropertiesStruct.EffectContextHandle.IsValid())
+		GameplayEffectPropertiesStruct.SourceASC = GameplayEffectPropertiesStruct.EffectContextHandle.
+			GetInstigatorAbilitySystemComponent();
 
 	if (GameplayEffectPropertiesStruct.SourceASC)
 		GameplayEffectPropertiesStruct.SourceAvatarActor = GameplayEffectPropertiesStruct.SourceASC->GetAvatarActor();
@@ -96,7 +98,11 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				Cast<ICombatInterface>(GetOwningAbilitySystemComponent()->GetAvatarActor())->Die();
 			}
 		}
-		
+		if (ABasePlayerController* PC = Cast<ABasePlayerController>(
+			UGameplayStatics::GetPlayerController(GameplayEffectPropertiesStruct.SourceAvatarActor, 0)))
+		{
+			PC->Client_ShowDamageText(CacheDamage, GameplayEffectPropertiesStruct.TargetAvatarActor);
+		}
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));

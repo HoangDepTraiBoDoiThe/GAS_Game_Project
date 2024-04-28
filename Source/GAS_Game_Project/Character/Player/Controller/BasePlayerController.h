@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerController.h"
 #include "BasePlayerController.generated.h"
 
+class UWidgetComponent;
 class USplineComponent;
 class UMyAbilitySystemComponent;
 class UInputDataAsset;
@@ -26,6 +27,10 @@ class GAS_GAME_PROJECT_API ABasePlayerController : public APlayerController
 public:
 	ABasePlayerController();
 
+	UFUNCTION(Client, Unreliable)
+	void Client_ShowDamageText(float DamageTextValue, AActor* Target);
+
+	
 protected:
 	virtual void BeginPlay() override;
 	void AutoRun();
@@ -47,6 +52,9 @@ protected:
 
 	UMyAbilitySystemComponent* GetASC();
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UWidgetComponent> DamageWidgetComponentClass;
+	
 	bool bLeftShiftPressing = false;
 	USplineComponent* SplineComponent;
 
