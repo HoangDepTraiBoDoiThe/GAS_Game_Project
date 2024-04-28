@@ -24,7 +24,8 @@ public:
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
-
+	virtual void Die() override;
+	
 protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UWidgetComponent> HitPointBar;

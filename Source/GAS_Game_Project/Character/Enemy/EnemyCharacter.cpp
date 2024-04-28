@@ -70,6 +70,14 @@ UAnimMontage* AEnemyCharacter::GetHitReactMontage_Implementation()
 	return HitReactMontage;
 }
 
+void AEnemyCharacter::Die()
+{
+	if (HasAuthority())
+	{
+		Multicast_Death();
+	} 
+}
+
 void AEnemyCharacter::BindBroadCastToWidgetOnAttChange() const
 {
 	AbilitySystemComponent->OnNewAttributeValueChangeBroadcastToControllerDelegate.AddLambda(

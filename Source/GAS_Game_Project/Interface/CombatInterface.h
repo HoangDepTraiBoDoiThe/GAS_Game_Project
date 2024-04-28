@@ -24,6 +24,7 @@ public:
 	virtual float GetCharacterLevel() = 0;
 	virtual FVector WeaponLocation() = 0;
 	virtual AActor* GetWeapon() = 0;
+	virtual void Die() = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UAnimMontage* GetHitReactMontage();

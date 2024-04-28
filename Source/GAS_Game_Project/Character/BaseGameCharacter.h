@@ -36,7 +36,10 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	virtual void InitAttributeValue();
 	virtual AActor* GetWeapon() override;
-
+	virtual void Die() override;
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void Multicast_Death();
+	
 	UPROPERTY(EditAnywhere)
 	FName WeaponSocketName;
 	UPROPERTY(EditAnywhere)
@@ -65,6 +68,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	bool bHitReacting;
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UAnimMontage> DeathMontage;
+	
 private:
 
 	

@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
 #include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
+#include "GAS_Game_Project/Interface/CombatInterface.h"
 #include "Net/UnrealNetwork.h"
 
 UBaseAttributeSet::UBaseAttributeSet()
@@ -89,6 +90,10 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				FGameplayTagContainer TagContainer;
 				TagContainer.AddTag(MyGameplayTags::Get().Effects_OnHitReact);
 				GetOwningAbilitySystemComponent()->TryActivateAbilitiesByTag(TagContainer);
+			}
+			else
+			{
+				Cast<ICombatInterface>(GetOwningAbilitySystemComponent()->GetAvatarActor())->Die();
 			}
 		}
 	}

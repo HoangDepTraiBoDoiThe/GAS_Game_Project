@@ -51,6 +51,17 @@ AActor* ABaseGameCharacter::GetWeapon()
 	return Cast<AActor>(Weapon);
 }
 
+void ABaseGameCharacter::Die()
+{
+}
+
+void ABaseGameCharacter::Multicast_Death_Implementation()
+{
+	if (DeathMontage)
+		PlayAnimMontage(DeathMontage);
+	GetMesh()->SetSimulatePhysics(true);
+}
+
 void ABaseGameCharacter::ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const
 {
 	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
