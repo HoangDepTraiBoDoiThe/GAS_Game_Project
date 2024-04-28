@@ -27,7 +27,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<ABaseProjectile> AbilityProjectileClass;
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<UGameplayEffect> AbililyEffectClass;
+	TSubclassOf<UGameplayEffect> AbilityEffectClass;
 
 	UPROPERTY(EditAnywhere)
 	FScalableFloat AbilityDamage;

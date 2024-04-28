@@ -35,7 +35,7 @@ void UProjectileGameplayAbility::SpawnProjectile(FVector TargetLocation)
 	EffectContextHandle.AddInstigator(GetAvatarActorFromActorInfo(), Cast<ICombatInterface>(GetAvatarActorFromActorInfo())->GetWeapon());
 
 	const float Damage = AbilityDamage.GetValueAtLevel(GetAbilityLevel());
-	FGameplayEffectSpecHandle EffectSpecHandle = GetAbilitySystemComponentFromActorInfo_Checked()->MakeOutgoingSpec(AbililyEffectClass,GetAbilityLevel(), EffectContextHandle);
+	FGameplayEffectSpecHandle EffectSpecHandle = GetAbilitySystemComponentFromActorInfo_Checked()->MakeOutgoingSpec(AbilityEffectClass,GetAbilityLevel(), EffectContextHandle);
 		
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, MyGameplayTags::Get().Attribute_Meta_HitPoint, Damage);
 	Projectile->SetProjectileEffectSpecHandle(EffectSpecHandle);

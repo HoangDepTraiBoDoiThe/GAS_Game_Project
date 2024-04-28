@@ -96,6 +96,7 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				Cast<ICombatInterface>(GetOwningAbilitySystemComponent()->GetAvatarActor())->Die();
 			}
 		}
+		
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
