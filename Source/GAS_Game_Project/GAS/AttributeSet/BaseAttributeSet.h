@@ -77,7 +77,6 @@ public:
 
 	FGameplayEffectPropertiesStruct GameplayEffectPropertiesStruct;
 	
-protected:
 #pragma region Primary attributes
 
 	UPROPERTY(ReplicatedUsing = OnRep_Strength, BlueprintReadOnly, EditAnywhere)
