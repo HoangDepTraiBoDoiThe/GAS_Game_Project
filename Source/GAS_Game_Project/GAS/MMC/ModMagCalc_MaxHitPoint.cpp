@@ -24,10 +24,10 @@ float UModMagCalc_MaxHitPoint::CalculateBaseMagnitude_Implementation(const FGame
 	AggregatorEvaluateParameters.TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
 	GetCapturedAttributeMagnitude(AttCapDef, Spec, AggregatorEvaluateParameters, OUT_Mag);
 
-	checkf(Spec.GetEffectContext().GetSourceObject(), TEXT("GameplayEffect's Source object is null"))
-	checkf(Spec.Def, TEXT("GameplayEffect's is null"))
+	checkf(Spec.GetEffectContext().GetSourceObject(), TEXT("My Message | UModMagCalc_MaxHitPoint | CRITICAL | GameplayEffect's Source object is null"))
+	checkf(Spec.Def, TEXT("My Message | UModMagCalc_MaxHitPoint | CRITICAL | GameplayEffect's is null"))
 	ICombatInterface* Character = Cast<ICombatInterface>(Spec.GetEffectContext().GetSourceObject());
-	checkf(Character, TEXT("GameplayEffect's is null"))
+	checkf(Character, TEXT("My Message | UModMagCalc_MaxHitPoint | CRITICAL | GameplayEffect's is null"))
 	const float CharacterLevel = Character->GetCharacterLevel();
 	
 	return BaseAttributeValue + (OUT_Mag * ScaleValuePerModMaCalc) + (CharacterLevel * ScaleValuePerCharacterLevel);
