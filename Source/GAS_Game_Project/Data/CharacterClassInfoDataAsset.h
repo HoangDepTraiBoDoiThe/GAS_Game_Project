@@ -50,4 +50,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category=CharacterCommon)
 	TArray<TSubclassOf<UBaseGameplayAbility>> CommonAbilities;
+
+	UPROPERTY(EditAnywhere, Category=CharacterCommon)
+	TObjectPtr<UCurveTable> CoefficientCurveTable;
 };
