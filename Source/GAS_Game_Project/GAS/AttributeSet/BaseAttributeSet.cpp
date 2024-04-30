@@ -101,7 +101,8 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		if (ABasePlayerController* PC = Cast<ABasePlayerController>(
 			UGameplayStatics::GetPlayerController(GameplayEffectPropertiesStruct.SourceAvatarActor, 0)))
 		{
-			PC->Client_ShowDamageText(CacheDamage, GameplayEffectPropertiesStruct.TargetAvatarActor);
+			const float DamageText = CacheDamage >= 0 ? CacheDamage : 0;
+			PC->Client_ShowDamageText(DamageText, GameplayEffectPropertiesStruct.TargetAvatarActor);
 		}
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())

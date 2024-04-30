@@ -5,6 +5,7 @@
 
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
 #include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
+#include "GAS_Game_Project/Global/MyBlueprintFunctionLibrary.h"
 
 struct MyDamageStatic
 {
@@ -32,7 +33,7 @@ UExecCalc_Damage::UExecCalc_Damage()
 }
 
 void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
-	FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
+                                              FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
 	float Armor;
 	float ArmorPenetration;
@@ -45,10 +46,13 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	BlockChance = FMath::Max(0.f, BlockChance);
 
 	float Damage = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(MyGameplayTags::Get().Attribute_Meta_HitPoint);
-	
+
+	float ArmorCoe;
+	GetCoeValue(ExecutionParams, "ArmorCoe", ArmorCoe);
+
 	const bool bBlockDamageChance = FMath::RandRange(1, 100) <= BlockChance;
 	const float DamageAfterBlockChange = bBlockDamageChance ? Damage / 2 : Damage;
-	const float ArmorBlockFragmentAfterArmorPenetration = Armor * 0.333 * ((100 - ArmorPenetration) / 100);
+	const float ArmorBlockFragmentAfterArmorPenetration = Armor * ArmorCoe * ((100 - ArmorPenetration) / 100);
 	const float FinDamage = DamageAfterBlockChange - ArmorBlockFragmentAfterArmorPenetration;
 
 	const FGameplayModifierEvaluatedData GameplayModifierEvaluatedData(UBaseAttributeSet::GetHitPointMetaAttribute(), EGameplayModOp::Additive, FinDamage);	
@@ -63,4 +67,11 @@ void UExecCalc_Damage::AttemptCalculateCapturedAttributeMagnitude(
 	AggregatorEvaluateParameters.SourceTags = ExecutionParams.GetOwningSpec().CapturedSourceTags.GetAggregatedTags();
 	AggregatorEvaluateParameters.TargetTags = ExecutionParams.GetOwningSpec().CapturedTargetTags.GetAggregatedTags();
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(AttCapDef, AggregatorEvaluateParameters, Magnitude);
+}
+
+void UExecCalc_Damage::GetCoeValue(const FGameplayEffectCustomExecutionParameters& ExecutionParams, const FName RowName, float& ArmorCoe) const
+{
+	UCurveTable* CoefficientCurveTable = UMyBlueprintFunctionLibrary::GetCoefficientCurveTable(ExecutionParams.GetTargetAbilitySystemComponent()->GetAvatarActor());
+	const FRealCurve* ArmorCoeCurve = CoefficientCurveTable->FindCurve(RowName, "CoefficientCurveTable");
+	ArmorCoe = ArmorCoeCurve->Eval(Cast<ABaseGameCharacter>(ExecutionParams.GetTargetAbilitySystemComponent()->GetAvatarActor())->GetCharacterLevel());
 }

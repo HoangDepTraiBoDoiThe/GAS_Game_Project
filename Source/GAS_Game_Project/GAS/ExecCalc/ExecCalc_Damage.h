@@ -20,4 +20,5 @@ public:
 
 protected:
 	void AttemptCalculateCapturedAttributeMagnitude(const FGameplayEffectCustomExecutionParameters& ExecutionParams, const FGameplayEffectAttributeCaptureDefinition& AttCapDef, float& Magnitude) const;
+	void GetCoeValue(const FGameplayEffectCustomExecutionParameters& ExecutionParams, FName RowName, float& ArmorCoe) const;
 };
