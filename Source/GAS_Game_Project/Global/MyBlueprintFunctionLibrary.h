@@ -25,6 +25,7 @@ public:
 	UFUNCTION(meta=(WorldContext = "WorldContextObject"))
 	static void InitAttributeValue(const ABaseGameCharacter* GameCharacter, const UObject* WorldContextObject);
 	static void AddAbilities(UAbilitySystemComponent* ASC, const UObject* WorldContextObject);
+	static UCurveTable* GetCoefficientCurveTable(const UObject* WorldContextObject);
 	
 protected:
 	static FWidgetControllerParamsStruct MakeWidgetControllerParamsStruct (const UObject* WorldContextObject);

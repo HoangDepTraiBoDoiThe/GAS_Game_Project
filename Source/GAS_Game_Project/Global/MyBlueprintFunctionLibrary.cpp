@@ -50,6 +50,12 @@ void UMyBlueprintFunctionLibrary::AddAbilities(UAbilitySystemComponent* ASC, con
 	}
 }
 
+UCurveTable* UMyBlueprintFunctionLibrary::GetCoefficientCurveTable(const UObject* WorldContextObject)
+{
+	const AMyGameModeBase* GameModeBase = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	return GameModeBase->CharacterClassInfoDataAsset->CoefficientCurveTable.Get();
+}
+
 FWidgetControllerParamsStruct UMyBlueprintFunctionLibrary::MakeWidgetControllerParamsStruct(const UObject* WorldContextObject)
 {
 	const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
