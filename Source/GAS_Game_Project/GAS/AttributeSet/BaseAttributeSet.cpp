@@ -54,7 +54,47 @@ void UBaseAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
+	SetupGameplayEffectPropertiesStruct(Data);
 
+	if (Data.EvaluatedData.Attribute == GetHitPointMetaAttribute())
+	{
+		const float CacheDamage = GetHitPointMeta();
+		SetHitPointMeta(0.f);
+
+		if (CacheDamage > 0.f)
+		{
+			SetHitPoint(FMath::Clamp(GetHitPoint() - CacheDamage, 0.f, GetMaxHitPoint()));
+			if (GetHitPoint() > 0.f)
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(MyGameplayTags::Get().Effects_OnHitReact);
+				GetOwningAbilitySystemComponent()->TryActivateAbilitiesByTag(TagContainer);
+			}
+			else
+			{
+				Cast<ICombatInterface>(GetOwningAbilitySystemComponent()->GetAvatarActor())->Die();
+			}
+		}
+		if (ABasePlayerController* PC = Cast<ABasePlayerController>(
+			UGameplayStatics::GetPlayerController(GameplayEffectPropertiesStruct.SourceAvatarActor, 0)))
+		{
+			const float DamageText = CacheDamage >= 0 ? CacheDamage : 0;
+			PC->Client_ShowDamageText(DamageText, GameplayEffectPropertiesStruct.TargetAvatarActor);
+		}
+	}
+	ClampingAttributeValues(Data);
+}
+
+void UBaseAttributeSet::ClampingAttributeValues(const FGameplayEffectModCallbackData& Data)
+{
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
+		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+	if (Data.EvaluatedData.Attribute == GetHitPointAttribute())
+		SetHitPoint(FMath::Clamp(GetHitPoint(), 0.f, GetMaxHitPoint()));
+}
+
+void UBaseAttributeSet::SetupGameplayEffectPropertiesStruct(const FGameplayEffectModCallbackData& Data)
+{
 	GameplayEffectPropertiesStruct.EffectContextHandle = Data.EffectSpec.GetEffectContext();
 	if (GameplayEffectPropertiesStruct.EffectContextHandle.IsValid())
 		GameplayEffectPropertiesStruct.SourceASC = GameplayEffectPropertiesStruct.EffectContextHandle.
@@ -76,39 +116,6 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		if (!GameplayEffectPropertiesStruct.TargetActorController)
 			UE_LOG(LogTemp, Warning, TEXT("GameplayEffectPropertiesStruct.TargetActorController is null"))
 	}
-
-	if (Data.EvaluatedData.Attribute == GetHitPointMetaAttribute())
-	{
-		const float CacheDamage = GetHitPointMeta();
-		SetHitPointMeta(0.f);
-		UE_LOG(LogTemp, Warning, TEXT("CacheDamage: %f"), CacheDamage)
-
-		if (CacheDamage > 0.f)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("CacheDamage: %f"), CacheDamage)
-			SetHitPoint(FMath::Clamp(GetHitPoint() - CacheDamage, 0.f, GetMaxHitPoint()));
-			if (GetHitPoint() > 0.f)
-			{
-				FGameplayTagContainer TagContainer;
-				TagContainer.AddTag(MyGameplayTags::Get().Effects_OnHitReact);
-				GetOwningAbilitySystemComponent()->TryActivateAbilitiesByTag(TagContainer);
-			}
-			else
-			{
-				Cast<ICombatInterface>(GetOwningAbilitySystemComponent()->GetAvatarActor())->Die();
-			}
-		}
-		if (ABasePlayerController* PC = Cast<ABasePlayerController>(
-			UGameplayStatics::GetPlayerController(GameplayEffectPropertiesStruct.SourceAvatarActor, 0)))
-		{
-			const float DamageText = CacheDamage >= 0 ? CacheDamage : 0;
-			PC->Client_ShowDamageText(DamageText, GameplayEffectPropertiesStruct.TargetAvatarActor);
-		}
-	}
-	if (Data.EvaluatedData.Attribute == GetManaAttribute())
-		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
-	if (Data.EvaluatedData.Attribute == GetHitPointAttribute())
-		SetHitPoint(FMath::Clamp(GetHitPoint(), 0.f, GetMaxHitPoint()));
 }
 
 void UBaseAttributeSet::OnRep_HitPoint(const FGameplayAttributeData& LastVal) const

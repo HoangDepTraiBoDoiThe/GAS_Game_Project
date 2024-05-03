@@ -170,6 +170,9 @@ public:
 	void OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration) const;
 
 protected:
+	void ClampingAttributeValues(const FGameplayEffectModCallbackData& Data);
+	void SetupGameplayEffectPropertiesStruct(const FGameplayEffectModCallbackData& Data);
+
 	TMap<FGameplayTag, TStaticFunctionPtr<FGameplayAttribute()>> AttributeTagMap;
 
 private:
