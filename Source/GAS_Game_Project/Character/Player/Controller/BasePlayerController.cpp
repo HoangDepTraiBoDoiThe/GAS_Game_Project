@@ -31,8 +31,7 @@ void ABasePlayerController::Client_ShowDamageText_Implementation(float DamageTex
 	DamageTextWidgetComponent->RegisterComponent();
 	DamageTextWidgetComponent->AttachToComponent(Cast<ABaseGameCharacter>(Target)->GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 	DamageTextWidgetComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-	DamageTextWidgetComponent->SetDamageText(DamageTextValue);
-	DamageTextWidgetComponent->SetDamageStatus(bCritHit, bBlockedHit);
+	DamageTextWidgetComponent->SetDamageText(DamageTextValue, bCritHit, bBlockedHit);
 }
 
 void ABasePlayerController::BeginPlay()
