@@ -7,7 +7,9 @@
 #include "GameplayEffectExtension.h"
 #include "GAS_Game_Project/Character/Player/Controller/BasePlayerController.h"
 #include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
+#include "GAS_Game_Project/Global/MyBlueprintFunctionLibrary.h"
 #include "GAS_Game_Project/Interface/CombatInterface.h"
+#include "GAS_Game_Project/Types/MyGameplayEffectTypes.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 
@@ -55,7 +57,7 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 {
 	Super::PostGameplayEffectExecute(Data);
 	SetupGameplayEffectPropertiesStruct(Data);
-
+	
 	if (Data.EvaluatedData.Attribute == GetHitPointMetaAttribute())
 	{
 		const float CacheDamage = GetHitPointMeta();
@@ -78,8 +80,9 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		if (ABasePlayerController* PC = Cast<ABasePlayerController>(
 			UGameplayStatics::GetPlayerController(GameplayEffectPropertiesStruct.SourceAvatarActor, 0)))
 		{
+			const FMyGameplayEffectContext* Context = UMyBlueprintFunctionLibrary::GetMyGameplayEffectContext(GameplayEffectPropertiesStruct.EffectContextHandle.Get());
 			const float DamageText = CacheDamage >= 0 ? CacheDamage : 0;
-			PC->Client_ShowDamageText(DamageText, GameplayEffectPropertiesStruct.TargetAvatarActor);
+			PC->Client_ShowDamageText(DamageText, GameplayEffectPropertiesStruct.TargetAvatarActor, Context->IsCriticalHit(), Context->IsHitBlocked());
 		}
 	}
 	ClampingAttributeValues(Data);

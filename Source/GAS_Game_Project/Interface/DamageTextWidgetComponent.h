@@ -17,6 +17,10 @@ class GAS_GAME_PROJECT_API UDamageTextWidgetComponent : public UWidgetComponent
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetDamageText(float DamgeTextValue);
+
+	// Crit, blocked, etc
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetDamageStatus(bool bCritHit, bool bBlockedHit);
 	
 protected:
 	

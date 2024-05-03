@@ -29,13 +29,13 @@ void UMyBlueprintFunctionLibrary::InitAttributeValue(const ABaseGameCharacter* G
 	AMyGameModeBase* GameModeBase = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
 	if (!GameModeBase) return;
 	
-	GameCharacter->ApplyGameplayEffectToSelf(GameModeBase->CharacterClassInfoDataAsset->SecondaryDefaultAttribute);
-	GameCharacter->ApplyGameplayEffectToSelf(GameModeBase->CharacterClassInfoDataAsset->VitalDefaultAttribute);
 	for (TTuple<ECharacterClass, FCharacterClassDefaultMainInfosStruct>& CharacterDefaultClass : GameModeBase->CharacterClassInfoDataAsset->CharacterDefaultInfoMap)
 	{
 		if (GameCharacter->GetCharacterClass() == CharacterDefaultClass.Key)
 			GameCharacter->ApplyGameplayEffectToSelf(CharacterDefaultClass.Value.PrimaryDefaultAttributes);
 	}
+	GameCharacter->ApplyGameplayEffectToSelf(GameModeBase->CharacterClassInfoDataAsset->SecondaryDefaultAttribute);
+	GameCharacter->ApplyGameplayEffectToSelf(GameModeBase->CharacterClassInfoDataAsset->VitalDefaultAttribute);
 }
 
 void UMyBlueprintFunctionLibrary::AddAbilities(UAbilitySystemComponent* ASC, const UObject* WorldContextObject)
@@ -55,6 +55,20 @@ UCurveTable* UMyBlueprintFunctionLibrary::GetCoefficientCurveTable(const UObject
 	const AMyGameModeBase* GameModeBase = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
 	if (!GameModeBase) return nullptr;
 	return GameModeBase->CharacterClassInfoDataAsset->CoefficientCurveTable.Get();
+}
+
+void UMyBlueprintFunctionLibrary::SetupMyGameplayEffectContext(FGameplayEffectContext* GameplayEffectContext, bool bCriticalHit, bool bBlockedHit)
+{
+	FMyGameplayEffectContext* MyGameplayEffectContext = StaticCast<FMyGameplayEffectContext*>(GameplayEffectContext);
+	MyGameplayEffectContext->SetIsCriticalHit(bCriticalHit);
+	MyGameplayEffectContext->SetIsHitBlocked(bBlockedHit);
+}
+
+FMyGameplayEffectContext* UMyBlueprintFunctionLibrary::GetMyGameplayEffectContext(FGameplayEffectContext* GameplayEffectContext)
+{
+	if (FMyGameplayEffectContext* Context = StaticCast<FMyGameplayEffectContext*>(GameplayEffectContext))
+		return Context;
+	return nullptr;
 }
 
 FWidgetControllerParamsStruct UMyBlueprintFunctionLibrary::MakeWidgetControllerParamsStruct(const UObject* WorldContextObject)

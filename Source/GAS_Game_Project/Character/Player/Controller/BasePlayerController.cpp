@@ -25,13 +25,14 @@ ABasePlayerController::ABasePlayerController()
 	SplineComponent = CreateDefaultSubobject<USplineComponent>(FName("Spline component"));
 }
 
-void ABasePlayerController::Client_ShowDamageText_Implementation(float DamageTextValue, AActor* Target)
+void ABasePlayerController::Client_ShowDamageText_Implementation(float DamageTextValue, AActor* Target, bool bCritHit, bool bBlockedHit)
 {
 	UDamageTextWidgetComponent* DamageTextWidgetComponent = NewObject<UDamageTextWidgetComponent>(Target, DamageWidgetComponentClass);
 	DamageTextWidgetComponent->RegisterComponent();
 	DamageTextWidgetComponent->AttachToComponent(Cast<ABaseGameCharacter>(Target)->GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 	DamageTextWidgetComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	DamageTextWidgetComponent->SetDamageText(DamageTextValue);
+	DamageTextWidgetComponent->SetDamageStatus(bCritHit, bBlockedHit);
 }
 
 void ABasePlayerController::BeginPlay()

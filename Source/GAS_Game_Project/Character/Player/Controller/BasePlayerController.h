@@ -28,7 +28,7 @@ public:
 	ABasePlayerController();
 
 	UFUNCTION(Client, Unreliable)
-	void Client_ShowDamageText(float DamageTextValue, AActor* Target);
+	void Client_ShowDamageText(float DamageTextValue, AActor* Target, bool bCritHit, bool bBlockedHit);
 
 	
 protected:

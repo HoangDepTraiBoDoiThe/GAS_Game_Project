@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GAS_Game_Project/Types/MyGameplayEffectTypes.h"
 #include "GAS_Game_Project/UserInterface/Controller/AttributeMenuWidgetController.h"
 #include "GAS_Game_Project/UserInterface/Controller/OverlayWidgetController.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
@@ -26,6 +27,8 @@ public:
 	static void InitAttributeValue(const ABaseGameCharacter* GameCharacter, const UObject* WorldContextObject);
 	static void AddAbilities(UAbilitySystemComponent* ASC, const UObject* WorldContextObject);
 	static UCurveTable* GetCoefficientCurveTable(const UObject* WorldContextObject);
+	static void SetupMyGameplayEffectContext(FGameplayEffectContext* GameplayEffectContext, bool bCriticalHit, bool bBlockedHit);
+	static FMyGameplayEffectContext* GetMyGameplayEffectContext(FGameplayEffectContext* GameplayEffectContext);
 	
 protected:
 	static FWidgetControllerParamsStruct MakeWidgetControllerParamsStruct (const UObject* WorldContextObject);
