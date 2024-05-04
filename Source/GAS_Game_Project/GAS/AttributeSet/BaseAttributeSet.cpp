@@ -29,6 +29,9 @@ UBaseAttributeSet::UBaseAttributeSet()
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_CriticalHitDamage, GetCriticalHitDamageAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_CriticalHitResistance, GetCriticalHitResistanceAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_MaxHitPoint, GetMaxHitPointAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Resistance_Elemental_Fire, GetResistance_FireAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Resistance_Elemental_Water, GetResistance_WaterAttribute);
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Resistance_Elemental_Wind, GetResistance_WindAttribute);
 }
 
 void UBaseAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -43,6 +46,9 @@ void UBaseAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Intelligence, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Vigor, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Resilience, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Resistance_Fire, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Resistance_Water, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Resistance_Wind, COND_None, REPNOTIFY_Always)
 }
 
 void UBaseAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -202,5 +208,20 @@ void UBaseAttributeSet::OnRep_HealthRegeneration(const FGameplayAttributeData& O
 void UBaseAttributeSet::OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, ManaRegeneration, OldManaRegeneration)
+}
+
+void UBaseAttributeSet::OnRep_Resistance_Fire(const FGameplayAttributeData& OldManaRegeneration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, Resistance_Fire, OldManaRegeneration)
+}
+
+void UBaseAttributeSet::OnRep_Resistance_Water(const FGameplayAttributeData& OldManaRegeneration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, Resistance_Water, OldManaRegeneration)
+}
+
+void UBaseAttributeSet::OnRep_Resistance_Wind(const FGameplayAttributeData& OldManaRegeneration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, Resistance_Wind, OldManaRegeneration)
 }
 #pragma endregion Secondary attributes

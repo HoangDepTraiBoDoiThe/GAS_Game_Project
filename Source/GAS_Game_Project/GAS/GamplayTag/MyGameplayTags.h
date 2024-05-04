@@ -41,9 +41,20 @@ public:
  FGameplayTag Attribute_Secondary_ManaRegeneration;
  FGameplayTag Attribute_Secondary_MaxHitPoint;
  FGameplayTag Attribute_Secondary_MaxMana;
-
+ 
  /*
-  *	Meta attributes
+  *	Elemental Tags
+  */
+ FGameplayTag DamageType_Elemental_Fire;
+ FGameplayTag DamageType_Elemental_Water;
+ FGameplayTag DamageType_Elemental_Wind;
+
+ FGameplayTag Attribute_Resistance_Elemental_Fire;
+ FGameplayTag Attribute_Resistance_Elemental_Water;
+ FGameplayTag Attribute_Resistance_Elemental_Wind;
+ 
+ /*
+  *	Meta attribute Tags
   */
  FGameplayTag Attribute_Meta_HitPoint;
  

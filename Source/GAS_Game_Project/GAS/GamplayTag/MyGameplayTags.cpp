@@ -87,12 +87,35 @@ void MyGameplayTags::InitNativeGameplayTags()
 		FString("Impacted by 'Vigor'. Maximum amount of 'Hit Point' obtainable"));
 
 	/*
-	 *	Meta attributes
+	*	Elemental Tags
+	*/
+	MyGameplayTags::GameplayTags.DamageType_Elemental_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("DamageType.Elemental.Fire"),
+		FString(""));
+	MyGameplayTags::GameplayTags.DamageType_Elemental_Water = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("DamageType.Elemental.Water"),
+		FString(""));
+	MyGameplayTags::GameplayTags.DamageType_Elemental_Wind = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("DamageType.Elemental.Wind"),
+		FString(""));
+
+	MyGameplayTags::GameplayTags.Attribute_Resistance_Elemental_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attribute.Resistance.Elemental.Fire"),
+		FString(""));
+	MyGameplayTags::GameplayTags.Attribute_Resistance_Elemental_Water = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attribute.Resistance.Elemental.Water"),
+		FString(""));
+	MyGameplayTags::GameplayTags.Attribute_Resistance_Elemental_Wind = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attribute.Resistance.Elemental.Wind"),
+		FString(""));
+
+	/*
+	 *	Meta attribute Tags
 	 */
 	MyGameplayTags::GameplayTags.Attribute_Meta_HitPoint = UGameplayTagsManager::Get().AddNativeGameplayTag(
-	FName("Attribute.Meta.HitPoint"),
-	FString(""));
-	
+		FName("Attribute.Meta.HitPoint"),
+		FString(""));
+
 	/*
 	 * Ability Input Tags 
 	 */
@@ -107,6 +130,6 @@ void MyGameplayTags::InitNativeGameplayTags()
 		FString("Right mouse button"));
 
 	MyGameplayTags::GameplayTags.Effects_OnHitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
-	FName("Effects.OnHitReact"),
-	FString("OnHitReact"));
+		FName("Effects.OnHitReact"),
+		FString("OnHitReact"));
 }

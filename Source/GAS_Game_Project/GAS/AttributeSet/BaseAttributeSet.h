@@ -15,7 +15,7 @@ USTRUCT()
 struct FGameplayEffectPropertiesStruct
 {
 	GENERATED_BODY()
-	
+
 	UPROPERTY()
 	FGameplayEffectContextHandle EffectContextHandle;
 	UPROPERTY()
@@ -39,7 +39,7 @@ struct FGameplayEffectPropertiesStruct
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
-template<typename T>
+template <typename T>
 using TStaticFunctionPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
 
 UCLASS()
@@ -53,7 +53,10 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
-	FORCEINLINE TMap<FGameplayTag, TStaticFunctionPtr<FGameplayAttribute()>> GetAttributeTagMap() {return AttributeTagMap;}
+	FORCEINLINE TMap<FGameplayTag, TStaticFunctionPtr<FGameplayAttribute()>> GetAttributeTagMap()
+	{
+		return AttributeTagMap;
+	}
 
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Strength)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Intelligence);
@@ -72,11 +75,16 @@ public:
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, CriticalHitResistance)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, HealthRegeneration)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, ManaRegeneration)
-	
+
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, HitPointMeta)
 
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Resistance_Fire)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Resistance_Water)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Resistance_Wind)
+
 	FGameplayEffectPropertiesStruct GameplayEffectPropertiesStruct;
-	
+
+protected:
 #pragma region Primary attributes
 
 	UPROPERTY(ReplicatedUsing = OnRep_Strength, BlueprintReadOnly, EditAnywhere)
@@ -99,22 +107,22 @@ public:
 	void OnRep_Vigor(const FGameplayAttributeData& OldVigor) const;
 	UFUNCTION()
 	void OnRep_Resilience(const FGameplayAttributeData& OldResilience) const;
-	
+
 #pragma endregion Primary attributes
-	
+
 #pragma region Secondary attributes
 	UPROPERTY(ReplicatedUsing = OnRep_HitPoint, BlueprintReadOnly, Category = Attribute)
 	FGameplayAttributeData HitPoint;
-	
+
 	UPROPERTY(ReplicatedUsing = OnRep_MaxHitPoint)
-	FGameplayAttributeData MaxHitPoint;	
+	FGameplayAttributeData MaxHitPoint;
 
 	UPROPERTY(ReplicatedUsing = OnRep_Mana)
-	FGameplayAttributeData Mana;	
+	FGameplayAttributeData Mana;
 
 	UPROPERTY(ReplicatedUsing = OnRep_MaxMana)
 	FGameplayAttributeData MaxMana;
-	
+
 	UPROPERTY(ReplicatedUsing = OnRep_Armor, EditAnywhere, BlueprintReadOnly)
 	FGameplayAttributeData Armor;
 
@@ -140,10 +148,20 @@ public:
 	FGameplayAttributeData ManaRegeneration;
 #pragma endregion
 
+#pragma region Resistance attributes
+	UPROPERTY(ReplicatedUsing = OnRep_Resistance_Fire, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData Resistance_Fire;
+	UPROPERTY(ReplicatedUsing = OnRep_Resistance_Water, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData Resistance_Water;
+	UPROPERTY(ReplicatedUsing = OnRep_Resistance_Wind, EditAnywhere, BlueprintReadOnly)
+	FGameplayAttributeData Resistance_Wind;
+
+#pragma endregion
+
 #pragma region Meta Attributes
 	UPROPERTY(VisibleAnywhere, Category="Meta Attributes")
 	FGameplayAttributeData HitPointMeta;
-	
+
 	UFUNCTION()
 	void OnRep_HitPoint(const FGameplayAttributeData& OldHitPoint) const;
 	UFUNCTION()
@@ -168,13 +186,17 @@ public:
 	void OnRep_HealthRegeneration(const FGameplayAttributeData& OldHealthRegeneration) const;
 	UFUNCTION()
 	void OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration) const;
+	UFUNCTION()
+	void OnRep_Resistance_Fire(const FGameplayAttributeData& OldManaRegeneration) const;
+	UFUNCTION()
+	void OnRep_Resistance_Water(const FGameplayAttributeData& OldManaRegeneration) const;
+	UFUNCTION()
+	void OnRep_Resistance_Wind(const FGameplayAttributeData& OldManaRegeneration) const;
+#pragma endregion
 
-protected:
 	void ClampingAttributeValues(const FGameplayEffectModCallbackData& Data);
 	void SetupGameplayEffectPropertiesStruct(const FGameplayEffectModCallbackData& Data);
-
 	TMap<FGameplayTag, TStaticFunctionPtr<FGameplayAttribute()>> AttributeTagMap;
 
 private:
-
 };
