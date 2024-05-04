@@ -19,16 +19,19 @@ UBaseAttributeSet::UBaseAttributeSet()
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Primary_Intelligence, GetIntelligenceAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Primary_Vigor, GetVigorAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Primary_Resilience, GetResilienceAttribute);
+
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_Armor, GetArmorAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_ArmorPenetration, GetArmorPenetrationAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_BlockChance, GetBlockChanceAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_HealthRegeneration, GetHealthRegenerationAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_ManaRegeneration, GetManaAttribute);
-	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_MaxMana, GetMaxManaAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_CriticalHitChance, GetCriticalHitChanceAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_CriticalHitDamage, GetCriticalHitDamageAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_CriticalHitResistance, GetCriticalHitResistanceAttribute);
+	
+	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_MaxMana, GetMaxManaAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Secondary_MaxHitPoint, GetMaxHitPointAttribute);
+	
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Resistance_Elemental_Fire, GetResistance_FireAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Resistance_Elemental_Water, GetResistance_WaterAttribute);
 	AttributeTagMap.Add(MyGameplayTags::Get().Attribute_Resistance_Elemental_Wind, GetResistance_WindAttribute);
@@ -38,17 +41,28 @@ void UBaseAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, HitPoint, COND_None, REPNOTIFY_Always)
-	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxHitPoint, COND_None, REPNOTIFY_Always)
-	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Mana, COND_None, REPNOTIFY_Always)
-	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxMana, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Vigor, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Strength, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Intelligence, COND_None, REPNOTIFY_Always)
-	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Vigor, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Resilience, COND_None, REPNOTIFY_Always)
+	
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Armor, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, ArmorPenetration, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, BlockChance, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, CriticalHitChance, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, CriticalHitDamage, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, CriticalHitResistance, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, HealthRegeneration, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, ManaRegeneration, COND_None, REPNOTIFY_Always)
+	
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Resistance_Fire, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Resistance_Water, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Resistance_Wind, COND_None, REPNOTIFY_Always)
+	
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, HitPoint, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Mana, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxMana, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxHitPoint, COND_None, REPNOTIFY_Always)
 }
 
 void UBaseAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -125,26 +139,6 @@ void UBaseAttributeSet::SetupGameplayEffectPropertiesStruct(const FGameplayEffec
 		if (!GameplayEffectPropertiesStruct.TargetActorController)
 			UE_LOG(LogTemp, Warning, TEXT("GameplayEffectPropertiesStruct.TargetActorController is null"))
 	}
-}
-
-void UBaseAttributeSet::OnRep_HitPoint(const FGameplayAttributeData& LastVal) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, HitPoint, LastVal)
-}
-
-void UBaseAttributeSet::OnRep_MaxHitPoint(const FGameplayAttributeData& LastVal) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, MaxHitPoint, LastVal)
-}
-
-void UBaseAttributeSet::OnRep_Mana(const FGameplayAttributeData& LastVal) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, Mana, LastVal)
-}
-
-void UBaseAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& LastVal) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, MaxMana, LastVal)
 }
 
 #pragma region Primary attributes
@@ -225,3 +219,25 @@ void UBaseAttributeSet::OnRep_Resistance_Wind(const FGameplayAttributeData& OldM
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSet, Resistance_Wind, OldManaRegeneration)
 }
 #pragma endregion Secondary attributes
+
+#pragma region Vital attributes
+void UBaseAttributeSet::OnRep_HitPoint(const FGameplayAttributeData& LastVal) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, HitPoint, LastVal)
+}
+
+void UBaseAttributeSet::OnRep_MaxHitPoint(const FGameplayAttributeData& LastVal) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, MaxHitPoint, LastVal)
+}
+
+void UBaseAttributeSet::OnRep_Mana(const FGameplayAttributeData& LastVal) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, Mana, LastVal)
+}
+
+void UBaseAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& LastVal) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, MaxMana, LastVal)
+}
+#pragma endregion Vital attributes

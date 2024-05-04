@@ -63,10 +63,6 @@ public:
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Vigor)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Resilience)
 
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, MaxHitPoint)
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, HitPoint)
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Mana)
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, MaxMana)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Armor)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, ArmorPenetration)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, BlockChance)
@@ -75,6 +71,11 @@ public:
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, CriticalHitResistance)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, HealthRegeneration)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, ManaRegeneration)
+	
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, MaxHitPoint)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, HitPoint)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Mana)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, MaxMana)
 
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, HitPointMeta)
 
