@@ -14,6 +14,11 @@ struct MyDamageStatic
 	DECLARE_ATTRIBUTE_CAPTUREDEF(ArmorPenetration)
 	DECLARE_ATTRIBUTE_CAPTUREDEF(BlockChance)
 	DECLARE_ATTRIBUTE_CAPTUREDEF(CriticalHitChance)
+	DECLARE_ATTRIBUTE_CAPTUREDEF(Resistance_Fire)
+	DECLARE_ATTRIBUTE_CAPTUREDEF(Resistance_Water)
+	DECLARE_ATTRIBUTE_CAPTUREDEF(Resistance_Wind)
+
+	TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition> Tag2Resistance;
 	
 	MyDamageStatic()
 	{
@@ -22,6 +27,13 @@ struct MyDamageStatic
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UBaseAttributeSet, ArmorPenetration, Source, false)
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UBaseAttributeSet, BlockChance, Target, false)
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UBaseAttributeSet, CriticalHitChance, Source, false)
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UBaseAttributeSet, Resistance_Fire, Source, false)
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UBaseAttributeSet, Resistance_Water, Source, false)
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UBaseAttributeSet, Resistance_Wind, Source, false)
+
+		Tag2Resistance.Add(MyGameplayTags::Get().DamageType_Elemental_Fire, Resistance_FireDef);
+		Tag2Resistance.Add(MyGameplayTags::Get().DamageType_Elemental_Water, Resistance_WaterDef);
+		Tag2Resistance.Add(MyGameplayTags::Get().DamageType_Elemental_Wind, Resistance_WindDef);
 	}
 };
 
@@ -38,12 +50,16 @@ UExecCalc_Damage::UExecCalc_Damage()
 	RelevantAttributesToCapture.Add(GetMyDamageStatic().ArmorPenetrationDef);
 	RelevantAttributesToCapture.Add(GetMyDamageStatic().BlockChanceDef);
 	RelevantAttributesToCapture.Add(GetMyDamageStatic().CriticalHitChanceDef);
+	RelevantAttributesToCapture.Add(GetMyDamageStatic().Resistance_FireDef);
+	RelevantAttributesToCapture.Add(GetMyDamageStatic().Resistance_WaterDef);
+	RelevantAttributesToCapture.Add(GetMyDamageStatic().Resistance_WindDef);
 }
 
 void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
                                               FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
-	float Armor;	
+	float Armor;
+	float ArmorCoe;
 	float ArmorPenetration;
 	float BlockChance;
 	float CriticalHitChance;
@@ -53,15 +69,20 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	AttemptCalculateCapturedAttributeMagnitude(ExecutionParams, GetMyDamageStatic().BlockChanceDef, BlockChance);
 	AttemptCalculateCapturedAttributeMagnitude(ExecutionParams, GetMyDamageStatic().CriticalHitChanceDef, CriticalHitChance);
 	AttemptCalculateCapturedAttributeMagnitude(ExecutionParams, GetMyDamageStatic().ResilienceDef, Resilience);
+	GetCoeValue(ExecutionParams, "ArmorCoe", ArmorCoe);
 	Armor = FMath::Max(0.f, Armor);
 	ArmorPenetration = FMath::Max(0.f, ArmorPenetration);
 	BlockChance = FMath::Max(0.f, BlockChance);
 	CriticalHitChance = FMath::Max(0.f, CriticalHitChance);
 
-	float Damage = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(MyGameplayTags::Get().Attribute_Meta_HitPoint);
-
-	float ArmorCoe;
-	GetCoeValue(ExecutionParams, "ArmorCoe", ArmorCoe);
+	float Damage = 0;
+	for (const auto& Pair : GetMyDamageStatic().Tag2Resistance)
+	{
+		const float DamageType = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(Pair.Key);
+		float ResistanceValue;
+		AttemptCalculateCapturedAttributeMagnitude(ExecutionParams, Pair.Value, ResistanceValue);
+		Damage += DamageType - ResistanceValue < 0 ? 0.f : DamageType - ResistanceValue;
+	}
 
 	const bool bBlockHit = FMath::RandRange(1, 100) <= BlockChance;
 	const bool bCritHit = FMath::RandRange(1, 100) <= CriticalHitChance;

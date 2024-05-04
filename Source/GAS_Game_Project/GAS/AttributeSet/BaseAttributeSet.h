@@ -85,7 +85,6 @@ public:
 
 	FGameplayEffectPropertiesStruct GameplayEffectPropertiesStruct;
 
-protected:
 #pragma region Primary attributes
 
 	UPROPERTY(ReplicatedUsing = OnRep_Strength, BlueprintReadOnly, EditAnywhere)
@@ -194,7 +193,7 @@ protected:
 	UFUNCTION()
 	void OnRep_Resistance_Wind(const FGameplayAttributeData& OldManaRegeneration) const;
 #pragma endregion
-
+protected:
 	void ClampingAttributeValues(const FGameplayEffectModCallbackData& Data);
 	void SetupGameplayEffectPropertiesStruct(const FGameplayEffectModCallbackData& Data);
 	TMap<FGameplayTag, TStaticFunctionPtr<FGameplayAttribute()>> AttributeTagMap;

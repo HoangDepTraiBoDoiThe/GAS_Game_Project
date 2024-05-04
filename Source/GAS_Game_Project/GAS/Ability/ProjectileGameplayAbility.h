@@ -3,32 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BaseGameplayAbility.h"
+#include "DamageGameplayAbility.h"
 #include "ProjectileGameplayAbility.generated.h"
 
-class ABaseProjectile;
 /**
  * 
  */
 UCLASS()
-class GAS_GAME_PROJECT_API UProjectileGameplayAbility : public UBaseGameplayAbility
+class GAS_GAME_PROJECT_API UProjectileGameplayAbility : public UDamageGameplayAbility
 {
 	GENERATED_BODY()
 
-public:
-	FORCEINLINE FScalableFloat GetAbilityDamage() {return AbilityDamage;}
-	
 protected:
-	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-	                             const FGameplayAbilityActivationInfo ActivationInfo,
-	                             const FGameplayEventData* TriggerEventData) override;
 	UFUNCTION(BlueprintCallable)
-	void SpawnProjectile(FVector TargetLocation);
+	void SpawnProjectile(FVector TargetLocation) const;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<ABaseProjectile> AbilityProjectileClass;
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UGameplayEffect> AbilityEffectClass;
-
-	UPROPERTY(EditAnywhere)
-	FScalableFloat AbilityDamage;
 };
