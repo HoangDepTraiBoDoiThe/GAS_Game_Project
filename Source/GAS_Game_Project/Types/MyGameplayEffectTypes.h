@@ -37,7 +37,19 @@ public:
 
  virtual bool NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess) override;
  virtual UScriptStruct* GetScriptStruct() const override;
-
+ /** Creates a copy of this context, used to duplicate for later modifications */
+ virtual FMyGameplayEffectContext* Duplicate() const override
+ {
+  FMyGameplayEffectContext* NewContext = new FMyGameplayEffectContext();
+  *NewContext = *this;
+  if (GetHitResult())
+  {
+   // Does a deep copy of the hit result
+   NewContext->AddHitResult(*GetHitResult(), true);
+  }
+  return NewContext;
+ }
+ 
 protected:
  UPROPERTY()
  bool bIsCriticalHit{false};

@@ -45,6 +45,7 @@ static MyDamageStatic GetMyDamageStatic()
 
 UExecCalc_Damage::UExecCalc_Damage()
 {
+	MyGameplayTags::Get().InitNativeGameplayTags();
 	RelevantAttributesToCapture.Add(GetMyDamageStatic().ArmorDef);
 	RelevantAttributesToCapture.Add(GetMyDamageStatic().ResilienceDef);
 	RelevantAttributesToCapture.Add(GetMyDamageStatic().ArmorPenetrationDef);
@@ -78,7 +79,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	float Damage = 0;
 	for (const auto& Pair : GetMyDamageStatic().Tag2Resistance)
 	{
-		const float DamageType = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(Pair.Key);
+		const float DamageType = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(Pair.Key, false);
 		float ResistanceValue;
 		AttemptCalculateCapturedAttributeMagnitude(ExecutionParams, Pair.Value, ResistanceValue);
 		Damage += DamageType - ResistanceValue < 0 ? 0.f : DamageType - ResistanceValue;
