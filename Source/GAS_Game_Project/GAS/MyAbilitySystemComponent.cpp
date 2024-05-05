@@ -66,7 +66,7 @@ void UMyAbilitySystemComponent::AbilityInputTagHeld(FGameplayTag& InputTag)
 		if (Ability2Active.IsActive()) continue;
 		if (Ability2Active.DynamicAbilityTags.HasTagExact(InputTag))
 		{
-			TryActivateAbility(Ability2Active.Handle);
+			bool bActivated = TryActivateAbility(Ability2Active.Handle);
 			AbilitySpecInputPressed(Ability2Active);
 		}
 	}
