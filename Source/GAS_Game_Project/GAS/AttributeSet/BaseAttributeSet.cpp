@@ -97,8 +97,7 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				Cast<ICombatInterface>(GetOwningAbilitySystemComponent()->GetAvatarActor())->Die();
 			}
 		}
-		if (ABasePlayerController* PC = Cast<ABasePlayerController>(
-			UGameplayStatics::GetPlayerController(GameplayEffectPropertiesStruct.SourceAvatarActor, 0)))
+		if (ABasePlayerController* PC = Cast<ABasePlayerController>(Cast<ABaseGameCharacter>(Data.EffectSpec.GetContext().GetInstigator())->GetController()))
 		{
 			const FMyGameplayEffectContext* Context = UMyBlueprintFunctionLibrary::GetMyGameplayEffectContext(GameplayEffectPropertiesStruct.EffectContextHandle.Get());
 			const float DamageText = CacheDamage >= 0 ? CacheDamage : 0;

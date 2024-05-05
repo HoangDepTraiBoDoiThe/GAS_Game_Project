@@ -27,6 +27,7 @@ ABasePlayerController::ABasePlayerController()
 
 void ABasePlayerController::Client_ShowDamageText_Implementation(float DamageTextValue, AActor* Target, bool bCritHit, bool bBlockedHit)
 {
+	if (!IsLocalController()) return;
 	UDamageTextWidgetComponent* DamageTextWidgetComponent = NewObject<UDamageTextWidgetComponent>(Target, DamageWidgetComponentClass);
 	DamageTextWidgetComponent->RegisterComponent();
 	DamageTextWidgetComponent->AttachToComponent(Cast<ABaseGameCharacter>(Target)->GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
