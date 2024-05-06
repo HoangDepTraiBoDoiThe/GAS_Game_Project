@@ -3,7 +3,10 @@
 
 #include "EnemyCharacter.h"
 
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Controller/MyAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
@@ -52,6 +55,14 @@ void AEnemyCharacter::OnEventGameplayTagChange(const FGameplayTag Tag, int32 New
 {
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : InitialWalkSpeed;
+}
+
+void AEnemyCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	Cast<AMyAIController>(GetController())->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->GetBlackboardAsset());
+	Cast<AMyAIController>(GetController())->RunBehaviorTree(BehaviorTree);
 }
 
 void AEnemyCharacter::HighlightActor()

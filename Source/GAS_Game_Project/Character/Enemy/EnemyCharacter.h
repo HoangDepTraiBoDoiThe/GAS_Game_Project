@@ -8,6 +8,8 @@
 #include "GAS_Game_Project/UserInterface/Controller/OverlayWidgetController.h"
 #include "EnemyCharacter.generated.h"
 
+class AMyAIController;
+class UBehaviorTree;
 class UWidgetComponent;
 /**
  * 
@@ -30,6 +32,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UWidgetComponent> HitPointBar;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UAnimMontage> HitReactMontage;
 
@@ -42,4 +47,6 @@ protected:
 	void BindBroadCastToWidgetOnAttChange() const;
 	void InitBroadCastVitalAttValue() const;
 	void OnEventGameplayTagChange(const FGameplayTag, int32);
+
+	virtual void PossessedBy(AController* NewController) override;
 };
