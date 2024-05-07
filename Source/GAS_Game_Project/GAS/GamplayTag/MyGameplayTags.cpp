@@ -9,7 +9,6 @@ MyGameplayTags MyGameplayTags::GameplayTags;
 
 void MyGameplayTags::InitNativeGameplayTags()
 {
-	if (!Get().GameplayTags.Attribute_Vital_HitPoint.IsValid()) return;
 	/*
 	 *	Vital attributes
 	 */

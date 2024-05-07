@@ -45,7 +45,6 @@ static MyDamageStatic GetMyDamageStatic()
 
 UExecCalc_Damage::UExecCalc_Damage()
 {
-	MyGameplayTags::Get().InitNativeGameplayTags();
 	RelevantAttributesToCapture.Add(GetMyDamageStatic().ArmorDef);
 	RelevantAttributesToCapture.Add(GetMyDamageStatic().ResilienceDef);
 	RelevantAttributesToCapture.Add(GetMyDamageStatic().ArmorPenetrationDef);

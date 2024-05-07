@@ -42,7 +42,7 @@ protected:
 	FOnGameplayAttributeValuesSignature OnAttributeValuesSignature;
 
 	UPROPERTY(EditAnywhere)
-	float InitialWalkSpeed = 500.f;
+	float InitialWalkSpeed = 420.f;
 
 	void BindBroadCastToWidgetOnAttChange() const;
 	void InitBroadCastVitalAttValue() const;

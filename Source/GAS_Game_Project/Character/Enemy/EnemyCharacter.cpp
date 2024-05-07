@@ -55,6 +55,7 @@ void AEnemyCharacter::OnEventGameplayTagChange(const FGameplayTag Tag, int32 New
 {
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : InitialWalkSpeed;
+	Cast<AMyAIController>(GetController())->GetBlackboardComponent()->SetValueAsBool(FName("IsHitReacting"), bHitReacting);
 }
 
 void AEnemyCharacter::PossessedBy(AController* NewController)
@@ -63,6 +64,7 @@ void AEnemyCharacter::PossessedBy(AController* NewController)
 
 	Cast<AMyAIController>(GetController())->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->GetBlackboardAsset());
 	Cast<AMyAIController>(GetController())->RunBehaviorTree(BehaviorTree);
+	Cast<AMyAIController>(GetController())->GetBlackboardComponent()->SetValueAsBool(FName("IsRangeClass"), GetCharacterClass() == ECharacterClass::ECC_Ranger);
 }
 
 void AEnemyCharacter::HighlightActor()

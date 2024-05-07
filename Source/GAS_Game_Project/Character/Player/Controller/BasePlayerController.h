@@ -56,8 +56,11 @@ protected:
 	TSubclassOf<UWidgetComponent> DamageWidgetComponentClass;
 	
 	bool bLeftShiftPressing = false;
+
+	UPROPERTY()
 	USplineComponent* SplineComponent;
 
+	UPROPERTY()
 	UMyAbilitySystemComponent* ASC;
 	
 	UPROPERTY(EditAnywhere)

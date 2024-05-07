@@ -83,7 +83,7 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		const float CacheDamage = GetHitPointMeta();
 		SetHitPointMeta(0.f);
 
-		if (CacheDamage > 0.f)
+		if (true)
 		{
 			SetHitPoint(FMath::Clamp(GetHitPoint() - CacheDamage, 0.f, GetMaxHitPoint()));
 			if (GetHitPoint() > 0.f)

@@ -20,5 +20,5 @@ class GAS_GAME_PROJECT_API UBTService_FindNearestTarget : public UBTService_Blue
 	FBlackboardKeySelector TargetActor;
 	
 	UPROPERTY(EditAnywhere)
-	FBlackboardKeySelector DistanceToTarget;
+	FBlackboardKeySelector DistanceToNearestTarget;
 };
