@@ -18,7 +18,7 @@ struct MyDamageStatic
 	DECLARE_ATTRIBUTE_CAPTUREDEF(Resistance_Water)
 	DECLARE_ATTRIBUTE_CAPTUREDEF(Resistance_Wind)
 
-	TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition> Tag2Resistance;
+	TMap<EDamageType, FGameplayEffectAttributeCaptureDefinition> Tag2Resistance;
 	
 	MyDamageStatic()
 	{
@@ -31,9 +31,10 @@ struct MyDamageStatic
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UBaseAttributeSet, Resistance_Water, Source, false)
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UBaseAttributeSet, Resistance_Wind, Source, false)
 
-		Tag2Resistance.Add(MyGameplayTags::Get().DamageType_Elemental_Fire, Resistance_FireDef);
-		Tag2Resistance.Add(MyGameplayTags::Get().DamageType_Elemental_Water, Resistance_WaterDef);
-		Tag2Resistance.Add(MyGameplayTags::Get().DamageType_Elemental_Wind, Resistance_WindDef);
+		Tag2Resistance.Add(EDamageType::EDT_Physical, Resistance_FireDef);
+		Tag2Resistance.Add(EDamageType::EDT_Fire, Resistance_FireDef);
+		Tag2Resistance.Add(EDamageType::EDT_Water, Resistance_WaterDef);
+		Tag2Resistance.Add(EDamageType::EDT_Wind, Resistance_WindDef);
 	}
 };
 
@@ -78,7 +79,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	float Damage = 0;
 	for (const auto& Pair : GetMyDamageStatic().Tag2Resistance)
 	{
-		const float DamageType = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(Pair.Key, false);
+		const FGameplayTag DamageTypeTag = MyGameplayTags::Get().EnumToGameTag_DamageTypes[Pair.Key];
+		const float DamageType = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(DamageTypeTag, false);
 		float ResistanceValue;
 		AttemptCalculateCapturedAttributeMagnitude(ExecutionParams, Pair.Value, ResistanceValue);
 		Damage += DamageType - ResistanceValue < 0 ? 0.f : DamageType - ResistanceValue;

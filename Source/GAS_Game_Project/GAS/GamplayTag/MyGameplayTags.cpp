@@ -87,8 +87,11 @@ void MyGameplayTags::InitNativeGameplayTags()
 		FString("Impacted by 'Vigor'. Maximum amount of 'Hit Point' obtainable"));
 
 	/*
-	*	Elemental Tags
+	*	Damage type Tags
 	*/
+	MyGameplayTags::GameplayTags.DamageType_Elemental_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("DamageType.Elemental.Physical"),
+	FString(""));
 	MyGameplayTags::GameplayTags.DamageType_Elemental_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("DamageType.Elemental.Fire"),
 		FString(""));
@@ -98,6 +101,10 @@ void MyGameplayTags::InitNativeGameplayTags()
 	MyGameplayTags::GameplayTags.DamageType_Elemental_Wind = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("DamageType.Elemental.Wind"),
 		FString(""));
+	GameplayTags.EnumToGameTag_DamageTypes.Add(EDamageType::EDT_Physical, MyGameplayTags::Get().DamageType_Elemental_Physical);
+	GameplayTags.EnumToGameTag_DamageTypes.Add(EDamageType::EDT_Fire, MyGameplayTags::Get().DamageType_Elemental_Fire);
+	GameplayTags.EnumToGameTag_DamageTypes.Add(EDamageType::EDT_Water, MyGameplayTags::Get().DamageType_Elemental_Water);
+	GameplayTags.EnumToGameTag_DamageTypes.Add(EDamageType::EDT_Wind, MyGameplayTags::Get().DamageType_Elemental_Wind);
 
 	MyGameplayTags::GameplayTags.Attribute_Resistance_Elemental_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attribute.Resistance.Elemental.Fire"),
@@ -107,6 +114,9 @@ void MyGameplayTags::InitNativeGameplayTags()
 		FString(""));
 	MyGameplayTags::GameplayTags.Attribute_Resistance_Elemental_Wind = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attribute.Resistance.Elemental.Wind"),
+		FString(""));
+	MyGameplayTags::GameplayTags.Attribute_Resistance_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attribute.Resistance.Physical"),
 		FString(""));
 
 	/*

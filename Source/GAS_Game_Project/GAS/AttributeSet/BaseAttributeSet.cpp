@@ -80,28 +80,30 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	
 	if (Data.EvaluatedData.Attribute == GetHitPointMetaAttribute())
 	{
-		const float CacheDamage = GetHitPointMeta();
+		const float CacheDamage = FMath::Max(0, GetHitPointMeta());
 		SetHitPointMeta(0.f);
 
-		if (true)
+		SetHitPoint(FMath::Clamp(GetHitPoint() - CacheDamage, 0.f, GetMaxHitPoint()));
+		if (GetHitPoint() > 0.f)
 		{
-			SetHitPoint(FMath::Clamp(GetHitPoint() - CacheDamage, 0.f, GetMaxHitPoint()));
-			if (GetHitPoint() > 0.f)
-			{
-				FGameplayTagContainer TagContainer;
-				TagContainer.AddTag(MyGameplayTags::Get().Effects_OnHitReact);
-				GetOwningAbilitySystemComponent()->TryActivateAbilitiesByTag(TagContainer);
-			}
-			else
-			{
-				Cast<ICombatInterface>(GetOwningAbilitySystemComponent()->GetAvatarActor())->Die();
-			}
+			FGameplayTagContainer TagContainer;
+			TagContainer.AddTag(MyGameplayTags::Get().Effects_OnHitReact);
+			GetOwningAbilitySystemComponent()->TryActivateAbilitiesByTag(TagContainer);
 		}
-		if (ABasePlayerController* PC = Cast<ABasePlayerController>(Cast<ABaseGameCharacter>(Data.EffectSpec.GetContext().GetInstigator())->GetController()))
+		else
 		{
-			const FMyGameplayEffectContext* Context = UMyBlueprintFunctionLibrary::GetMyGameplayEffectContext(GameplayEffectPropertiesStruct.EffectContextHandle.Get());
-			const float DamageText = CacheDamage >= 0 ? CacheDamage : 0;
-			PC->Client_ShowDamageText(DamageText, GameplayEffectPropertiesStruct.TargetAvatarActor, Context->IsCriticalHit(), Context->IsHitBlocked());
+			Cast<ICombatInterface>(GetOwningAbilitySystemComponent()->GetAvatarActor())->Die();
+		}
+
+		const FMyGameplayEffectContext* Context = UMyBlueprintFunctionLibrary::GetMyGameplayEffectContext(GameplayEffectPropertiesStruct.EffectContextHandle.Get());
+		const float DamageText = CacheDamage >= 0 ? CacheDamage : 0;
+
+		ABasePlayerController* PC = Cast<ABasePlayerController>(Cast<ABaseGameCharacter>(Data.EffectSpec.GetContext().GetInstigator())->GetController());
+		if (PC) PC->Client_ShowDamageText(DamageText, GameplayEffectPropertiesStruct.TargetAvatarActor, Context->IsCriticalHit(), Context->IsHitBlocked());
+		else
+		{
+			PC = Cast<ABasePlayerController>(GetOwningAbilitySystemComponent()->GetAvatarActor()->GetInstigatorController());
+			if (PC) PC->Client_ShowDamageText(DamageText, GameplayEffectPropertiesStruct.TargetAvatarActor, Context->IsCriticalHit(), Context->IsHitBlocked());
 		}
 	}
 	ClampingAttributeValues(Data);

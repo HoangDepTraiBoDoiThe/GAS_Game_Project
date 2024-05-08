@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "GAS_Game_Project/GAS_Game_Project.h"
 
 /**
  * 
@@ -14,6 +15,8 @@ public:
  static const MyGameplayTags& Get() {return GameplayTags;}
  static void InitNativeGameplayTags ();
 
+ TMap<EDamageType, FGameplayTag> EnumToGameTag_DamageTypes;
+ 
  /*
  *	Vital attributes
  */
@@ -43,12 +46,14 @@ public:
  FGameplayTag Attribute_Secondary_MaxMana;
  
  /*
-  *	Elemental Tags
+  *	Damage type Tags
   */
+ FGameplayTag DamageType_Elemental_Physical;
  FGameplayTag DamageType_Elemental_Fire;
  FGameplayTag DamageType_Elemental_Water;
  FGameplayTag DamageType_Elemental_Wind;
 
+ FGameplayTag Attribute_Resistance_Physical;
  FGameplayTag Attribute_Resistance_Elemental_Fire;
  FGameplayTag Attribute_Resistance_Elemental_Water;
  FGameplayTag Attribute_Resistance_Elemental_Wind;

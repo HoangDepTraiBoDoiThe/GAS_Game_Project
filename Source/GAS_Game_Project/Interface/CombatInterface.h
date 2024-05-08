@@ -29,6 +29,11 @@ public:
 	virtual void Die() = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetCurTarget(AActor* Actor);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AActor* GetCurTarget();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UAnimMontage* GetHitReactMontage();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)

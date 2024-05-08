@@ -60,6 +60,7 @@ void ABaseGameCharacter::Multicast_Death_Implementation()
 	if (DeathMontage)
 		PlayAnimMontage(DeathMontage);
 	GetMesh()->SetSimulatePhysics(true);
+	SetLifeSpan(5.f);
 }
 
 void ABaseGameCharacter::ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const

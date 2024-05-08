@@ -92,6 +92,23 @@ void AEnemyCharacter::Die()
 	} 
 }
 
+void AEnemyCharacter::SetCurTarget_Implementation(AActor* Actor)
+{
+	CurTarget = Actor;
+}
+
+AActor* AEnemyCharacter::GetCurTarget_Implementation()
+{
+	return CurTarget;
+}
+
+void AEnemyCharacter::Multicast_Death_Implementation()
+{
+	Super::Multicast_Death_Implementation();
+	Cast<AMyAIController>(GetController())->GetBlackboardComponent()->SetValueAsBool(FName("IsDeath"), true);
+	Cast<AMyAIController>(GetController())->GetBehaviorTreeComponent()->StopLogic(FString("Actor is death"));
+}
+
 void AEnemyCharacter::BindBroadCastToWidgetOnAttChange() const
 {
 	AbilitySystemComponent->OnNewAttributeValueChangeBroadcastToControllerDelegate.AddLambda(

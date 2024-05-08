@@ -27,8 +27,13 @@ public:
 	virtual void UnHighlightActor() override;
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die() override;
+
+	virtual void SetCurTarget_Implementation(AActor* Actor) override;
+	virtual AActor* GetCurTarget_Implementation() override;
 	
 protected:
+	virtual void Multicast_Death_Implementation() override;
+	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UWidgetComponent> HitPointBar;
 
@@ -44,6 +49,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	float InitialWalkSpeed = 420.f;
 
+	UPROPERTY(BlueprintReadOnly)
+	AActor* CurTarget;
+	
 	void BindBroadCastToWidgetOnAttChange() const;
 	void InitBroadCastVitalAttValue() const;
 	void OnEventGameplayTagChange(const FGameplayTag, int32);
