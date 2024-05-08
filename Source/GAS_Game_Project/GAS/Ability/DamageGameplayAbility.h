@@ -23,7 +23,16 @@ protected:
 								 const FGameplayAbilityActivationInfo ActivationInfo,
 								 const FGameplayEventData* TriggerEventData) override;
 
-	UPROPERTY(EditAnywhere)
+	UFUNCTION(BlueprintCallable)
+	virtual FGameplayEffectSpecHandle MakeMyGameplayEffectSpecHandle() const;
+
+	UFUNCTION(BlueprintCallable)
+	void MakeSphereHitChecker(TArray<AActor*>& OverlapTargetActors, const UObject* WorldContextObject, const TArray<AActor*>& IgnoreActors, AActor* DamageCauser, const FVector& Origin, float DamageOuterRadius);
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void AppliedMyGameplayEffectToTarget(UAbilitySystemComponent* TargetASC);
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> AbilityEffectClass;
 
 	UPROPERTY(EditAnywhere)

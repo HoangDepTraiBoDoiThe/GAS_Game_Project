@@ -33,7 +33,7 @@ void ABaseGameCharacter::Tick(float DeltaTime)
 
 }
 
-FVector ABaseGameCharacter::WeaponLocation()
+FVector ABaseGameCharacter::WeaponLocation_Implementation()
 {
 	return GetMesh()->GetSocketByName(WeaponSocketName)->GetSocketLocation(GetMesh());
 }
@@ -76,4 +76,3 @@ UAbilitySystemComponent* ABaseGameCharacter::GetAbilitySystemComponent() const
 }
 
 float ABaseGameCharacter::GetCharacterLevel() { return CharacterLevel; }
-

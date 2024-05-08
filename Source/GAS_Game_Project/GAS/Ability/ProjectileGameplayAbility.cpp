@@ -14,22 +14,14 @@ void UProjectileGameplayAbility::SpawnProjectile(const FVector TargetLocation) c
 
 	ABaseGameCharacter* BaseGameCharacter = Cast<ABaseGameCharacter>(GetAvatarActorFromActorInfo());
 	FTransform ProjectileTransform;
-	const FRotator ProjectileRotator = (TargetLocation - BaseGameCharacter->WeaponLocation()).Rotation();
-	ProjectileTransform.SetLocation(BaseGameCharacter->WeaponLocation());
+	const FRotator ProjectileRotator = (TargetLocation - ICombatInterface::Execute_WeaponLocation(BaseGameCharacter)).Rotation();
+	ProjectileTransform.SetLocation(ICombatInterface::Execute_WeaponLocation(BaseGameCharacter));
 	ProjectileTransform.SetRotation(ProjectileRotator.Quaternion());
 	APawn* Instigator = Cast<APawn>(BaseGameCharacter);
 	
 	ABaseProjectile* Projectile = GetWorld()->SpawnActorDeferred<ABaseProjectile>(AbilityProjectileClass, ProjectileTransform, GetOwningActorFromActorInfo(), Instigator);
 
-	FGameplayEffectContextHandle EffectContextHandle = GetAbilitySystemComponentFromActorInfo_Checked()->MakeEffectContext();
-	EffectContextHandle.AddInstigator(GetAvatarActorFromActorInfo(), Cast<ICombatInterface>(GetAvatarActorFromActorInfo())->GetWeapon());
-
-	FGameplayEffectSpecHandle EffectSpecHandle = GetAbilitySystemComponentFromActorInfo_Checked()->MakeOutgoingSpec(AbilityEffectClass,GetAbilityLevel(), EffectContextHandle);
-	for (const TTuple<FGameplayTag, FScalableFloat> Pair : AbilityDamages)
-	{
-		const float Damage = Pair.Value.GetValueAtLevel(GetAbilityLevel());
-		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, Pair.Key, Damage);
-	}	
+	FGameplayEffectSpecHandle EffectSpecHandle = MakeMyGameplayEffectSpecHandle();
 
 	Projectile->SetProjectileEffectSpecHandle(EffectSpecHandle);
 	Projectile->FinishSpawning(ProjectileTransform);

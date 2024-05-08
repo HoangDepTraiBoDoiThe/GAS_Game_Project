@@ -27,7 +27,8 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual float GetCharacterLevel() override;
 	FORCEINLINE UBaseAttributeSet* GetAttributeSet() const {return AttributeSet;}
-	virtual FVector WeaponLocation() override;
+	UFUNCTION(BlueprintCallable)
+	virtual FVector WeaponLocation_Implementation() override;
 	FORCEINLINE ECharacterClass GetCharacterClass() const {return CharacterClass;}
 	void ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const;
 	

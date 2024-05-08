@@ -62,6 +62,7 @@ void AEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
+	
 	Cast<AMyAIController>(GetController())->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->GetBlackboardAsset());
 	Cast<AMyAIController>(GetController())->RunBehaviorTree(BehaviorTree);
 	Cast<AMyAIController>(GetController())->GetBlackboardComponent()->SetValueAsBool(FName("IsRangeClass"), GetCharacterClass() == ECharacterClass::ECC_Ranger);

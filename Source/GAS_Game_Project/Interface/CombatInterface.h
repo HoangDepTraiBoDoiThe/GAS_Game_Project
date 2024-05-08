@@ -22,7 +22,9 @@ class GAS_GAME_PROJECT_API ICombatInterface
 
 public:
 	virtual float GetCharacterLevel() = 0;
-	virtual FVector WeaponLocation() = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	FVector WeaponLocation();
 	virtual AActor* GetWeapon() = 0;
 	virtual void Die() = 0;
 
