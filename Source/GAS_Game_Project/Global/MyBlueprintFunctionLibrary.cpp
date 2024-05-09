@@ -48,6 +48,16 @@ void UMyBlueprintFunctionLibrary::AddAbilities(UAbilitySystemComponent* ASC, con
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, GameCharacter->GetCharacterLevel());
 		ASC->GiveAbility(AbilitySpec);
 	}
+
+	FCharacterClassDefaultMainInfosStruct* InfosStruct = GameModeBase->CharacterClassInfoDataAsset->CharacterDefaultInfoMap.Find(GameCharacter->GetCharacterClass());
+	if (InfosStruct)
+	{
+		for (auto& Ability : InfosStruct->ClassAbilities)
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, GameCharacter->GetCharacterLevel());
+			ASC->GiveAbility(AbilitySpec);
+		}
+	}
 }
 
 UCurveTable* UMyBlueprintFunctionLibrary::GetCoefficientCurveTable(const UObject* WorldContextObject)

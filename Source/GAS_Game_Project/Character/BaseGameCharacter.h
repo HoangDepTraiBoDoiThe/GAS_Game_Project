@@ -31,6 +31,7 @@ public:
 	virtual FVector WeaponLocation_Implementation() override;
 	FORCEINLINE ECharacterClass GetCharacterClass() const {return CharacterClass;}
 	void ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const;
+	FORCEINLINE ECharacterClass GetCharacterClass() {return CharacterClass;}
 	
 protected:
 	virtual void BeginPlay() override;
