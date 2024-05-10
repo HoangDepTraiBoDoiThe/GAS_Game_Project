@@ -13,6 +13,7 @@
 #include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
 #include "GAS_Game_Project/Global/MyBlueprintFunctionLibrary.h"
 #include "GAS_Game_Project/UserInterface/UserWidget/BaseUserWidget.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -61,11 +62,10 @@ void AEnemyCharacter::OnEventGameplayTagChange(const FGameplayTag Tag, int32 New
 void AEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-
 	
 	Cast<AMyAIController>(GetController())->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->GetBlackboardAsset());
 	Cast<AMyAIController>(GetController())->RunBehaviorTree(BehaviorTree);
-	Cast<AMyAIController>(GetController())->GetBlackboardComponent()->SetValueAsBool(FName("IsRangeClass"), GetCharacterClass() == ECharacterClass::ECC_Ranger);
+	Cast<AMyAIController>(GetController())->GetBlackboardComponent()->SetValueAsBool(FName("IsRangeClass"), GetCharacterClass() != ECharacterClass::ECC_Warrior);
 }
 
 void AEnemyCharacter::HighlightActor()

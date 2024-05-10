@@ -29,6 +29,8 @@ public:
 	static UCurveTable* GetCoefficientCurveTable(const UObject* WorldContextObject);
 	static void SetupMyGameplayEffectContext(FGameplayEffectContext* GameplayEffectContext, bool bCriticalHit, bool bBlockedHit);
 	static FMyGameplayEffectContext* GetMyGameplayEffectContext(FGameplayEffectContext* GameplayEffectContext);
+	UFUNCTION(BlueprintPure)
+	static bool AreWeOnInTheSameTeam(const AActor* ActorA, const AActor* ActorB);
 	
 protected:
 	static FWidgetControllerParamsStruct MakeWidgetControllerParamsStruct (const UObject* WorldContextObject);

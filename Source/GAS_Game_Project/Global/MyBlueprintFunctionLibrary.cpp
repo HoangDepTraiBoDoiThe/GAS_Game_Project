@@ -81,6 +81,17 @@ FMyGameplayEffectContext* UMyBlueprintFunctionLibrary::GetMyGameplayEffectContex
 	return nullptr;
 }
 
+bool UMyBlueprintFunctionLibrary::AreWeOnInTheSameTeam(const AActor* ActorA, const AActor* ActorB)
+{
+	const bool ActorAIsPlayer = ActorA->ActorHasTag(FName("Player"));
+	const bool ActorBIsPlayer = ActorB->ActorHasTag(FName("Player"));
+	const bool ActorAIsEnemy = ActorA->ActorHasTag(FName("Enemy"));
+	const bool ActorBIsEnemy = ActorB->ActorHasTag(FName("Enemy"));
+
+	if (ActorAIsPlayer && ActorBIsPlayer || ActorAIsEnemy && ActorBIsEnemy) return true;
+	return false;
+}
+
 FWidgetControllerParamsStruct UMyBlueprintFunctionLibrary::MakeWidgetControllerParamsStruct(const UObject* WorldContextObject)
 {
 	const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
