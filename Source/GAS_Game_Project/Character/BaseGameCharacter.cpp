@@ -21,6 +21,21 @@ ABaseGameCharacter::ABaseGameCharacter()
 	bUseControllerRotationYaw = false;
 }
 
+int32 ABaseGameCharacter::GetMinionMinionCount_Implementation()
+{
+	return MinionCount;
+}
+
+int32 ABaseGameCharacter::GetMinionThreadHold_Implementation()
+{
+	return MinionThreadHold;
+}
+
+void ABaseGameCharacter::IncreaseMinionMinionCount_Implementation(int32 Val)
+{
+	MinionCount += Val;
+}
+
 void ABaseGameCharacter::BeginPlay()
 {
 	Super::BeginPlay();

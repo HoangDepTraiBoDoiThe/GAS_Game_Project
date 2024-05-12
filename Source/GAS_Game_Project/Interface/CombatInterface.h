@@ -38,4 +38,11 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void StartMotionWarping(FVector TargetLocation);
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void IncreaseMinionMinionCount(int32 Val);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	int32 GetMinionMinionCount();	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	int32 GetMinionThreadHold();
 };

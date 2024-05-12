@@ -32,6 +32,9 @@ public:
 	FORCEINLINE ECharacterClass GetCharacterClass() const {return CharacterClass;}
 	void ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const;
 	FORCEINLINE ECharacterClass GetCharacterClass() {return CharacterClass;}
+	virtual int32 GetMinionMinionCount_Implementation() override;
+	virtual int32 GetMinionThreadHold_Implementation() override;
+	virtual void IncreaseMinionMinionCount_Implementation(int32 Val) override;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -41,6 +44,11 @@ protected:
 	virtual void Die() override;
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void Multicast_Death();
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 MinionCount = 0;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	int32 MinionThreadHold;
 	
 	UPROPERTY(EditAnywhere)
 	FName WeaponSocketName;
