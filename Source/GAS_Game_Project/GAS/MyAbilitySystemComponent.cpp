@@ -31,7 +31,17 @@ void UMyAbilitySystemComponent::AddAbilities(TArray<TSubclassOf<UGameplayAbility
 		}
 
 		GiveAbility(AbilitySpec);
+		ActivatableAbilitiesAdded();
 	}
+}
+
+void UMyAbilitySystemComponent::ActivatableAbilitiesAdded()
+{
+	if (!ActivatableAbilitiesAddedDelegate.ExecuteIfBound(this))
+	{
+		UE_LOG(LogTemp, Error, TEXT("My Message | UMyAbilitySystemComponent | Not Crucial | No call back functions has been bound to this Delegate [%s]"), *ActivatableAbilitiesAddedDelegate.GetUObject()->GetName())
+	}
+	bActivatableAbilitiesAdded = true;
 }
 
 void UMyAbilitySystemComponent::BindGameplayEffectCallback()

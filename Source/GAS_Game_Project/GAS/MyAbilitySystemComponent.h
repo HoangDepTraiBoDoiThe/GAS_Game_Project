@@ -12,6 +12,7 @@
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGameplayAttributevalueChangeBroadcastToControllerSignature, const FOnAttributeChangeData&)
 DECLARE_MULTICAST_DELEGATE_OneParam(FGameplayEffectTagsBroadcastToControllerSignature, const FGameplayTagContainer&)
+DECLARE_DELEGATE_OneParam(FActivatableAbilitiesAddedSignature, const UAbilitySystemComponent*)
 
 
 UCLASS()
@@ -29,7 +30,12 @@ public:
 
 	FGameplayAttributevalueChangeBroadcastToControllerSignature OnNewAttributeValueChangeBroadcastToControllerDelegate;
 	FGameplayEffectTagsBroadcastToControllerSignature GameplayEffectTagsBroadcastToControllerDelegate;
+	FActivatableAbilitiesAddedSignature ActivatableAbilitiesAddedDelegate;
 
+	bool bActivatableAbilitiesAdded;
+	
 private:
+	// When ASC gave Abilities to the player, it should also notify the UI to show it.
+	void ActivatableAbilitiesAdded();
 	void BindGameplayEffectCallback();
 };

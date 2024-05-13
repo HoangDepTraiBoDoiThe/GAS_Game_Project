@@ -8,6 +8,7 @@
 #include "GAS_Game_Project/UserInterface/Controller/BaseWidgetController.h"
 #include "MyHUD.generated.h"
 
+class UAbilityUIInfoDataAsset;
 class UOverlayWidgetController;
 class UBaseUserWidget;
 /**
@@ -43,6 +44,7 @@ protected:
 	TObjectPtr<UAttributeMenuWidgetController> AttributeMenuWidgetController;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBaseUserWidget> OverlayWidget;
+
 
 private:
 	

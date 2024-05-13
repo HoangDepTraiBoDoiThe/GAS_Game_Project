@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
 #include "BaseWidgetController.h"
 #include "GAS_Game_Project/Character/Player/PlayerCharacter.h"
 #include "GAS_Game_Project/Character/Player/Controller/BasePlayerController.h"
+#include "GAS_Game_Project/Data/AbilityUIInforDataAsset.h"
 #include "OverlayWidgetController.generated.h"
 
 class UBaseUserWidget;
@@ -31,6 +33,7 @@ struct FUIWidgetRow : public FTableRowBase
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameplayAttributeValuesSignature, const float, NewValue, FGameplayAttribute, Attribute);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameplayEffectWidgetMessageStructToViewSignature, const FUIWidgetRow&, UIWidgetRow);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityUIInfoToViewSignature, FAbilityUIInfoStruct, AbilityUIInfoStruct);
 
 UCLASS()
 class GAS_GAME_PROJECT_API UOverlayWidgetController : public UBaseWidgetController
@@ -39,8 +42,10 @@ class GAS_GAME_PROJECT_API UOverlayWidgetController : public UBaseWidgetControll
 
 
 public:
+	UOverlayWidgetController();
 	virtual void BroadCastInitialValue() override;
 	virtual void BroadCastToDependencies() override;
+	void BroadCastAbilityInfoToDependencies();
 	template <class T>
 	T* GetUIWidgetRowData(const FGameplayTag& MessageTag);
 
@@ -49,10 +54,14 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnGameplayEffectWidgetMessageStructToViewSignature OnGameplayEffectWidgetMessageStructToViewDelegate;
-
-protected:
-
 	
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FAbilityUIInfoToViewSignature AbilityUIInfoToViewSignature;
+	
+protected:
+	void AfterAbilitiesAddedToPlayer(const UAbilitySystemComponent* ASC);
+	void GetAbilityUIInfoStructByInputTag(FGameplayTag, FAbilityUIInfoStruct& OUTAbilityUIInfoStruct) const;
+
 };
 
 template <class T>

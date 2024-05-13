@@ -6,6 +6,7 @@
 #include "GAS_Game_Project/Character/BaseGameCharacter.h"
 #include "PlayerCharacter.generated.h"
 
+class UAbilityUIInfoDataAsset;
 class UAttributeInfo;
 class AMyPlayerState;
 class ABasePlayerController;
@@ -20,6 +21,7 @@ class GAS_GAME_PROJECT_API APlayerCharacter : public ABaseGameCharacter
 
 public:
 	FORCEINLINE UDataTable* GetUIWidgetDataTable() const { return UIDataTable; }
+	FORCEINLINE UAbilityUIInfoDataAsset* GetAbilityUIInfoDataAsset() const {return AbilityUIInfoDataAsset;}
 
 protected:
 	virtual void BeginPlay() override;
@@ -43,5 +45,8 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UDataTable> UIDataTable;
+		
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UAbilityUIInfoDataAsset> AbilityUIInfoDataAsset;
 	
 };

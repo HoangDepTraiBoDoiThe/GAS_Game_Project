@@ -31,6 +31,7 @@ void AMyHUD::SetupWidget(const FWidgetControllerParamsStruct& NewWidgetControlle
 		check(OverlayWidgetController)
 		OverlayWidgetController->BroadCastInitialValue();
 		OverlayWidgetController->BroadCastToDependencies();
+		OverlayWidgetController->BroadCastAbilityInfoToDependencies();
 	}
 }
 
