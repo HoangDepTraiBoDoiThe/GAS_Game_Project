@@ -35,7 +35,7 @@ void UOverlayWidgetController::BroadCastToDependencies()
 			for (const FGameplayTag& Tag : GameplayTagContainer)
 			{
 				if (const FUIWidgetRow* UIWidgetRow = GetUIWidgetRowData<FUIWidgetRow>(Tag)) OnGameplayEffectWidgetMessageStructToViewDelegate.Broadcast(*UIWidgetRow);
-				else UE_LOG(LogTemp, Error, TEXT("My Message | UOverlayWidgetController | Not critial | UIWidgetRow that associate with tag [%s] was not found. Add row name for all the attributes to fix the issue"), *Tag.GetTagName().ToString())
+				// else UE_LOG(LogTemp, Error, TEXT("My Message | UOverlayWidgetController | Not critial | UIWidgetRow that associate with tag [%s] was not found. Add row name for all the attributes to fix the issue"), *Tag.GetTagName().ToString())
 			}
 		});
 }
