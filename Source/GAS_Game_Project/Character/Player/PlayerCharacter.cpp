@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "Controller/BasePlayerController.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
+#include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
 #include "GAS_Game_Project/Interface/DamageTextWidgetComponent.h"
 #include "GAS_Game_Project/UserInterface/HUD/MyHUD.h"
 #include "PlayerState/MyPlayerState.h"
@@ -25,7 +26,7 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
-	if (HasAuthority()) AbilitySystemComponent->AddAbilities(AbilitiesToActive, CharacterLevel);
+	AbilitySystemComponent->AddAbilities(AbilitiesToActive, CharacterLevel);
 }
 
 void APlayerCharacter::OnRep_Controller()

@@ -138,7 +138,13 @@ void MyGameplayTags::InitNativeGameplayTags()
 	MyGameplayTags::GameplayTags.Control_RMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Input.Control_RMB"),
 		FString("Right mouse button"));
-
+	/*
+	 * Ability Cooldown and Cost 
+	 */
+	GameplayTags.Ability_Cooldown_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Ability.Cooldown.FireBolt"),
+		FString(""));
+	
 	MyGameplayTags::GameplayTags.Effects_OnHitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Effects.OnHitReact"),
 		FString("OnHitReact"));

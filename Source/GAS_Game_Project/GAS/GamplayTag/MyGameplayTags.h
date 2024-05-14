@@ -72,6 +72,11 @@ public:
  FGameplayTag Test_Ability_1;
 
  /*
+  * Ability Cooldown and Cost 
+  */
+  FGameplayTag Ability_Cooldown_FireBolt;
+ 
+ /*
  * Other 
  */
  FGameplayTag Effects_OnHitReact;
