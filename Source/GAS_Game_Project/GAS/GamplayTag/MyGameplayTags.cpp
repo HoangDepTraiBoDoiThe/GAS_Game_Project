@@ -125,6 +125,9 @@ void MyGameplayTags::InitNativeGameplayTags()
 	MyGameplayTags::GameplayTags.Attribute_Meta_HitPoint = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attribute.Meta.HitPoint"),
 		FString(""));
+	MyGameplayTags::GameplayTags.Attribute_Meta_IncomingXP = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attribute.Meta.IncomingXP"),
+		FString(""));
 
 	/*
 	 * Ability Input Tags 

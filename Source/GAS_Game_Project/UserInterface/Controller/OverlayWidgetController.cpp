@@ -4,6 +4,7 @@
 #include "OverlayWidgetController.h"
 
 #include "AbilitySystemComponent.h"
+#include "GAS_Game_Project/Data/XPDataAsset.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 #include "GAS_Game_Project/GAS/Ability/BaseGameplayAbility.h"
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
@@ -38,6 +39,14 @@ void UOverlayWidgetController::BroadCastToDependencies()
 				// else UE_LOG(LogTemp, Error, TEXT("My Message | UOverlayWidgetController | Not critial | UIWidgetRow that associate with tag [%s] was not found. Add row name for all the attributes to fix the issue"), *Tag.GetTagName().ToString())
 			}
 		});
+	PlayerState.Get()->OnXPChangeDelegate.AddLambda(
+		[this] (const int32 CharacterXP)
+		{
+			int32 XPForCurrentLevel = PlayerState.Get()->GeXPDataAsset()->GetXPRequirementForCurrentLevel(PlayerState->GetCharacterLevel());
+			int32 XPForNextLevel = PlayerState.Get()->GeXPDataAsset()->XPInfos[PlayerState->GetCharacterLevel()].XPRequirementForNextLevel;
+			OnCharacterXPToViewSignature.Broadcast(CharacterXP, XPForCurrentLevel, XPForNextLevel);
+		}
+	);
 }
 
 void UOverlayWidgetController::BroadCastAbilityInfoToDependencies()

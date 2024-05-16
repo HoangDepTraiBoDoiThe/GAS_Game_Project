@@ -26,7 +26,8 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
-	AbilitySystemComponent->AddAbilities(AbilitiesToActive, CharacterLevel);
+	AbilitySystemComponent->AddAbilities(AbilitiesToActive, GetCharacterLevel());
+	AbilitySystemComponent->AddEventReceiver(EventReceiver, GetCharacterLevel());
 }
 
 void APlayerCharacter::OnRep_Controller()
@@ -52,6 +53,13 @@ void APlayerCharacter::InitAbilityActorInfo()
 		const FWidgetControllerParamsStruct WidgetControllerStruct(AbilitySystemComponent, AttributeSet, PlayerController, GetPlayerState<AMyPlayerState>());
 		HUD->SetupWidget(WidgetControllerStruct);
 	}
+}
+
+int32 APlayerCharacter::GetCharacterLevel() const
+{
+	check(GetPlayerState())
+	const int32 Level = Cast<AMyPlayerState>(GetPlayerState())->GetCharacterLevel();
+	return Level;
 }
 
 bool APlayerCharacter::IsHudValid()

@@ -51,6 +51,7 @@ public:
 	UBaseAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	void GiveRewardToPlayer() const;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 	FORCEINLINE TMap<FGameplayTag, TStaticFunctionPtr<FGameplayAttribute()>> GetAttributeTagMap()
@@ -78,6 +79,7 @@ public:
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, MaxMana)
 
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, HitPointMeta)
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, IncomingXPMeta)
 
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Resistance_Fire)
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Resistance_Water)
@@ -161,6 +163,8 @@ public:
 #pragma region Meta Attributes
 	UPROPERTY(VisibleAnywhere, Category="Meta Attributes")
 	FGameplayAttributeData HitPointMeta;
+	UPROPERTY(VisibleAnywhere, Category="Meta Attributes")
+	FGameplayAttributeData IncomingXPMeta;
 
 	UFUNCTION()
 	void OnRep_HitPoint(const FGameplayAttributeData& OldHitPoint) const;

@@ -25,7 +25,7 @@ public:
 	ABaseGameCharacter();
 	virtual void Tick(float DeltaTime) override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	virtual float GetCharacterLevel() override;
+	virtual int32 GetCharacterLevel() const override;
 	FORCEINLINE UBaseAttributeSet* GetAttributeSet() const {return AttributeSet;}
 	UFUNCTION(BlueprintCallable)
 	virtual FVector WeaponLocation_Implementation() override;
@@ -53,6 +53,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	FName WeaponSocketName;
 	UPROPERTY(EditAnywhere)
+	TSubclassOf<UGameplayAbility> EventReceiver;
+	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<UGameplayAbility>> AbilitiesToActive;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributesClass;
@@ -63,9 +65,6 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	ECharacterClass CharacterClass = ECharacterClass::ECC_None;
-	
-	UPROPERTY(EditAnywhere)
-	float CharacterLevel = 1;
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UMyAbilitySystemComponent> AbilitySystemComponent;

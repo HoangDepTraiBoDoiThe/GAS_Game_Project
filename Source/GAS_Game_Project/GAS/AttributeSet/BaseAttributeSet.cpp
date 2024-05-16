@@ -3,8 +3,10 @@
 
 #include "BaseAttributeSet.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
+#include "GAS_Game_Project/Character/Enemy/EnemyCharacter.h"
 #include "GAS_Game_Project/Character/Player/Controller/BasePlayerController.h"
 #include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
 #include "GAS_Game_Project/Global/MyBlueprintFunctionLibrary.h"
@@ -93,6 +95,7 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		else
 		{
 			Cast<ICombatInterface>(GetOwningAbilitySystemComponent()->GetAvatarActor())->Die();
+			if (Cast<APlayerCharacter>(GameplayEffectPropertiesStruct.SourceAvatarActor)) GiveRewardToPlayer();
 		}
 
 		const FMyGameplayEffectContext* Context = UMyBlueprintFunctionLibrary::GetMyGameplayEffectContext(GameplayEffectPropertiesStruct.EffectContextHandle.Get());
@@ -106,7 +109,26 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			if (PC) PC->Client_ShowDamageText(DamageText, GameplayEffectPropertiesStruct.TargetAvatarActor, Context->IsCriticalHit(), Context->IsHitBlocked());
 		}
 	}
+	if (Data.EvaluatedData.Attribute == GetIncomingXPMetaAttribute())
+	{
+		int32 CacheXP = GetIncomingXPMeta();
+		SetIncomingXPMeta(0);
+		Cast<AMyPlayerState>(Cast<APlayerCharacter>(GameplayEffectPropertiesStruct.SourceAvatarActor)->GetPlayerState())->LevelUpIfPossible(CacheXP);
+		Cast<AMyPlayerState>(Cast<APlayerCharacter>(GameplayEffectPropertiesStruct.SourceAvatarActor)->GetPlayerState())->CharacterXPIncreasement(CacheXP);
+	}
 	ClampingAttributeValues(Data);
+}
+
+void UBaseAttributeSet::GiveRewardToPlayer() const
+{
+	FGameplayEventData PlayLoad = FGameplayEventData();
+	PlayLoad.Instigator = GameplayEffectPropertiesStruct.TargetAvatarActor;
+	PlayLoad.Target = GameplayEffectPropertiesStruct.SourceAvatarActor;
+	PlayLoad.ContextHandle = GameplayEffectPropertiesStruct.EffectContextHandle;
+	FScalableFloat XPReward = Cast<AEnemyCharacter>(GameplayEffectPropertiesStruct.TargetASC->GetAvatarActor())->GetXPReward();
+	const float Magnitude = XPReward.GetValueAtLevel(Cast<ICombatInterface>(GameplayEffectPropertiesStruct.TargetASC->GetAvatarActor())->GetCharacterLevel());
+	PlayLoad.EventMagnitude = Magnitude;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GameplayEffectPropertiesStruct.SourceAvatarActor, MyGameplayTags::Get().Attribute_Meta_IncomingXP, PlayLoad);
 }
 
 void UBaseAttributeSet::ClampingAttributeValues(const FGameplayEffectModCallbackData& Data)

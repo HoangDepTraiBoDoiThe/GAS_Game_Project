@@ -35,6 +35,12 @@ void UMyAbilitySystemComponent::AddAbilities(TArray<TSubclassOf<UGameplayAbility
 	}
 }
 
+void UMyAbilitySystemComponent::AddEventReceiver(TSubclassOf<UGameplayAbility> EventReceiverAbilityClass, int32 Level)
+{
+	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(EventReceiverAbilityClass, Level);
+	GiveAbilityAndActivateOnce(AbilitySpec);
+}
+
 void UMyAbilitySystemComponent::ActivatableAbilitiesAdded()
 {
 	if (!ActivatableAbilitiesAddedDelegate.ExecuteIfBound(this))

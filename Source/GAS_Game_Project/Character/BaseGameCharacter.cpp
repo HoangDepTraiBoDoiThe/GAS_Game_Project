@@ -82,7 +82,7 @@ void ABaseGameCharacter::ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> 
 {
 	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
 	ContextHandle.AddSourceObject(this);
-	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClassToApply, CharacterLevel, ContextHandle);
+	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClassToApply, GetCharacterLevel(), ContextHandle);
 	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 }
 
@@ -91,4 +91,4 @@ UAbilitySystemComponent* ABaseGameCharacter::GetAbilitySystemComponent() const
 	return Cast<UAbilitySystemComponent>(AbilitySystemComponent);
 }
 
-float ABaseGameCharacter::GetCharacterLevel() { return CharacterLevel; }
+int32 ABaseGameCharacter::GetCharacterLevel() const { return 1; }

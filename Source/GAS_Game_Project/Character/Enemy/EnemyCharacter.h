@@ -30,7 +30,8 @@ public:
 
 	virtual void SetCurTarget_Implementation(AActor* Actor) override;
 	virtual AActor* GetCurTarget_Implementation() override;
-	
+	FORCEINLINE FScalableFloat GetXPReward() {return XPReward;}
+
 protected:
 	virtual void Multicast_Death_Implementation() override;
 	
@@ -51,6 +52,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 	AActor* CurTarget;
+
+	UPROPERTY(EditDefaultsOnly)
+	FScalableFloat XPReward;
 	
 	void BindBroadCastToWidgetOnAttChange() const;
 	void InitBroadCastVitalAttValue() const;

@@ -21,7 +21,7 @@ class GAS_GAME_PROJECT_API ICombatInterface
 	GENERATED_BODY()
 
 public:
-	virtual float GetCharacterLevel() = 0;
+	virtual int32 GetCharacterLevel() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	FVector WeaponLocation();

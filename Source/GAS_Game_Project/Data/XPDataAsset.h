@@ -31,8 +31,8 @@ class GAS_GAME_PROJECT_API UXPDataAsset : public UDataAsset
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
 	int32 GetLevelByXP(const int32 XP, const int32 CurrentLevel = 1);
+	int32 GetXPRequirementForCurrentLevel(const int32 Level);
 
 	// This Array's indexes will be using as Level. Ignore the first index as it will not be use.
 	UPROPERTY(EditDefaultsOnly)

@@ -17,3 +17,10 @@ int32 UXPDataAsset::GetLevelByXP(const int32 XP, const int32 CurrentLevel)
 	}
 	return 1;
 }
+
+int32 UXPDataAsset::GetXPRequirementForCurrentLevel(const int32 Level)
+{
+	if (XPInfos.Num() <= 2 || Level == 1) return 0;
+	return XPInfos[Level-1].XPRequirementForNextLevel;
+}
+

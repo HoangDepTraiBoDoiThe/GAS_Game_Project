@@ -62,6 +62,7 @@ public:
   *	Meta attribute Tags
   */
  FGameplayTag Attribute_Meta_HitPoint;
+ FGameplayTag Attribute_Meta_IncomingXP;
  
  /*
   * Ability Input Tags 
