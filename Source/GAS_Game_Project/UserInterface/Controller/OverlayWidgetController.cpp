@@ -47,6 +47,12 @@ void UOverlayWidgetController::BroadCastToDependencies()
 			OnCharacterXPToViewSignature.Broadcast(CharacterXP, XPForCurrentLevel, XPForNextLevel);
 		}
 	);
+	PlayerState.Get()->OnCharacterLevelChangeDelegate.AddLambda(
+	[this] (const int32 CharacterLevel)
+		{
+			OnCharacterLevelToViewSignature.Broadcast(CharacterLevel);
+		}
+	);
 }
 
 void UOverlayWidgetController::BroadCastAbilityInfoToDependencies()

@@ -87,5 +87,5 @@ void AMyPlayerState::RepNotify_CharacterXP(int32 OldXPValue)
 
 void AMyPlayerState::RepNotify_CharacterLevel(int32 OldCharacterLevelValue)
 {
-	OnXPChangeDelegate.Broadcast(CharacterLevel);
+	OnCharacterLevelChangeDelegate.Broadcast(CharacterLevel);
 }

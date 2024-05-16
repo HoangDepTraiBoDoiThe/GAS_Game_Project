@@ -34,6 +34,7 @@ struct FUIWidgetRow : public FTableRowBase
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameplayAttributeValuesSignature, const float, NewValue, FGameplayAttribute, Attribute);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnCharacterXPToViewSignature, const int32, CurrentXP, const int32, XPForCurrentLevel, const int32, XPForNextLevel);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameplayEffectWidgetMessageStructToViewSignature, const FUIWidgetRow&, UIWidgetRow);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterLevelToViewSignature, const int32, CharacterLevel);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityUIInfoToViewSignature, FAbilityUIInfoStruct, AbilityUIInfoStruct);
 
 UCLASS()
@@ -61,6 +62,8 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category = "GAS|XP")
 	FOnCharacterXPToViewSignature OnCharacterXPToViewSignature;
+	UPROPERTY(BlueprintAssignable, Category = "GAS|XP")
+	FOnCharacterLevelToViewSignature OnCharacterLevelToViewSignature;
 	
 protected:
 	void AfterAbilitiesAddedToPlayer(const UAbilitySystemComponent* ASC);
