@@ -77,7 +77,9 @@ void AMyPlayerState::LevelUpIfPossible(int32 XP)
 {
 	if (!HasAuthority()) return;
 
-	int32 LevelIncoming = XPDataAsset->GetLevelByXP(XP, GetCharacterLevel());
+	int32 CurrentXP = GetCharacterXP();
+	int32 XP2Check = CurrentXP + XP;
+	int32 LevelIncoming = XPDataAsset->GetLevelByXP(XP2Check, GetCharacterLevel());
 	if (LevelIncoming > GetCharacterLevel())
 	{
 		SetCharacterLevel(LevelIncoming);
