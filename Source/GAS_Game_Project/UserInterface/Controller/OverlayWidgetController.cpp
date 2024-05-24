@@ -40,11 +40,14 @@ void UOverlayWidgetController::BroadCastToDependencies()
 			}
 		});
 	PlayerState.Get()->OnXPChangeDelegate.AddLambda(
-		[this] (const int32 CharacterXP)
+		[this] (const int32 CharacterXP, int32 OldXP)
 		{
-			int32 XPForCurrentLevel = PlayerState.Get()->GeXPDataAsset()->GetXPRequirementForCurrentLevel(PlayerState->GetCharacterLevel());
-			int32 XPForNextLevel = PlayerState.Get()->GeXPDataAsset()->XPInfos[PlayerState->GetCharacterLevel()].XPRequirementForNextLevel;
-			OnCharacterXPToViewSignature.Broadcast(CharacterXP, XPForCurrentLevel, XPForNextLevel);
+			const int32 XPForCurrentLevel = PlayerState.Get()->GeXPDataAsset()->GetXPRequirementForCurrentLevel(PlayerState->GetCharacterLevel());
+			const int32 XPForNextLevel = PlayerState.Get()->GeXPDataAsset()->XPInfos[PlayerState->GetCharacterLevel()].XPRequirementForNextLevel;
+			const int32 OldLevel = PlayerState.Get()->GeXPDataAsset()->GetLevelByXP(OldXP);
+			const int32 CurrentLevel = PlayerState.Get()->GeXPDataAsset()->GetLevelByXP(CharacterXP);
+			const int32 Loop = CurrentLevel - OldLevel;
+			OnCharacterXPToViewSignature.Broadcast(Loop, CharacterXP, XPForCurrentLevel, XPForNextLevel);
 		}
 	);
 	PlayerState.Get()->OnCharacterLevelChangeDelegate.AddLambda(

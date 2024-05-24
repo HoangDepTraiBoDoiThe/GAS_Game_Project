@@ -16,6 +16,7 @@ class UAttributeSet;
  * 
  */
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnIntPropertyChangeSignature, const int32)
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnIntPropertyChangeTwoParamSignature, const int32, const int32 OldXP)
 
 UCLASS()
 class GAS_GAME_PROJECT_API AMyPlayerState : public APlayerState, public IAbilitySystemInterface
@@ -43,7 +44,7 @@ public:
 	// For server only
 	void LevelUpIfPossible(int32 XP);
 	
-	FOnIntPropertyChangeSignature OnXPChangeDelegate;
+	FOnIntPropertyChangeTwoParamSignature OnXPChangeDelegate;
 	FOnIntPropertyChangeSignature OnCharacterLevelChangeDelegate;
 	
 protected:

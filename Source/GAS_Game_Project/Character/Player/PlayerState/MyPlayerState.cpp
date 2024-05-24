@@ -41,16 +41,20 @@ void AMyPlayerState::SetCharacterXP(const int32 NewXP)
 {
 	if (!HasAuthority()) return;
 
+	LevelUpIfPossible(NewXP);
+	const int32 OldXP = GetCharacterXP();
 	CharacterXP = NewXP;
-	OnXPChangeDelegate.Broadcast(NewXP);
+	OnXPChangeDelegate.Broadcast(NewXP, OldXP);
 }
 
 void AMyPlayerState::CharacterXPIncreasement(const int32 AdditionXP)
 {
 	if (!HasAuthority()) return;
 
+	const int32 OldXP = GetCharacterXP();
 	CharacterXP += AdditionXP;
-	OnXPChangeDelegate.Broadcast(CharacterXP);
+	LevelUpIfPossible(CharacterLevel);
+	OnXPChangeDelegate.Broadcast(CharacterXP, OldXP);
 }
 
 void AMyPlayerState::SetCharacterLevel(const int32 NewLevel)
@@ -66,14 +70,14 @@ void AMyPlayerState::CharacterLevelIncreasement()
 	if (!HasAuthority()) return;
 
 	CharacterLevel += 1;
-	OnXPChangeDelegate.Broadcast(CharacterLevel);
+	OnCharacterLevelChangeDelegate.Broadcast(CharacterLevel);
 }
 
 void AMyPlayerState::LevelUpIfPossible(int32 XP)
 {
 	if (!HasAuthority()) return;
 
-	int32 LevelIncoming = XPDataAsset->GetLevelByXP(XP + GetCharacterXP(), GetCharacterLevel());
+	int32 LevelIncoming = XPDataAsset->GetLevelByXP(XP, GetCharacterLevel());
 	if (LevelIncoming > GetCharacterLevel())
 	{
 		SetCharacterLevel(LevelIncoming);
@@ -82,7 +86,7 @@ void AMyPlayerState::LevelUpIfPossible(int32 XP)
 
 void AMyPlayerState::RepNotify_CharacterXP(int32 OldXPValue)
 {
-	OnXPChangeDelegate.Broadcast(CharacterXP);
+	OnXPChangeDelegate.Broadcast(CharacterXP, OldXPValue);
 }
 
 void AMyPlayerState::RepNotify_CharacterLevel(int32 OldCharacterLevelValue)
