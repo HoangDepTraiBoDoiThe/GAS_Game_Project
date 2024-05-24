@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "BaseUserWidget.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWidgetCloseSignature);
+
 class UBaseWidgetController;
 /**
  * 
@@ -21,6 +23,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void WidgetControllerSet();
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnWidgetCloseSignature OnWidgetCloseDelegate;
 	
 protected:
 	UPROPERTY(BlueprintReadWrite)
