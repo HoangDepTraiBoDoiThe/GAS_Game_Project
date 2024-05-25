@@ -19,5 +19,8 @@ public:
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnOnParamToViewSignature OnSpellPointToViewDelegate;
+
+	UFUNCTION(BlueprintCallable)
+	void SpendSpellPoint(const int32 PointsToSpend = 1);
 	
 };

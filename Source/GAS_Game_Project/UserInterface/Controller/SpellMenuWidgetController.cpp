@@ -12,3 +12,8 @@ void USpellMenuWidgetController::BroadCastToDependencies()
 		}
 	);
 }
+
+void USpellMenuWidgetController::SpendSpellPoint(const int32 PointsToSpend)
+{
+	PlayerState->ChangeSpellPoint(-PointsToSpend);
+}
