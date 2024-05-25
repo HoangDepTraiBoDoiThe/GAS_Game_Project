@@ -24,6 +24,7 @@ void AMyPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
 	DOREPLIFETIME(AMyPlayerState, CharacterXP)
 	DOREPLIFETIME(AMyPlayerState, CharacterLevel)
+	DOREPLIFETIME(AMyPlayerState, AbilityPoint)
 }
 
 UAbilitySystemComponent* AMyPlayerState::GetAbilitySystemComponent() const
@@ -57,6 +58,14 @@ void AMyPlayerState::CharacterXPIncreasement(const int32 AdditionXP)
 	OnXPChangeDelegate.Broadcast(CharacterXP, OldXP);
 }
 
+void AMyPlayerState::CharacterLevelChange(const int32 AdditionLevel)
+{
+	if (!HasAuthority()) return;
+	
+	CharacterLevel += AdditionLevel;
+	OnCharacterLevelChangeDelegate.Broadcast(CharacterLevel);
+}
+
 void AMyPlayerState::SetCharacterLevel(const int32 NewLevel)
 {
 	if (!HasAuthority()) return;
@@ -65,24 +74,30 @@ void AMyPlayerState::SetCharacterLevel(const int32 NewLevel)
 	OnCharacterLevelChangeDelegate.Broadcast(NewLevel);
 }
 
-void AMyPlayerState::CharacterLevelIncreasement()
+void AMyPlayerState::ChangeAttributePoint(const int32 AdditionAbilityPoint)
 {
 	if (!HasAuthority()) return;
-
-	CharacterLevel += 1;
-	OnCharacterLevelChangeDelegate.Broadcast(CharacterLevel);
+	AbilityPoint += AdditionAbilityPoint;
+	OnAttributePointChangeDelegate.Broadcast(AbilityPoint);
 }
 
-void AMyPlayerState::LevelUpIfPossible(int32 XP)
+void AMyPlayerState::LevelUpIfPossible(int32 IncomingXP)
 {
 	if (!HasAuthority()) return;
 
-	int32 CurrentXP = GetCharacterXP();
-	int32 XP2Check = CurrentXP + XP;
-	int32 LevelIncoming = XPDataAsset->GetLevelByXP(XP2Check, GetCharacterLevel());
-	if (LevelIncoming > GetCharacterLevel())
+	const int32 CurrentXP = GetCharacterXP();
+	const int32 XP2Check = CurrentXP + IncomingXP;
+	const int32 LevelIncoming = XPDataAsset->GetLevelByXP(XP2Check, GetCharacterLevel()) - GetCharacterLevel();
+	if (LevelIncoming > 0)
 	{
-		SetCharacterLevel(LevelIncoming);
+		for (int32 i = 1; i <= LevelIncoming; i++)
+		{
+			int32 IncomingAttributePoint;
+			int32 IncomingAbilityPoint;
+			XPDataAsset->GetRewards(IncomingAttributePoint, IncomingAbilityPoint, GetCharacterLevel() + i);
+			ChangeAttributePoint(IncomingAttributePoint);
+		}
+		CharacterLevelChange(LevelIncoming);
 	}
 }
 
@@ -94,4 +109,14 @@ void AMyPlayerState::RepNotify_CharacterXP(int32 OldXPValue)
 void AMyPlayerState::RepNotify_CharacterLevel(int32 OldCharacterLevelValue)
 {
 	OnCharacterLevelChangeDelegate.Broadcast(CharacterLevel);
+}
+
+void AMyPlayerState::RepNotify_AbilityPoint(int32 OldAbilityPointValue)
+{
+	OnAttributePointChangeDelegate.Broadcast(AbilityPoint);
+}
+
+void AMyPlayerState::BroadCastCharacterExperience()
+{
+	OnAttributePointChangeDelegate.Broadcast(AbilityPoint);
 }

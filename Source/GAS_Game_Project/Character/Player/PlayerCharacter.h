@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GAS_Game_Project/Character/BaseGameCharacter.h"
+#include "GAS_Game_Project/Interface/PlayerInterface.h"
+#include "PlayerState/MyPlayerState.h"
 #include "PlayerCharacter.generated.h"
 
 class UAbilityUIInfoDataAsset;
@@ -15,7 +17,7 @@ class AMyHUD;
  * 
  */
 UCLASS()
-class GAS_GAME_PROJECT_API APlayerCharacter : public ABaseGameCharacter
+class GAS_GAME_PROJECT_API APlayerCharacter : public ABaseGameCharacter, public IPlayerInterface
 {
 	GENERATED_BODY()
 
@@ -23,7 +25,11 @@ public:
 	FORCEINLINE UDataTable* GetUIWidgetDataTable() const { return UIDataTable; }
 	FORCEINLINE UAbilityUIInfoDataAsset* GetAbilityUIInfoDataAsset() const {return AbilityUIInfoDataAsset;}
 	int32 GetCharacterLevel() const override;
+	virtual int32 GetCharacterXP() override;
+	virtual int32 GetAttributePoint() override;
 
+	AMyPlayerState* GetMyPlayerState();
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
@@ -41,7 +47,7 @@ protected:
 	UPROPERTY()
 	TObjectPtr<ABasePlayerController> PlayerController;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<AMyPlayerState> MyPlayerState;
 
 	UPROPERTY(EditAnywhere)

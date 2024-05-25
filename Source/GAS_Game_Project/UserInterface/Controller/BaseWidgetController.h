@@ -16,6 +16,8 @@ class UAttributeSet;
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnOnParamToViewSignature, const int32, ValueToBroadCast);
+
 USTRUCT(BlueprintType)
 struct FWidgetControllerParamsStruct
 {

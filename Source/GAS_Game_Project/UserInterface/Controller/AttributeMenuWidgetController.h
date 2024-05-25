@@ -23,11 +23,23 @@ public:
 	virtual void BroadCastInitialValue() override;
 	virtual void BroadCastToDependencies() override;
 
+	UFUNCTION(BlueprintCallable)
+	void ChangeAttributePoint(const int32 AdditionAttributePoint);
+
+	UFUNCTION(BlueprintCallable)
+	void SpendAttributePoint(const FGameplayTag AttributeTag);
+	
+	UFUNCTION(BlueprintCallable)
+	void BroadCastCharacterExperience();
+	
 	UPROPERTY(BlueprintAssignable)
 	FOnGameplayAttributeMenuSignature OnGameplayAttributeMenu;
 
 	UFUNCTION()
 	FORCEINLINE FOnGameplayAttributeMenuSignature& GetOnGameplayAttributeMenu () {return OnGameplayAttributeMenu;}
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|XP")
+	FOnOnParamToViewSignature OnAttributePointToViewSignature;
 	
 protected:
 	

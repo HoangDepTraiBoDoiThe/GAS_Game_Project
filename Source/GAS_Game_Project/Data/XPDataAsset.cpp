@@ -18,6 +18,12 @@ int32 UXPDataAsset::GetLevelByXP(const int32 XP, const int32 CurrentLevel)
 	return 1;
 }
 
+void UXPDataAsset::GetRewards(int32& OutAttributePoint, int32& OutAbilityPoint, const int32 RewardAtLevel)
+{
+	OutAttributePoint = XPInfos[RewardAtLevel].AttributePoint;
+	OutAbilityPoint = XPInfos[RewardAtLevel].AbilityPoint;
+}
+
 int32 UXPDataAsset::GetXPRequirementForCurrentLevel(const int32 Level)
 {
 	if (XPInfos.Num() <= 2 || Level == 1) return 0;

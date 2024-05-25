@@ -62,6 +62,16 @@ int32 APlayerCharacter::GetCharacterLevel() const
 	return Level;
 }
 
+int32 APlayerCharacter::GetCharacterXP()
+{
+	return GetMyPlayerState()->GetCharacterXP();
+}
+
+int32 APlayerCharacter::GetAttributePoint()
+{
+	return GetMyPlayerState()->GetAbilityPoint();
+}
+
 bool APlayerCharacter::IsHudValid()
 {
 	if (!HUD) HUD = PlayerController->GetHUD<AMyHUD>();
@@ -78,4 +88,10 @@ bool APlayerCharacter::IsPlayerStateValid()
 {
 	if (!MyPlayerState) MyPlayerState = Cast<AMyPlayerState>(GetPlayerState());
 	return MyPlayerState != nullptr;
+}
+
+AMyPlayerState* APlayerCharacter::GetMyPlayerState()
+{
+	if (!MyPlayerState) MyPlayerState = Cast<AMyPlayerState>(GetPlayerState());
+	return MyPlayerState;
 }

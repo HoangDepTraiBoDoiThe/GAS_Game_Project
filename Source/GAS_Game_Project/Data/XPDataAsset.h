@@ -32,6 +32,7 @@ class GAS_GAME_PROJECT_API UXPDataAsset : public UDataAsset
 
 public:
 	int32 GetLevelByXP(const int32 XP, const int32 CurrentLevel = 1);
+	void GetRewards(int32& OutAttributePoint, int32& OutAbilityPoint, const int32 RewardAtLevel = 1);
 	int32 GetXPRequirementForCurrentLevel(const int32 Level);
 
 	// This Array's indexes will be using as Level. Ignore the first index as it will not be use.

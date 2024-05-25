@@ -28,24 +28,26 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	FORCEINLINE int32 GetCharacterLevel() const {return CharacterLevel;}
 	FORCEINLINE int32 GetCharacterXP() const {return CharacterXP;}
+	FORCEINLINE int32 GetAbilityPoint() const {return AbilityPoint;}
 	FORCEINLINE UBaseAttributeSet* GetAttributeSet() const {return AttributeSet;}
-
 	FORCEINLINE UAttributeInfo* GetAttributeInfo () const {return AttributeInfo;}
 	UXPDataAsset* GeXPDataAsset() const;
+	void BroadCastCharacterExperience();
 
-	// For server only
-	FORCEINLINE void SetCharacterLevel(const int32 NewLevel);
-	// For server only
-	FORCEINLINE void SetCharacterXP(const int32 NewXP);
-	// For server only
-	FORCEINLINE void CharacterXPIncreasement(const int32 AdditionXP);
-	// For server only
-	FORCEINLINE void CharacterLevelIncreasement();
-	// For server only
-	void LevelUpIfPossible(int32 XP);
-	
+#pragma region //Setter for server only
+	void SetCharacterLevel(const int32 NewLevel);
+	void SetCharacterXP(const int32 NewXP);
+	void CharacterXPIncreasement(const int32 AdditionXP);
+	void CharacterLevelChange(const int32 AdditionLevel);
+	void LevelUpIfPossible(int32 IncomingXP);
+	// Either increase or decrease it.
+	void ChangeAttributePoint(const int32 AdditionAbilityPoint);
+
+#pragma endregion
+		
 	FOnIntPropertyChangeTwoParamSignature OnXPChangeDelegate;
 	FOnIntPropertyChangeSignature OnCharacterLevelChangeDelegate;
+	FOnIntPropertyChangeSignature OnAttributePointChangeDelegate;
 	
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -53,6 +55,8 @@ protected:
 	void RepNotify_CharacterXP(int32 OldXPValue);
 	UFUNCTION()
 	void RepNotify_CharacterLevel(int32 OldCharacterLevelValue);
+	UFUNCTION()
+	void RepNotify_AbilityPoint(int32 OldAbilityPointValue);
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -66,7 +70,10 @@ protected:
 	int32 CharacterLevel = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, ReplicatedUsing=RepNotify_CharacterXP)
-	int32 CharacterXP;
+	int32 CharacterXP = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, ReplicatedUsing=RepNotify_AbilityPoint)
+	int32 AbilityPoint = 0;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UXPDataAsset> XPDataAsset;

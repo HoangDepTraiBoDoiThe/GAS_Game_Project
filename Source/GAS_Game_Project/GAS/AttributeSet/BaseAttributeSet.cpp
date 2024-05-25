@@ -12,7 +12,6 @@
 #include "GAS_Game_Project/Global/MyBlueprintFunctionLibrary.h"
 #include "GAS_Game_Project/Interface/CombatInterface.h"
 #include "GAS_Game_Project/Types/MyGameplayEffectTypes.h"
-#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 
 UBaseAttributeSet::UBaseAttributeSet()
