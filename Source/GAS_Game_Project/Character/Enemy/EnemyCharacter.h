@@ -32,8 +32,9 @@ public:
 	virtual AActor* GetCurTarget_Implementation() override;
 	FORCEINLINE FScalableFloat GetXPReward() {return XPReward;}
 
+	AMyAIController* GetAIController();
+	
 protected:
-	virtual void Multicast_Death_Implementation() override;
 	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UWidgetComponent> HitPointBar;
@@ -55,10 +56,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	FScalableFloat XPReward;
+
+	TObjectPtr<AMyAIController> AIController;
 	
 	void BindBroadCastToWidgetOnAttChange() const;
 	void InitBroadCastVitalAttValue() const;
 	void OnEventGameplayTagChange(const FGameplayTag, int32);
+	void SetupAIBehavior();
 
 	virtual void PossessedBy(AController* NewController) override;
 };

@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 
@@ -68,14 +69,18 @@ AActor* ABaseGameCharacter::GetWeapon()
 
 void ABaseGameCharacter::Die()
 {
+	if (HasAuthority())
+	{
+		Multicast_Death();
+	}
+	SetLifeSpan(5.f);
 }
 
 void ABaseGameCharacter::Multicast_Death_Implementation()
 {
-	if (DeathMontage)
-		PlayAnimMontage(DeathMontage);
+	if (DeathMontage) PlayAnimMontage(DeathMontage);
+	GetCharacterMovement()->MaxWalkSpeed = 0.f;
 	GetMesh()->SetSimulatePhysics(true);
-	SetLifeSpan(5.f);
 }
 
 void ABaseGameCharacter::ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClassToApply) const

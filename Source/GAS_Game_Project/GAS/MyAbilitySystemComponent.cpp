@@ -6,6 +6,7 @@
 #include "GameplayEffectExtension.h"
 #include "Ability/BaseGameplayAbility.h"
 #include "GAS_Game_Project/UserInterface/Controller/OverlayWidgetController.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 void UMyAbilitySystemComponent::InitOwnerAndAvatarActor(AActor* NewOwnerActor, AActor* NewAvatarActor)
 {
@@ -41,11 +42,11 @@ void UMyAbilitySystemComponent::AddEventReceiver(TSubclassOf<UGameplayAbility> E
 	GiveAbilityAndActivateOnce(AbilitySpec);
 }
 
-void UMyAbilitySystemComponent::ActivatableAbilitiesAdded()
+void UMyAbilitySystemComponent::ActivatableAbilitiesAdded_Implementation()
 {
 	if (!ActivatableAbilitiesAddedDelegate.ExecuteIfBound(this))
 	{
-		UE_LOG(LogTemp, Error, TEXT("My Message | UMyAbilitySystemComponent | Not Crucial | No call back functions has been bound to this Delegate [%s]"), *ActivatableAbilitiesAddedDelegate.GetUObject()->GetName())
+		UE_LOG(LogTemp, Error, TEXT("My Message | UMyAbilitySystemComponent | Not Crucial | No call back functions has been bound to this Delegate [ActivatableAbilitiesAddedDelegate]"))
 	}
 	bActivatableAbilitiesAdded = true;
 }

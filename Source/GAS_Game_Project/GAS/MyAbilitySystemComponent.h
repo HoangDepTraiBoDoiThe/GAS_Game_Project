@@ -37,6 +37,7 @@ public:
 	
 private:
 	// When ASC gave Abilities to the player, it should also notify the UI to show it.
+	UFUNCTION(Client, Reliable)
 	void ActivatableAbilitiesAdded();
 	void BindGameplayEffectCallback();
 };

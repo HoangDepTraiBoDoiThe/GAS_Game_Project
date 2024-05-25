@@ -6,8 +6,6 @@
 #include "AbilitySystemComponent.h"
 #include "Controller/BasePlayerController.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
-#include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
-#include "GAS_Game_Project/Interface/DamageTextWidgetComponent.h"
 #include "GAS_Game_Project/UserInterface/HUD/MyHUD.h"
 #include "PlayerState/MyPlayerState.h"
 
@@ -43,9 +41,9 @@ void APlayerCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = Cast<UMyAbilitySystemComponent>(MyPlayerState->GetAbilitySystemComponent());
 	AbilitySystemComponent->BindCallBackToDependencies();
 	AttributeSet = MyPlayerState->GetAttributeSet();
+	AbilitySystemComponent->InitAbilityActorInfo(Cast<AActor>(MyPlayerState), this);
 	if (HasAuthority() && AbilitySystemComponent)
 	{
-		AbilitySystemComponent->InitAbilityActorInfo(Cast<AActor>(MyPlayerState), this);
 		InitAttributeValue();
 	}
 	if (IsPlayerControllerValid() && IsHudValid())
@@ -70,6 +68,12 @@ int32 APlayerCharacter::GetCharacterXP()
 int32 APlayerCharacter::GetAttributePoint()
 {
 	return GetMyPlayerState()->GetAbilityPoint();
+}
+
+void APlayerCharacter::Die()
+{
+	
+	Super::Die();
 }
 
 bool APlayerCharacter::IsHudValid()

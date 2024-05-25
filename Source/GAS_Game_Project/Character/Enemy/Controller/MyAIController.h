@@ -18,7 +18,7 @@ class GAS_GAME_PROJECT_API AMyAIController : public AAIController
 public:
 	AMyAIController();
 	FORCEINLINE UBehaviorTreeComponent* GetBehaviorTreeComponent() {return BehaviorTreeComponent;}
-
+	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBehaviorTreeComponent> BehaviorTreeComponent;

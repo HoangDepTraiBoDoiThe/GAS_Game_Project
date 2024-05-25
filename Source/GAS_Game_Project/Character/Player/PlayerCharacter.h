@@ -27,6 +27,7 @@ public:
 	int32 GetCharacterLevel() const override;
 	virtual int32 GetCharacterXP() override;
 	virtual int32 GetAttributePoint() override;
+	virtual void Die() override;
 
 	AMyPlayerState* GetMyPlayerState();
 	
