@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "GAS_Game_Project/Character/Player/Controller/BasePlayerController.h"
 #include "GAS_Game_Project/UserInterface/Controller/OverlayWidgetController.h"
+#include "GAS_Game_Project/UserInterface/Controller/SpellMenuWidgetController.h"
 #include "GAS_Game_Project/UserInterface/UserWidget/BaseUserWidget.h"
 
 AMyHUD::AMyHUD()
@@ -39,6 +40,8 @@ UOverlayWidgetController* AMyHUD::GetOverlayWidgetController(const FWidgetContro
 {
 	if (!OverlayWidgetController)
 	{
+		checkf(OverlayWidgetControllerClass, TEXT("My message | Crucial | UMyBlueprintFunctionLibrary | OverlayWidgetControllerClass is not valid"))
+
 		OverlayWidgetController = NewObject<UOverlayWidgetController>(OverlayWidgetControllerClass);
 		OverlayWidgetController->SetupWidgetControllerParams(NewWidgetControllerStruct);		
 	}
@@ -50,10 +53,24 @@ UAttributeMenuWidgetController* AMyHUD::GetAttributeMenuWidgetController(
 {
 	if (!AttributeMenuWidgetController)
 	{
+		checkf(AttributeMenuWidgetControllerClass, TEXT("My message | Crucial | UMyBlueprintFunctionLibrary | AttributeMenuWidgetControllerClass is not valid"))
+
 		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(AttributeMenuWidgetControllerClass);
 		AttributeMenuWidgetController->SetupWidgetControllerParams(NewWidgetControllerStruct);		
 	}
 	return AttributeMenuWidgetController;
+}
+
+USpellMenuWidgetController* AMyHUD::GetSpellMenuWidgetController(
+	const FWidgetControllerParamsStruct& NewWidgetControllerStruct)
+{
+	if (!SpellMenuWidgetController)
+	{
+		checkf(SpellMenuWidgetControllerClass, TEXT("My message | Crucial | UMyBlueprintFunctionLibrary | SpellMenuWidgetControllerClass is not valid"))
+		SpellMenuWidgetController = NewObject<USpellMenuWidgetController>(SpellMenuWidgetControllerClass);
+		SpellMenuWidgetController->SetupWidgetControllerParams(NewWidgetControllerStruct);		
+	}
+	return SpellMenuWidgetController;
 }
 
 bool AMyHUD::IsLocallyControlledPlayer(const FWidgetControllerParamsStruct& NewWidgetControllerStruct)

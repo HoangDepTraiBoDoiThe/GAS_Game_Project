@@ -13,6 +13,8 @@ UOverlayWidgetController* UMyBlueprintFunctionLibrary::GetOverlayWidgetControlle
 {
 	const FWidgetControllerParamsStruct WidgetControllerParamsStruct = MakeWidgetControllerParamsStruct(WorldContextObject);
 	AMyHUD* MyHUD = Cast<AMyHUD>(WidgetControllerParamsStruct.PlayerController->GetHUD());
+	checkf(MyHUD, TEXT("My message | Crucial | UMyBlueprintFunctionLibrary | Cant get MyHUD"))
+	
 	return MyHUD->GetOverlayWidgetController(WidgetControllerParamsStruct);
 }
 
@@ -20,8 +22,18 @@ UAttributeMenuWidgetController* UMyBlueprintFunctionLibrary::GetAttributeMenuWid
 {
 	const FWidgetControllerParamsStruct WidgetControllerParamsStruct = MakeWidgetControllerParamsStruct(WorldContextObject);
 	AMyHUD* MyHUD = Cast<AMyHUD>(WidgetControllerParamsStruct.PlayerController->GetHUD());
-	checkf(MyHUD, TEXT("Cant get MyHUD"))
+	checkf(MyHUD, TEXT("My message | Crucial | UMyBlueprintFunctionLibrary | Cant get MyHUD"))
+
 	return MyHUD->GetAttributeMenuWidgetController(WidgetControllerParamsStruct);
+}
+
+USpellMenuWidgetController* UMyBlueprintFunctionLibrary::GetSpellMenuWidgetController(
+	const UObject* WorldContextObject)
+{
+	const FWidgetControllerParamsStruct WidgetControllerParamsStruct = MakeWidgetControllerParamsStruct(WorldContextObject);
+	AMyHUD* MyHUD = Cast<AMyHUD>(WidgetControllerParamsStruct.PlayerController->GetHUD());
+	checkf(MyHUD, TEXT("My message | Crucial | UMyBlueprintFunctionLibrary | Cant get MyHUD"))
+	return MyHUD->GetSpellMenuWidgetController(WidgetControllerParamsStruct);
 }
 
 void UMyBlueprintFunctionLibrary::InitAttributeValue(const ABaseGameCharacter* GameCharacter, const UObject* WorldContextObject)

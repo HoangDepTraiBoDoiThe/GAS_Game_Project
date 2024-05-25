@@ -13,6 +13,8 @@
  * 
  */
 
+class USpellMenuWidgetController;
+
 UCLASS()
 class GAS_GAME_PROJECT_API UMyBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
 {
@@ -23,6 +25,9 @@ public:
 	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
 	UFUNCTION(BlueprintPure, meta=(WorldContext = "WorldContextObject"))
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
+	UFUNCTION(BlueprintPure, meta=(WorldContext = "WorldContextObject"))
+	static USpellMenuWidgetController* GetSpellMenuWidgetController(const UObject* WorldContextObject);
+	
 	UFUNCTION(meta=(WorldContext = "WorldContextObject"))
 	static void InitAttributeValue(const ABaseGameCharacter* GameCharacter, const UObject* WorldContextObject);
 	static void AddAbilities(UAbilitySystemComponent* ASC, const UObject* WorldContextObject);

@@ -8,6 +8,7 @@
 #include "GAS_Game_Project/UserInterface/Controller/BaseWidgetController.h"
 #include "MyHUD.generated.h"
 
+class USpellMenuWidgetController;
 class UAbilityUIInfoDataAsset;
 class UOverlayWidgetController;
 class UBaseUserWidget;
@@ -25,23 +26,29 @@ public:
 
 	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParamsStruct& NewWidgetControllerStruct);
 	UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const FWidgetControllerParamsStruct& NewWidgetControllerStruct);
+	USpellMenuWidgetController* GetSpellMenuWidgetController(const FWidgetControllerParamsStruct& NewWidgetControllerStruct);
 	
 protected:
 	virtual void BeginPlay() override;
 	static bool IsLocallyControlledPlayer(const FWidgetControllerParamsStruct& NewWidgetControllerStruct);
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
-	
-	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> OverlayWidgetClass;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UAttributeMenuWidgetController> SpellMenuWidgetControllerClass;
 
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UAttributeMenuWidgetController> AttributeMenuWidgetController;
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<USpellMenuWidgetController> SpellMenuWidgetController;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBaseUserWidget> OverlayWidget;
 
