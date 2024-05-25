@@ -61,8 +61,3 @@ void UAttributeMenuWidgetController::BroadCastAttributeValue(const FGameplayTag&
 	WantedAttributeInfoStruct.AttributeValue = GameplayAttribute.GetNumericValue(AttributeSet);
 	OnGameplayAttributeMenu.Broadcast(WantedAttributeInfoStruct);
 }
-
-void UAttributeMenuWidgetController::BroadCastCharacterExperience()
-{
-	PlayerState->BroadCastCharacterExperience();
-}

@@ -29,9 +29,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SpendAttributePoint(const FGameplayTag AttributeTag);
 	
-	UFUNCTION(BlueprintCallable)
-	void BroadCastCharacterExperience();
-	
 	UPROPERTY(BlueprintAssignable)
 	FOnGameplayAttributeMenuSignature OnGameplayAttributeMenu;
 

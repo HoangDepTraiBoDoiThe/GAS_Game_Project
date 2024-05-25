@@ -53,6 +53,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetupWidgetControllerParams(const FWidgetControllerParamsStruct& FWidgetControllerParamsStruct);
 
+	UFUNCTION(BlueprintCallable)
+	virtual void BroadCastCharacterExperience();
+	
 protected:
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UMyAbilitySystemComponent> AbilitySystemComponent;

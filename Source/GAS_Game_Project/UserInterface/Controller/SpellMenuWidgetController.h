@@ -15,6 +15,9 @@ class GAS_GAME_PROJECT_API USpellMenuWidgetController : public UBaseWidgetContro
 	GENERATED_BODY()
 
 public:
+	virtual void BroadCastToDependencies() override;
 	
+	UPROPERTY(BlueprintAssignable)
+	FOnOnParamToViewSignature OnSpellPointToViewDelegate;
 	
 };

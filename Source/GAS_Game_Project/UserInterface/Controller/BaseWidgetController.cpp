@@ -16,3 +16,8 @@ void UBaseWidgetController::SetupWidgetControllerParams(const FWidgetControllerP
 	PlayerController = NewFWidgetControllerParamsStruct.PlayerController;
 	PlayerState = NewFWidgetControllerParamsStruct.PlayerState;
 }
+
+void UBaseWidgetController::BroadCastCharacterExperience()
+{
+	PlayerState->BroadCastCharacterExperience();
+}

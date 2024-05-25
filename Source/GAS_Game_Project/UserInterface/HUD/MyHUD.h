@@ -40,7 +40,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UAttributeMenuWidgetController> SpellMenuWidgetControllerClass;
+	TSubclassOf<USpellMenuWidgetController> SpellMenuWidgetControllerClass;
 
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;

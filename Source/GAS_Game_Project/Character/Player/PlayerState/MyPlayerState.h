@@ -36,18 +36,21 @@ public:
 
 #pragma region //Setter for server only
 	void SetCharacterLevel(const int32 NewLevel);
+	void RewardPlayer(int32 LevelIncoming);
 	void SetCharacterXP(const int32 NewXP);
 	void CharacterXPIncreasement(const int32 AdditionXP);
 	void CharacterLevelChange(const int32 AdditionLevel);
 	void LevelUpIfPossible(int32 IncomingXP);
 	// Either increase or decrease it.
 	void ChangeAttributePoint(const int32 AdditionAbilityPoint);
+	void ChangeSpellPoint(const int32 AdditionSpellPoint);
 
 #pragma endregion
 		
 	FOnIntPropertyChangeTwoParamSignature OnXPChangeDelegate;
 	FOnIntPropertyChangeSignature OnCharacterLevelChangeDelegate;
 	FOnIntPropertyChangeSignature OnAttributePointChangeDelegate;
+	FOnIntPropertyChangeSignature OnSpellPointChangeDelegate;
 	
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -57,6 +60,8 @@ protected:
 	void RepNotify_CharacterLevel(int32 OldCharacterLevelValue);
 	UFUNCTION()
 	void RepNotify_AbilityPoint(int32 OldAbilityPointValue);
+	UFUNCTION()
+	void RepNotify_SpellPoint(int32 OldSpellPointValue);
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -74,6 +79,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, ReplicatedUsing=RepNotify_AbilityPoint)
 	int32 AbilityPoint = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, ReplicatedUsing=RepNotify_SpellPoint)
+	int32 SpellPoint = 0;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UXPDataAsset> XPDataAsset;

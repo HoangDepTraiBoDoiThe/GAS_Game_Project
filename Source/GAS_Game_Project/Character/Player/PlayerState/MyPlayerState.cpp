@@ -25,6 +25,7 @@ void AMyPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	DOREPLIFETIME(AMyPlayerState, CharacterXP)
 	DOREPLIFETIME(AMyPlayerState, CharacterLevel)
 	DOREPLIFETIME(AMyPlayerState, AbilityPoint)
+	DOREPLIFETIME(AMyPlayerState, SpellPoint)
 }
 
 UAbilitySystemComponent* AMyPlayerState::GetAbilitySystemComponent() const
@@ -74,11 +75,16 @@ void AMyPlayerState::SetCharacterLevel(const int32 NewLevel)
 	OnCharacterLevelChangeDelegate.Broadcast(NewLevel);
 }
 
-void AMyPlayerState::ChangeAttributePoint(const int32 AdditionAbilityPoint)
+void AMyPlayerState::RewardPlayer(const int32 LevelIncoming)
 {
-	if (!HasAuthority()) return;
-	AbilityPoint += AdditionAbilityPoint;
-	OnAttributePointChangeDelegate.Broadcast(AbilityPoint);
+	for (int32 i = 1; i <= LevelIncoming; i++)
+	{
+		int32 IncomingAttributePoint;
+		int32 IncomingAbilityPoint;
+		XPDataAsset->GetRewards(IncomingAttributePoint, IncomingAbilityPoint, GetCharacterLevel() + i);
+		ChangeAttributePoint(IncomingAttributePoint);
+		ChangeSpellPoint(IncomingAbilityPoint);
+	}
 }
 
 void AMyPlayerState::LevelUpIfPossible(int32 IncomingXP)
@@ -90,15 +96,23 @@ void AMyPlayerState::LevelUpIfPossible(int32 IncomingXP)
 	const int32 LevelIncoming = XPDataAsset->GetLevelByXP(XP2Check, GetCharacterLevel()) - GetCharacterLevel();
 	if (LevelIncoming > 0)
 	{
-		for (int32 i = 1; i <= LevelIncoming; i++)
-		{
-			int32 IncomingAttributePoint;
-			int32 IncomingAbilityPoint;
-			XPDataAsset->GetRewards(IncomingAttributePoint, IncomingAbilityPoint, GetCharacterLevel() + i);
-			ChangeAttributePoint(IncomingAttributePoint);
-		}
+		RewardPlayer(LevelIncoming);
 		CharacterLevelChange(LevelIncoming);
 	}
+}
+
+void AMyPlayerState::ChangeAttributePoint(const int32 AdditionAbilityPoint)
+{
+	if (!HasAuthority()) return;
+	AbilityPoint += AdditionAbilityPoint;
+	OnAttributePointChangeDelegate.Broadcast(AbilityPoint);
+}
+
+void AMyPlayerState::ChangeSpellPoint(const int32 AdditionSpellPoint)
+{
+	if (!HasAuthority()) return;
+	SpellPoint += AdditionSpellPoint;
+	OnSpellPointChangeDelegate.Broadcast(SpellPoint);	
 }
 
 void AMyPlayerState::RepNotify_CharacterXP(int32 OldXPValue)
@@ -116,7 +130,13 @@ void AMyPlayerState::RepNotify_AbilityPoint(int32 OldAbilityPointValue)
 	OnAttributePointChangeDelegate.Broadcast(AbilityPoint);
 }
 
+void AMyPlayerState::RepNotify_SpellPoint(int32 OldSpellPointValue)
+{
+	OnSpellPointChangeDelegate.Broadcast(SpellPoint);
+}
+
 void AMyPlayerState::BroadCastCharacterExperience()
 {
 	OnAttributePointChangeDelegate.Broadcast(AbilityPoint);
+	OnSpellPointChangeDelegate.Broadcast(SpellPoint);
 }
