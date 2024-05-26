@@ -33,7 +33,9 @@ public:
 	FORCEINLINE UAttributeInfo* GetAttributeInfo () const {return AttributeInfo;}
 	UXPDataAsset* GeXPDataAsset() const;
 	void BroadCastCharacterExperience();
-
+	UFUNCTION(BlueprintCallable, Server, Reliable)
+	void Server_SpendAttributePoint(const FGameplayTag AttributeTag);
+	
 #pragma region //Setter for server only
 	void SetCharacterLevel(const int32 NewLevel);
 	void RewardPlayer(int32 LevelIncoming);

@@ -2,10 +2,7 @@
 
 
 #include "AttributeMenuWidgetController.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
-#include "GameplayAbilityBlueprint.h"
-#include "GameplayEffectExtension.h"
 #include "GAS_Game_Project/Data/AttributeInfo.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
@@ -44,14 +41,7 @@ void UAttributeMenuWidgetController::ChangeAttributePoint(const int32 AdditionAt
 
 void UAttributeMenuWidgetController::SpendAttributePoint(const FGameplayTag AttributeTag)
 {
-	FGameplayEventData PlayLoad = FGameplayEventData();
-	PlayLoad.Instigator = PlayerState->GetPawn();
-	PlayLoad.EventMagnitude = 1;
-	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(PlayerState->GetPawn(), AttributeTag, PlayLoad);
-	ChangeAttributePoint(-PlayLoad.EventMagnitude);
-	
-	//FGameplayAttribute Attribute = AttributeSet.Get()->GetAttributeTagMap().Find(AttributeTag)();
-	//AbilitySystemComponent->SetNumericAttributeBase(Attribute, Attribute.GetNumericValue(AttributeSet) + 1);
+	PlayerState->Server_SpendAttributePoint(AttributeTag);
 }
 
 void UAttributeMenuWidgetController::BroadCastAttributeValue(const FGameplayTag& Tag, const FGameplayAttribute& GameplayAttribute) const

@@ -12,6 +12,7 @@
 #include "GAS_Game_Project/Global/MyBlueprintFunctionLibrary.h"
 #include "GAS_Game_Project/Interface/CombatInterface.h"
 #include "GAS_Game_Project/Types/MyGameplayEffectTypes.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Net/UnrealNetwork.h"
 
 UBaseAttributeSet::UBaseAttributeSet()
@@ -78,7 +79,7 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 {
 	Super::PostGameplayEffectExecute(Data);
 	SetupGameplayEffectPropertiesStruct(Data);
-	
+
 	if (Data.EvaluatedData.Attribute == GetHitPointMetaAttribute())
 	{
 		const float CacheDamage = FMath::Max(0, GetHitPointMeta());
@@ -112,7 +113,6 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		int32 CacheXP = GetIncomingXPMeta();
 		SetIncomingXPMeta(0);
-		Cast<AMyPlayerState>(Cast<APlayerCharacter>(GameplayEffectPropertiesStruct.SourceAvatarActor)->GetPlayerState())->LevelUpIfPossible(CacheXP);
 		Cast<AMyPlayerState>(Cast<APlayerCharacter>(GameplayEffectPropertiesStruct.SourceAvatarActor)->GetPlayerState())->CharacterXPIncreasement(CacheXP);
 	}
 	ClampingAttributeValues(Data);
@@ -120,6 +120,8 @@ void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 void UBaseAttributeSet::GiveRewardToPlayer() const
 {
+	if (!GetOwningActor()->HasAuthority()) return;
+	
 	FGameplayEventData PlayLoad = FGameplayEventData();
 	PlayLoad.Instigator = GameplayEffectPropertiesStruct.TargetAvatarActor;
 	PlayLoad.Target = GameplayEffectPropertiesStruct.SourceAvatarActor;

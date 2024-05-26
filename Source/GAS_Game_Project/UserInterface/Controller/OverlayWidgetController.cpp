@@ -68,7 +68,8 @@ void UOverlayWidgetController::AfterAbilitiesAddedToPlayer(const UAbilitySystemC
 {
 	for (const FGameplayAbilitySpec& AbilitySpec : ASC->GetActivatableAbilities())
 	{
-		if (Cast<UBaseGameplayAbility>(AbilitySpec.Ability)->AbilityStartupTag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Input"))))
+		const UBaseGameplayAbility* Ability = Cast<UBaseGameplayAbility>(AbilitySpec.Ability);
+		if (Ability && Ability->AbilityStartupTag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Input"))))
 		{
 			FAbilityUIInfoStruct OutAbilityUIInfoStruct;
 			GetAbilityUIInfoStructByInputTag(Cast<UBaseGameplayAbility>(AbilitySpec.Ability)->AbilityStartupTag, OutAbilityUIInfoStruct);

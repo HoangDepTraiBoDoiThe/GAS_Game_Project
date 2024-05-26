@@ -6,6 +6,7 @@
 #include "GAS_Game_Project/Data/XPDataAsset.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -53,9 +54,9 @@ void AMyPlayerState::CharacterXPIncreasement(const int32 AdditionXP)
 {
 	if (!HasAuthority()) return;
 
+	LevelUpIfPossible(AdditionXP);
 	const int32 OldXP = GetCharacterXP();
 	CharacterXP += AdditionXP;
-	LevelUpIfPossible(CharacterLevel);
 	OnXPChangeDelegate.Broadcast(CharacterXP, OldXP);
 }
 
@@ -113,6 +114,15 @@ void AMyPlayerState::ChangeSpellPoint(const int32 AdditionSpellPoint)
 	if (!HasAuthority()) return;
 	SpellPoint += AdditionSpellPoint;
 	OnSpellPointChangeDelegate.Broadcast(SpellPoint);	
+}
+
+void AMyPlayerState::Server_SpendAttributePoint_Implementation(const FGameplayTag AttributeTag)
+{
+	FGameplayEventData PlayLoad = FGameplayEventData();
+	PlayLoad.Instigator = GetPawn();
+	PlayLoad.EventMagnitude = 1;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetPawn(), AttributeTag, PlayLoad);
+	ChangeAttributePoint(-PlayLoad.EventMagnitude);
 }
 
 void AMyPlayerState::RepNotify_CharacterXP(int32 OldXPValue)
