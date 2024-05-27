@@ -31,8 +31,22 @@ void UMyAbilitySystemComponent::AddAbilities(TArray<TSubclassOf<UGameplayAbility
 		}
 
 		GiveAbility(AbilitySpec);
-		ActivatableAbilitiesAdded();
+		Client_ActivatableAbilitiesAdded();
 	}
+}
+
+void UMyAbilitySystemComponent::UnlockAbility(TSubclassOf<UGameplayAbility> AbilityToUnlock)
+{
+	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityToUnlock, 1);
+	const UBaseGameplayAbility* BaseGameplayAbility = CastChecked<UBaseGameplayAbility>(AbilitySpec.Ability.Get());
+	if (BaseGameplayAbility->AbilityStartupTag.IsValid())
+	{
+		AbilitySpec.DynamicAbilityTags.AddTag(BaseGameplayAbility->AbilityStartupTag);
+		AbilitySpec.DynamicAbilityTags.AddTag(MyGameplayTags::Get().Ability_Availability_Unlocked);
+	}
+
+	GiveAbility(AbilitySpec);
+	Client_ActivatableAbilitiesAdded();
 }
 
 void UMyAbilitySystemComponent::AddEventReceiver(TSubclassOf<UGameplayAbility> EventReceiverAbilityClass, int32 Level)
@@ -41,13 +55,13 @@ void UMyAbilitySystemComponent::AddEventReceiver(TSubclassOf<UGameplayAbility> E
 	GiveAbilityAndActivateOnce(AbilitySpec);
 }
 
-void UMyAbilitySystemComponent::ActivatableAbilitiesAdded_Implementation()
+void UMyAbilitySystemComponent::Client_ActivatableAbilitiesAdded_Implementation()
 {
-	if (!ActivatableAbilitiesAddedDelegate.ExecuteIfBound(this))
+	if (AbilitiesAddedDelegate.ExecuteIfBound(this))
 	{
-		UE_LOG(LogTemp, Error, TEXT("My Message | UMyAbilitySystemComponent | Not Crucial | No call back functions has been bound to this Delegate [ActivatableAbilitiesAddedDelegate]"))
+		
 	}
-	bActivatableAbilitiesAdded = true;
+	bAbilitiesAdded = true;
 }
 
 void UMyAbilitySystemComponent::BindGameplayEffectCallback()

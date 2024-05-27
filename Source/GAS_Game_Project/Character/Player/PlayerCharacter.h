@@ -23,7 +23,7 @@ class GAS_GAME_PROJECT_API APlayerCharacter : public ABaseGameCharacter, public 
 
 public:
 	FORCEINLINE UDataTable* GetUIWidgetDataTable() const { return UIDataTable; }
-	FORCEINLINE UAbilityUIInfoDataAsset* GetAbilityUIInfoDataAsset() const {return AbilityUIInfoDataAsset;}
+	FORCEINLINE virtual UAbilityUIInfoDataAsset* GetAbilityUIInfoDataAsset() override {return AbilityUIInfoDataAsset;}
 	int32 GetCharacterLevel() const override;
 	virtual int32 GetCharacterXP() override;
 	virtual int32 GetAttributePoint() override;

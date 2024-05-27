@@ -22,5 +22,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SpendSpellPoint(const int32 PointsToSpend = 1);
+	void UnlockAbility(const FGameplayTag& AbilityToUnlock);
 	
 };

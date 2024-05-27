@@ -24,7 +24,7 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
-	AbilitySystemComponent->AddAbilities(AbilitiesToActive, GetCharacterLevel());
+	AbilitySystemComponent->AddAbilities(AbilitiesToActive);
 	AbilitySystemComponent->AddEventReceiver(EventReceiver, GetCharacterLevel());
 }
 

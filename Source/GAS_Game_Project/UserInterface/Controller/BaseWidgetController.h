@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayEffect.h"
 #include "GAS_Game_Project/Character/Player/PlayerState/MyPlayerState.h"
-#include "UObject/NoExportTypes.h"
+#include "GAS_Game_Project/Data/AbilityUIInforDataAsset.h"
 #include "BaseWidgetController.generated.h"
 
 class UMyAbilitySystemComponent;
@@ -17,6 +17,7 @@ class UAttributeSet;
  * 
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnOnParamToViewSignature, const int32, ValueToBroadCast);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityUIInfoToViewSignature, FAbilityUIInfoStruct, AbilityUIInfoStruct);
 
 USTRUCT(BlueprintType)
 struct FWidgetControllerParamsStruct
@@ -48,15 +49,21 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void BroadCastInitialValue() {};
 	UFUNCTION(BlueprintCallable)
-	virtual void BroadCastToDependencies() {};
+	virtual void BroadCastToDependencies();
 	
 	UFUNCTION(BlueprintCallable)
 	void SetupWidgetControllerParams(const FWidgetControllerParamsStruct& FWidgetControllerParamsStruct);
 
 	UFUNCTION(BlueprintCallable)
 	virtual void BroadCastCharacterExperience();
+		
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FAbilityUIInfoToViewSignature AbilityUIInfoToViewSignature;
 	
 protected:
+	void BroadCastAbilityInfoToDependencies();
+	void AfterAbilitiesAddedToPlayer(const UAbilitySystemComponent* ASC);
+
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UMyAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY(BlueprintReadOnly)

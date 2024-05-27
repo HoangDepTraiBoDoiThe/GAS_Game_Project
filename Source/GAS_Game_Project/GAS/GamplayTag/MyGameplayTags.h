@@ -64,6 +64,8 @@ public:
  FGameplayTag Attribute_Meta_HitPoint;
  FGameplayTag Attribute_Meta_IncomingXP;
  
+
+ 
  /*
   * Ability Input Tags 
   */
@@ -76,6 +78,18 @@ public:
   * Ability Cooldown and Cost 
   */
   FGameplayTag Ability_Cooldown_FireBolt;
+
+ /*
+  *	Ability Availability Status Tags
+  */
+ FGameplayTag Ability_Availability_NotUnlockable;
+ FGameplayTag Ability_Availability_Unlockable;
+ FGameplayTag Ability_Availability_Unlocked;
+ FGameplayTag Ability_Availability_Equipped;
+ 
+ /*
+  *	Ability  Tags
+  */
  
  /*
  * Other 

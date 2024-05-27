@@ -90,8 +90,8 @@ void MyGameplayTags::InitNativeGameplayTags()
 	*	Damage type Tags
 	*/
 	MyGameplayTags::GameplayTags.DamageType_Elemental_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
-	FName("DamageType.Elemental.Physical"),
-	FString(""));
+		FName("DamageType.Elemental.Physical"),
+		FString(""));
 	MyGameplayTags::GameplayTags.DamageType_Elemental_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("DamageType.Elemental.Fire"),
 		FString(""));
@@ -101,17 +101,20 @@ void MyGameplayTags::InitNativeGameplayTags()
 	MyGameplayTags::GameplayTags.DamageType_Elemental_Wind = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("DamageType.Elemental.Wind"),
 		FString(""));
-	GameplayTags.EnumToGameTag_DamageTypes.Add(EDamageType::EDT_Physical, MyGameplayTags::Get().DamageType_Elemental_Physical);
+	GameplayTags.EnumToGameTag_DamageTypes.Add(EDamageType::EDT_Physical,
+	                                           MyGameplayTags::Get().DamageType_Elemental_Physical);
 	GameplayTags.EnumToGameTag_DamageTypes.Add(EDamageType::EDT_Fire, MyGameplayTags::Get().DamageType_Elemental_Fire);
-	GameplayTags.EnumToGameTag_DamageTypes.Add(EDamageType::EDT_Water, MyGameplayTags::Get().DamageType_Elemental_Water);
+	GameplayTags.EnumToGameTag_DamageTypes.
+	             Add(EDamageType::EDT_Water, MyGameplayTags::Get().DamageType_Elemental_Water);
 	GameplayTags.EnumToGameTag_DamageTypes.Add(EDamageType::EDT_Wind, MyGameplayTags::Get().DamageType_Elemental_Wind);
 
 	MyGameplayTags::GameplayTags.Attribute_Resistance_Elemental_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attribute.Resistance.Elemental.Fire"),
 		FString(""));
-	MyGameplayTags::GameplayTags.Attribute_Resistance_Elemental_Water = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attribute.Resistance.Elemental.Water"),
-		FString(""));
+	MyGameplayTags::GameplayTags.Attribute_Resistance_Elemental_Water = UGameplayTagsManager::Get().
+		AddNativeGameplayTag(
+			FName("Attribute.Resistance.Elemental.Water"),
+			FString(""));
 	MyGameplayTags::GameplayTags.Attribute_Resistance_Elemental_Wind = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attribute.Resistance.Elemental.Wind"),
 		FString(""));
@@ -147,8 +150,26 @@ void MyGameplayTags::InitNativeGameplayTags()
 	GameplayTags.Ability_Cooldown_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Ability.Cooldown.FireBolt"),
 		FString(""));
-	
+
 	MyGameplayTags::GameplayTags.Effects_OnHitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Effects.OnHitReact"),
 		FString("OnHitReact"));
+
+
+	/*
+	 *	Ability Availability Status Tags
+	 */
+	GameplayTags.Ability_Availability_NotUnlockable = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Ability.Availability.NotUnlockable"),
+		FString(""));
+	GameplayTags.Ability_Availability_Unlockable = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Ability.Availability.Unlockable"),
+		FString(""));
+	GameplayTags.Ability_Availability_Unlocked = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Ability.Availability.Unlocked"),
+		FString(""));
+	GameplayTags.Ability_Availability_Equipped = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Ability.Availability.Equipped"),
+		FString(""));
+
 }

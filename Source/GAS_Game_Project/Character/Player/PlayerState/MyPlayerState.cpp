@@ -7,6 +7,7 @@
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "GAS_Game_Project/Character/Player/PlayerCharacter.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -38,6 +39,12 @@ UXPDataAsset* AMyPlayerState::GeXPDataAsset() const
 {
 	checkf(XPDataAsset, TEXT("My message | Crucial | XPDataAsset in [PlayState] has not been set yet."))
 	return XPDataAsset;
+}
+
+APlayerCharacter* AMyPlayerState::GetPlayerCharacter()
+{
+	if (!PlayerCharacter) PlayerCharacter = Cast<APlayerCharacter>(GetPawn());
+	return PlayerCharacter;
 }
 
 void AMyPlayerState::SetCharacterXP(const int32 NewXP)

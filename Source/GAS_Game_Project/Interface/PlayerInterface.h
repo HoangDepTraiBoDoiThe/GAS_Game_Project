@@ -16,6 +16,7 @@ class UPlayerInterface : public UInterface
 /**
  * 
  */
+class UAbilityUIInfoDataAsset;
 class GAS_GAME_PROJECT_API IPlayerInterface
 {
 	GENERATED_BODY()
@@ -24,5 +25,6 @@ class GAS_GAME_PROJECT_API IPlayerInterface
 public:
 	virtual int32 GetCharacterXP() = 0;
 	virtual int32 GetAttributePoint() = 0;
+	virtual UAbilityUIInfoDataAsset* GetAbilityUIInfoDataAsset() = 0;
 	
 };

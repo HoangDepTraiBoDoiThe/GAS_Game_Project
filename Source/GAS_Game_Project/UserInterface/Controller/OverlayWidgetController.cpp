@@ -6,7 +6,6 @@
 #include "AbilitySystemComponent.h"
 #include "GAS_Game_Project/Data/XPDataAsset.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
-#include "GAS_Game_Project/GAS/Ability/BaseGameplayAbility.h"
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
 
 UOverlayWidgetController::UOverlayWidgetController()
@@ -24,6 +23,8 @@ void UOverlayWidgetController::BroadCastInitialValue()
 
 void UOverlayWidgetController::BroadCastToDependencies()
 {
+	Super::BroadCastToDependencies();
+	
 	AbilitySystemComponent->OnNewAttributeValueChangeBroadcastToControllerDelegate.AddLambda(
 		[this] (const FOnAttributeChangeData& NewAttributeData)
 		{
@@ -57,39 +58,4 @@ void UOverlayWidgetController::BroadCastToDependencies()
 		}
 	);
 }
-
-void UOverlayWidgetController::BroadCastAbilityInfoToDependencies()
-{
-	if (AbilitySystemComponent->bActivatableAbilitiesAdded) AfterAbilitiesAddedToPlayer(AbilitySystemComponent);
-	else AbilitySystemComponent->ActivatableAbilitiesAddedDelegate.BindUObject(this, &ThisClass::AfterAbilitiesAddedToPlayer);
-}
-
-void UOverlayWidgetController::AfterAbilitiesAddedToPlayer(const UAbilitySystemComponent* ASC)
-{
-	for (const FGameplayAbilitySpec& AbilitySpec : ASC->GetActivatableAbilities())
-	{
-		const UBaseGameplayAbility* Ability = Cast<UBaseGameplayAbility>(AbilitySpec.Ability);
-		if (Ability && Ability->AbilityStartupTag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Input"))))
-		{
-			FAbilityUIInfoStruct OutAbilityUIInfoStruct;
-			GetAbilityUIInfoStructByInputTag(Cast<UBaseGameplayAbility>(AbilitySpec.Ability)->AbilityStartupTag, OutAbilityUIInfoStruct);
-			AbilityUIInfoToViewSignature.Broadcast(OutAbilityUIInfoStruct);
-		}
-	}
-}
-
-void UOverlayWidgetController::GetAbilityUIInfoStructByInputTag(FGameplayTag InputTag,
-	FAbilityUIInfoStruct& OUTAbilityUIInfoStruct) const
-{
-	APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(AbilitySystemComponent->GetAvatarActor());
-	UAbilityUIInfoDataAsset* DataAsset = PlayerCharacter->GetAbilityUIInfoDataAsset();
-	for (FAbilityUIInfoStruct& AbilityUIInfoStruct : DataAsset->AbilityUIInfoStructs)
-	{
-		if (AbilityUIInfoStruct.InputTag.MatchesTagExact(InputTag))
-		{
-			OUTAbilityUIInfoStruct = AbilityUIInfoStruct;
-		}
-	}
-}
-
 

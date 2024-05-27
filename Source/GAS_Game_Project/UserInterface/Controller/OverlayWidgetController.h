@@ -3,11 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystemComponent.h"
 #include "BaseWidgetController.h"
 #include "GAS_Game_Project/Character/Player/PlayerCharacter.h"
 #include "GAS_Game_Project/Character/Player/Controller/BasePlayerController.h"
-#include "GAS_Game_Project/Data/AbilityUIInforDataAsset.h"
 #include "OverlayWidgetController.generated.h"
 
 class UBaseUserWidget;
@@ -34,7 +32,6 @@ struct FUIWidgetRow : public FTableRowBase
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameplayAttributeValuesSignature, const float, NewValue, FGameplayAttribute, Attribute);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnCharacterXPToViewSignature, const int32, Loop, const int32, CurrentXP, const int32, XPForCurrentLevel, const int32, XPForNextLevel);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameplayEffectWidgetMessageStructToViewSignature, const FUIWidgetRow&, UIWidgetRow);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityUIInfoToViewSignature, FAbilityUIInfoStruct, AbilityUIInfoStruct);
 
 UCLASS()
 class GAS_GAME_PROJECT_API UOverlayWidgetController : public UBaseWidgetController
@@ -46,7 +43,6 @@ public:
 	UOverlayWidgetController();
 	virtual void BroadCastInitialValue() override;
 	virtual void BroadCastToDependencies() override;
-	void BroadCastAbilityInfoToDependencies();
 	template <class T>
 	T* GetUIWidgetRowData(const FGameplayTag& MessageTag);
 	
@@ -56,17 +52,12 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnGameplayEffectWidgetMessageStructToViewSignature OnGameplayEffectWidgetMessageStructToViewDelegate;
 	
-	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FAbilityUIInfoToViewSignature AbilityUIInfoToViewSignature;
-	
 	UPROPERTY(BlueprintAssignable, Category = "GAS|XP")
 	FOnCharacterXPToViewSignature OnCharacterXPToViewSignature;
 	UPROPERTY(BlueprintAssignable, Category = "GAS|XP")
 	FOnOnParamToViewSignature OnCharacterLevelToViewSignature;
 	
 protected:
-	void AfterAbilitiesAddedToPlayer(const UAbilitySystemComponent* ASC);
-	void GetAbilityUIInfoStructByInputTag(FGameplayTag, FAbilityUIInfoStruct& OUTAbilityUIInfoStruct) const;
 
 };
 

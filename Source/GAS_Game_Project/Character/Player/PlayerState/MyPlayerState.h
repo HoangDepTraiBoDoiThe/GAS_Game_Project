@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerState.h"
 #include "MyPlayerState.generated.h"
 
+class APlayerCharacter;
 class UXPDataAsset;
 class UAttributeInfo;
 class UBaseAttributeSet;
@@ -32,6 +33,7 @@ public:
 	FORCEINLINE UBaseAttributeSet* GetAttributeSet() const {return AttributeSet;}
 	FORCEINLINE UAttributeInfo* GetAttributeInfo () const {return AttributeInfo;}
 	UXPDataAsset* GeXPDataAsset() const;
+	APlayerCharacter* GetPlayerCharacter();
 	void BroadCastCharacterExperience();
 	UFUNCTION(BlueprintCallable, Server, Reliable)
 	void Server_SpendAttributePoint(const FGameplayTag AttributeTag);
@@ -69,6 +71,8 @@ protected:
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY()
 	TObjectPtr<UBaseAttributeSet> AttributeSet;
+
+	TObjectPtr<APlayerCharacter> PlayerCharacter;
 	
 	UPROPERTY(EditAnywhere)
 	UAttributeInfo* AttributeInfo;
