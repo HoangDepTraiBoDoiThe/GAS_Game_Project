@@ -94,7 +94,7 @@ void ABasePlayerController::OnInputRelease(FGameplayTag InputTag)
 
 UMyAbilitySystemComponent* ABasePlayerController::GetASC()
 {
-	if (!ASC) ASC = CastChecked<UMyAbilitySystemComponent>(GetPlayerCharacter()->GetAbilitySystemComponent());
+	if (!ASC) ASC = Cast<UMyAbilitySystemComponent>(GetPlayerCharacter()->GetAbilitySystemComponent());
 	return ASC;
 }
 

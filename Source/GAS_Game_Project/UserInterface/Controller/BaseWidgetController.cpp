@@ -6,7 +6,6 @@
 #include "GAS_Game_Project/Character/Player/PlayerCharacter.h"
 #include "GAS_Game_Project/Data/AbilityUIInforDataAsset.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
-#include "GAS_Game_Project/GAS/Ability/BaseGameplayAbility.h"
 
 class APlayerCharacter;
 

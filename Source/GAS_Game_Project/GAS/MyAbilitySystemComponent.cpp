@@ -36,12 +36,39 @@ void UMyAbilitySystemComponent::AddStartupAbilities(TArray<TSubclassOf<UBaseGame
 	bAbilitiesAdded = true;
 }
 
+void UMyAbilitySystemComponent::UpdateAbilitiesStatus(TMap<FGameplayTag, TSubclassOf<UBaseGameplayAbility>>& AbilityClass)
+{
+	for (const TTuple<FGameplayTag, TSubclassOf<UBaseGameplayAbility>> Pair : AbilityClass)
+	{
+		if (!GetGameplayAbilitySpecFromTag(Pair.Key))
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Pair.Value);
+			AbilitySpec.DynamicAbilityTags.AddTag(MyGameplayTags::Get().Ability_Availability_Unlockable);
+			GiveAbility(AbilitySpec);
+			MarkAbilitySpecDirty(AbilitySpec);
+			Client_BroadCastAbilityStatusChange(GetAbilityStatusTagFromSpec(AbilitySpec), GetAbilityTagFromSpec(AbilitySpec), 1);
+		}
+	}
+}
+
 void UMyAbilitySystemComponent::AddEventReceiver(TSubclassOf<UGameplayAbility> EventReceiverAbilityClass, int32 Level)
 {
 	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(EventReceiverAbilityClass, Level);
 	GiveAbilityAndActivateOnce(AbilitySpec);
 }
 
+
+void UMyAbilitySystemComponent::Client_BroadCastAbilityStatusChange_Implementation(const FGameplayTag& AbilityStatus, const FGameplayTag AbilityTag, const int32 Level)
+{
+	OnAbilityStatusChangeDelegate.Broadcast(AbilityStatus, AbilityTag, Level);
+}
+
+void UMyAbilitySystemComponent::OnRep_ActivateAbilities()
+{
+	Super::OnRep_ActivateAbilities();
+	AbilitiesAddedDelegate.Broadcast();
+	bAbilitiesAdded = true;
+}
 
 void UMyAbilitySystemComponent::BindGameplayEffectCallback()
 {
@@ -90,6 +117,17 @@ FGameplayTag UMyAbilitySystemComponent::GetAbilityStatusTagFromSpec(const FGamep
 		}
 	}
 	return FGameplayTag();
+}
+
+FGameplayAbilitySpec* UMyAbilitySystemComponent::GetGameplayAbilitySpecFromTag(const FGameplayTag& AbilityTag)
+{
+	ABILITYLIST_SCOPE_LOCK()
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(AbilityTag))
+			return &AbilitySpec;
+	}
+	return nullptr;
 }
 
 void UMyAbilitySystemComponent::ForEachAbilityDelegate(FForEachAbility Delegate)

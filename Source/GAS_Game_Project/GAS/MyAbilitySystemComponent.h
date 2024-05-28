@@ -16,6 +16,7 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FGameplayAttributevalueChangeBroadcastToCont
                                     const FOnAttributeChangeData&)
 DECLARE_MULTICAST_DELEGATE_OneParam(FGameplayEffectTagsBroadcastToControllerSignature, const FGameplayTagContainer&)
 DECLARE_MULTICAST_DELEGATE(FActivatableAbilitiesAddedSignature)
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnAbilityStatusChangeSignature, const FGameplayTag& AbilityStatus, const FGameplayTag AbilityTag, const int32 Level)
 
 
 UCLASS()
@@ -29,18 +30,25 @@ public:
 	void InitOwnerAndAvatarActor(AActor* OwnerActor, AActor* AvatarActor);
 	void BindCallBackToDependencies();
 	void AddStartupAbilities(TArray<TSubclassOf<UBaseGameplayAbility>>, float Level = 1);
+	void UpdateAbilitiesStatus(TMap<FGameplayTag, TSubclassOf<UBaseGameplayAbility>>& AbilityClass);
 	void AddEventReceiver(TSubclassOf<UGameplayAbility> EventReceiverAbilityClass, int32 Level);
 	void BindGameplayAttrValChangeCallback(); // Should call BindCallBackToDependencies() instead
 	FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	FGameplayTag GetAbilityStatusTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
+	FGameplayAbilitySpec* GetGameplayAbilitySpecFromTag(const FGameplayTag& AbilityTag);
 	void ForEachAbilityDelegate(FForEachAbility Delegate);
 	
 	FGameplayAttributevalueChangeBroadcastToControllerSignature OnNewAttributeValueChangeBroadcastToControllerDelegate;
 	FGameplayEffectTagsBroadcastToControllerSignature GameplayEffectTagsBroadcastToControllerDelegate;
 	FActivatableAbilitiesAddedSignature AbilitiesAddedDelegate;
+	FOnAbilityStatusChangeSignature OnAbilityStatusChangeDelegate;
 
 	bool bAbilitiesAdded;
 	
 private:
+	UFUNCTION(Client, Reliable)
+	void Client_BroadCastAbilityStatusChange(const FGameplayTag& AbilityStatus, const FGameplayTag AbilityTag, const int32 Level);
+	virtual void OnRep_ActivateAbilities() override;
+	
 	void BindGameplayEffectCallback();
 };

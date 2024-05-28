@@ -8,7 +8,6 @@
 #include "GAS_Game_Project/GAS/AttributeSet/BaseAttributeSet.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GAS_Game_Project/Character/Player/PlayerCharacter.h"
-#include "GAS_Game_Project/GAS/GamplayTag/MyGameplayTags.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -90,11 +89,12 @@ void AMyPlayerState::RewardPlayer(const int32 LevelIncoming)
 	{
 		int32 IncomingAttributePoint;
 		int32 IncomingAbilityPoint;
-		TArray<TSubclassOf<UBaseGameplayAbility>> AbilityClassesToGive;
+		TMap<FGameplayTag, TSubclassOf<UBaseGameplayAbility>> AbilityClassesToGive;
 		XPDataAsset->GetRewards(IncomingAttributePoint, IncomingAbilityPoint, AbilityClassesToGive, GetCharacterLevel() + i);
 		
 		ChangeAttributePoint(IncomingAttributePoint);
 		ChangeSpellPoint(IncomingAbilityPoint);
+		Cast<UMyAbilitySystemComponent>(AbilitySystemComponent)->UpdateAbilitiesStatus(AbilityClassesToGive);
 	}
 }
 

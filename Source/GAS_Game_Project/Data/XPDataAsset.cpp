@@ -3,6 +3,8 @@
 
 #include "XPDataAsset.h"
 
+struct FGameplayTag;
+
 int32 UXPDataAsset::GetLevelByXP(const int32 XP, const int32 CurrentLevel)
 {
 	if (XPInfos.Num() <= 1) return 1;
@@ -18,7 +20,8 @@ int32 UXPDataAsset::GetLevelByXP(const int32 XP, const int32 CurrentLevel)
 	return 1;
 }
 
-void UXPDataAsset::GetRewards(int32& OutAttributePoint, int32& OutAbilityPoint, TArray<TSubclassOf<UBaseGameplayAbility>>& OutAbilityClasses, const int32 RewardAtLevel)
+void UXPDataAsset::GetRewards(int32& OutAttributePoint, int32& OutAbilityPoint,
+	TMap<FGameplayTag, TSubclassOf<UBaseGameplayAbility>>& OutAbilityClasses, const int32 RewardAtLevel)
 {
 	OutAttributePoint = XPInfos[RewardAtLevel].AttributePoint;
 	OutAbilityPoint = XPInfos[RewardAtLevel].AbilityPoint;

@@ -16,6 +16,14 @@ void USpellMenuWidgetController::BroadCastToDependencies()
 			OnSpellPointToViewDelegate.Broadcast(SpellPoint);			
 		}
 	);
+	AbilitySystemComponent->OnAbilityStatusChangeDelegate.AddLambda(
+			[this] (const FGameplayTag& AbilityStatus, const FGameplayTag AbilityTag, const int32 Level)
+			{
+				FAbilityUIInfoStruct AbilityUIInfoStruct = Cast<IPlayerInterface>(AbilitySystemComponent->GetAvatarActor())->GetAbilityUIInfoDataAsset()->GetAbilityUIInfoStructByAbilityTag(AbilityTag);
+				AbilityUIInfoStruct.AbilityAvailabilityStatus = AbilityStatus;
+				AbilityUIInfoToViewDelegate.Broadcast(AbilityUIInfoStruct);
+			}
+		);
 }
 
 void USpellMenuWidgetController::SpendSpellPoint(const int32 PointsToSpend)
