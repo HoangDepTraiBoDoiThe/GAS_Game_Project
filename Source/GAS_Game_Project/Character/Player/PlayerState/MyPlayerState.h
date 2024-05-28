@@ -31,6 +31,7 @@ public:
 	FORCEINLINE int32 GetCharacterLevel() const {return CharacterLevel;}
 	FORCEINLINE int32 GetCharacterXP() const {return CharacterXP;}
 	FORCEINLINE int32 GetAbilityPoint() const {return AbilityPoint;}
+	FORCEINLINE int32 GetSpellPoint() const {return SpellPoint;}
 	FORCEINLINE UBaseAttributeSet* GetAttributeSet() const {return AttributeSet;}
 	FORCEINLINE UAttributeInfo* GetAttributeInfo () const {return AttributeInfo;}
 	UXPDataAsset* GeXPDataAsset() const;
