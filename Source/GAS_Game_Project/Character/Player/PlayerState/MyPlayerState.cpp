@@ -95,7 +95,6 @@ void AMyPlayerState::RewardPlayer(const int32 LevelIncoming)
 		
 		ChangeAttributePoint(IncomingAttributePoint);
 		ChangeSpellPoint(IncomingAbilityPoint);
-		Cast<UMyAbilitySystemComponent>(AbilitySystemComponent)->AddAbilities(AbilityClassesToGive, MyGameplayTags::Get().Ability_Availability_Unlockable);
 	}
 }
 

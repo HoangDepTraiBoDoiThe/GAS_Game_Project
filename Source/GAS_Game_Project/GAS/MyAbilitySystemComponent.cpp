@@ -19,23 +19,21 @@ void UMyAbilitySystemComponent::BindCallBackToDependencies()
 	BindGameplayAttrValChangeCallback();
 }
 
-void UMyAbilitySystemComponent::AddAbilities(TArray<TSubclassOf<UBaseGameplayAbility>> Abilities, const FGameplayTag AbilityStatus, const float Level)
+void UMyAbilitySystemComponent::AddStartupAbilities(TArray<TSubclassOf<UBaseGameplayAbility>> Abilities, const float Level)
 {
 	if (!GetAvatarActor()->HasAuthority()) return;
 	for (const TSubclassOf<UBaseGameplayAbility>& Ability : Abilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, Level);
 		const UBaseGameplayAbility* BaseGameplayAbility = Cast<UBaseGameplayAbility>(AbilitySpec.Ability.Get());
-		if (BaseGameplayAbility->AbilityStartupTag.IsValid())
-		{
-			AbilitySpec.DynamicAbilityTags.AddTag(BaseGameplayAbility->AbilityStartupTag);
-		}
-		AbilitySpec.DynamicAbilityTags.AddTag(AbilityStatus);
+		AbilitySpec.DynamicAbilityTags.AddTag(BaseGameplayAbility->AbilityStartupTag);
+		AbilitySpec.DynamicAbilityTags.AddTag(MyGameplayTags::Get().Ability_Availability_Equipped);
 
 		GiveAbility(AbilitySpec);
 		MarkAbilitySpecDirty(AbilitySpec);
 	}
-	Client_ActivatableAbilitiesAdded();
+	AbilitiesAddedDelegate.Broadcast();
+	bAbilitiesAdded = true;
 }
 
 void UMyAbilitySystemComponent::AddEventReceiver(TSubclassOf<UGameplayAbility> EventReceiverAbilityClass, int32 Level)
@@ -44,14 +42,6 @@ void UMyAbilitySystemComponent::AddEventReceiver(TSubclassOf<UGameplayAbility> E
 	GiveAbilityAndActivateOnce(AbilitySpec);
 }
 
-void UMyAbilitySystemComponent::Client_ActivatableAbilitiesAdded_Implementation()
-{
-	if (AbilitiesAddedDelegate.ExecuteIfBound(this))
-	{
-		
-	}
-	bAbilitiesAdded = true;
-}
 
 void UMyAbilitySystemComponent::BindGameplayEffectCallback()
 {
@@ -75,6 +65,41 @@ void UMyAbilitySystemComponent::BindGameplayAttrValChangeCallback()
 			{
 				OnNewAttributeValueChangeBroadcastToControllerDelegate.Broadcast(NewAttributeData);
 			});
+	}
+}
+
+FGameplayTag UMyAbilitySystemComponent::GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	for (const FGameplayTag& Tag : AbilitySpec.Ability.Get()->AbilityTags)
+	{
+		if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Ability"))))
+		{
+			return Tag;
+		}
+	}
+	return FGameplayTag();
+}
+
+FGameplayTag UMyAbilitySystemComponent::GetAbilityStatusTagFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	for (const FGameplayTag& StatusTag : AbilitySpec.DynamicAbilityTags)
+	{
+		if (StatusTag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Ability.Availability"))))
+		{
+			return StatusTag;
+		}
+	}
+	return FGameplayTag();
+}
+
+void UMyAbilitySystemComponent::ForEachAbilityDelegate(FForEachAbility Delegate)
+{
+	for (const FGameplayAbilitySpec AbilitySpec : GetActivatableAbilities())
+	{
+		if (Delegate.ExecuteIfBound(AbilitySpec))
+		{
+			UE_LOG(LogTemp, Error, TEXT("My message | Failed to execute delegate in %hs"), __FUNCTION__);
+		}
 	}
 }
 

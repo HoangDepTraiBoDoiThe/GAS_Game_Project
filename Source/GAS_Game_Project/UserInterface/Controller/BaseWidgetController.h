@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayEffect.h"
 #include "GAS_Game_Project/Character/Player/PlayerState/MyPlayerState.h"
 #include "GAS_Game_Project/Data/AbilityUIInforDataAsset.h"
 #include "BaseWidgetController.generated.h"
@@ -17,6 +16,7 @@ class UAttributeSet;
  * 
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnOnParamToViewSignature, const int32, ValueToBroadCast);
+DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec GameplayAbilitySpec);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityUIInfoToViewSignature, FAbilityUIInfoStruct, AbilityUIInfoStruct);
 
 USTRUCT(BlueprintType)
@@ -58,11 +58,11 @@ public:
 	virtual void BroadCastCharacterExperience();
 		
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FAbilityUIInfoToViewSignature AbilityUIInfoToViewSignature;
+	FAbilityUIInfoToViewSignature AbilityUIInfoToViewDelegate;
 	
 protected:
 	UFUNCTION(BlueprintCallable)
-	void BroadCastAbilityUIInfoToDependencies(const UAbilitySystemComponent* ASC);
+	void BroadCastAbilityUIInfoToDependencies();
 
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UMyAbilitySystemComponent> AbilitySystemComponent;
