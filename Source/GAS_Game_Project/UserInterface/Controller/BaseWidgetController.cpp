@@ -16,7 +16,8 @@ UBaseWidgetController::UBaseWidgetController()
 
 void UBaseWidgetController::BroadCastToDependencies()
 {
-	BroadCastAbilityInfoToDependencies();
+	if (AbilitySystemComponent->bAbilitiesAdded) BroadCastAbilityUIInfoToDependencies(AbilitySystemComponent);
+	else AbilitySystemComponent->AbilitiesAddedDelegate.BindUObject(this, &ThisClass::BroadCastAbilityUIInfoToDependencies);
 }
 
 void UBaseWidgetController::SetupWidgetControllerParams(const FWidgetControllerParamsStruct& NewFWidgetControllerParamsStruct)
@@ -32,24 +33,18 @@ void UBaseWidgetController::BroadCastCharacterExperience()
 	PlayerState->BroadCastCharacterExperience();
 }
 
-void UBaseWidgetController::BroadCastAbilityInfoToDependencies()
+void UBaseWidgetController::BroadCastAbilityUIInfoToDependencies(const UAbilitySystemComponent* ASC)
 {
-	if (AbilitySystemComponent->bAbilitiesAdded) AfterAbilitiesAddedToPlayer(AbilitySystemComponent);
-	else AbilitySystemComponent->AbilitiesAddedDelegate.BindUObject(this, &ThisClass::AfterAbilitiesAddedToPlayer);
-}
-
-void UBaseWidgetController::AfterAbilitiesAddedToPlayer(const UAbilitySystemComponent* ASC)
-{
-	for (const FGameplayAbilitySpec& AbilitySpec : ASC->GetActivatableAbilities())
+	for (const FGameplayAbilitySpec AbilitySpec : ASC->GetActivatableAbilities())
 	{
-		if (AbilitySystemComponent->GetAvatarActor()->Implements<UPlayerInterface>())
+		if (ASC->GetAvatarActor()->Implements<UPlayerInterface>())
 		{
-			for (auto& AbilityStatusTag : AbilitySpec.DynamicAbilityTags)
+			for (auto AbilityStatusTag : AbilitySpec.DynamicAbilityTags)
 			{
 				if (AbilityStatusTag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Ability.Availability"))))
 				{
 					FGameplayTag AbilityTag = AbilitySpec.Ability->AbilityTags.First();
-					IPlayerInterface* PlayerInterface = Cast<IPlayerInterface>(AbilitySystemComponent->GetAvatarActor());
+					IPlayerInterface* PlayerInterface = Cast<IPlayerInterface>(ASC->GetAvatarActor());
 					UAbilityUIInfoDataAsset* UIInfoDataAsset = PlayerInterface->GetAbilityUIInfoDataAsset();
 					FAbilityUIInfoStruct AbilityUIInfoStruct = UIInfoDataAsset->GetAbilityUIInfoStructByAbilityTag(AbilityTag);
 					AbilityUIInfoStruct.AbilityAvailabilityStatus = AbilityStatusTag;

@@ -61,8 +61,8 @@ public:
 	FAbilityUIInfoToViewSignature AbilityUIInfoToViewSignature;
 	
 protected:
-	void BroadCastAbilityInfoToDependencies();
-	void AfterAbilitiesAddedToPlayer(const UAbilitySystemComponent* ASC);
+	UFUNCTION(BlueprintCallable)
+	void BroadCastAbilityUIInfoToDependencies(const UAbilitySystemComponent* ASC);
 
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UMyAbilitySystemComponent> AbilitySystemComponent;

@@ -21,6 +21,7 @@ void UMyAbilitySystemComponent::BindCallBackToDependencies()
 
 void UMyAbilitySystemComponent::AddAbilities(TArray<TSubclassOf<UBaseGameplayAbility>> Abilities, const FGameplayTag AbilityStatus, const float Level)
 {
+	if (!GetAvatarActor()->HasAuthority()) return;
 	for (const TSubclassOf<UBaseGameplayAbility>& Ability : Abilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, Level);
@@ -32,8 +33,9 @@ void UMyAbilitySystemComponent::AddAbilities(TArray<TSubclassOf<UBaseGameplayAbi
 		AbilitySpec.DynamicAbilityTags.AddTag(AbilityStatus);
 
 		GiveAbility(AbilitySpec);
-		Client_ActivatableAbilitiesAdded();
+		MarkAbilitySpecDirty(AbilitySpec);
 	}
+	Client_ActivatableAbilitiesAdded();
 }
 
 void UMyAbilitySystemComponent::AddEventReceiver(TSubclassOf<UGameplayAbility> EventReceiverAbilityClass, int32 Level)
