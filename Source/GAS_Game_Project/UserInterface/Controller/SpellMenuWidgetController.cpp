@@ -41,7 +41,8 @@ void USpellMenuWidgetController::SetSelectedSpellButtonTags(const FGameplayTag S
 
 void USpellMenuWidgetController::SpendSpellPoint(const int32 PointsToSpend)
 {
-	PlayerState->ChangeSpellPoint(-PointsToSpend);
+	if (SelectedSpellButtonTag.IsValid())
+		PlayerState->Server_UpgradeAbility(SelectedSpellButtonTag, PointsToSpend);
 }
 
 void USpellMenuWidgetController::UnlockAbility(const FGameplayTag& AbilityToUnlock)

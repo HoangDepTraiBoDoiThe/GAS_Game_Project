@@ -85,6 +85,7 @@ void AMyPlayerState::SetCharacterLevel(const int32 NewLevel)
 
 void AMyPlayerState::RewardPlayer(const int32 LevelIncoming)
 {
+	if (!HasAuthority()) return;
 	for (int32 i = 1; i <= LevelIncoming; i++)
 	{
 		int32 IncomingAttributePoint;
@@ -126,6 +127,11 @@ void AMyPlayerState::ChangeSpellPoint(const int32 AdditionSpellPoint)
 	OnSpellPointChangeDelegate.Broadcast(SpellPoint);	
 }
 
+void AMyPlayerState::Server_UpgradeAbility_Implementation(const FGameplayTag AbilityTag, const int32 UpgradePoint)
+{
+	ChangeSpellPoint(-UpgradePoint);
+	Cast<UMyAbilitySystemComponent>(AbilitySystemComponent)->UpgradeAbility(AbilityTag, UpgradePoint);
+}
 void AMyPlayerState::Server_SpendAttributePoint_Implementation(const FGameplayTag AttributeTag)
 {
 	FGameplayEventData PlayLoad = FGameplayEventData();
@@ -160,3 +166,4 @@ void AMyPlayerState::BroadCastCharacterExperience()
 	OnAttributePointChangeDelegate.Broadcast(AbilityPoint);
 	OnSpellPointChangeDelegate.Broadcast(SpellPoint);
 }
+

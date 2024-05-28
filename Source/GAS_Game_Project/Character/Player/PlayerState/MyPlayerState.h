@@ -39,6 +39,9 @@ public:
 	void BroadCastCharacterExperience();
 	UFUNCTION(BlueprintCallable, Server, Reliable)
 	void Server_SpendAttributePoint(const FGameplayTag AttributeTag);
+	UFUNCTION(Server, Reliable)
+	void Server_UpgradeAbility(const FGameplayTag AbilityTag, const int32 PointToUpgrade);
+	auto ChangeSpellPoint(const int32 AdditionSpellPoint) -> void;
 	
 #pragma region //Setter for server only
 	void SetCharacterLevel(const int32 NewLevel);
@@ -49,7 +52,7 @@ public:
 	void LevelUpIfPossible(int32 IncomingXP);
 	// Either increase or decrease it.
 	void ChangeAttributePoint(const int32 AdditionAbilityPoint);
-	void ChangeSpellPoint(const int32 AdditionSpellPoint);
+
 
 #pragma endregion
 		
@@ -60,7 +63,6 @@ public:
 	
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	void UnLockAbilities(const int32 CurrentLevel);
 	UFUNCTION()
 	void RepNotify_CharacterXP(int32 OldXPValue);
 	UFUNCTION()

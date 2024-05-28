@@ -32,9 +32,11 @@ public:
 	void AddStartupAbilities(TArray<TSubclassOf<UBaseGameplayAbility>>, float Level = 1);
 	void UpdateAbilitiesStatus(TMap<FGameplayTag, TSubclassOf<UBaseGameplayAbility>>& AbilityClass);
 	void AddEventReceiver(TSubclassOf<UGameplayAbility> EventReceiverAbilityClass, int32 Level);
+	void UpgradeAbility(const FGameplayTag AbilityToUpgrade, const int32 UpgradePoints);
 	void BindGameplayAttrValChangeCallback(); // Should call BindCallBackToDependencies() instead
 	FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	FGameplayTag GetAbilityStatusTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
+	void ChangeAbilityStatusTagFromSpec(FGameplayAbilitySpec& AbilitySpec, const FGameplayTag& TagToReplace);
 	FGameplayAbilitySpec* GetGameplayAbilitySpecFromTag(const FGameplayTag& AbilityTag);
 	void ForEachAbilityDelegate(FForEachAbility Delegate);
 	

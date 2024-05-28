@@ -3,6 +3,7 @@
 
 #include "MyAbilitySystemComponent.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
 #include "Ability/BaseGameplayAbility.h"
 #include "GAS_Game_Project/UserInterface/Controller/OverlayWidgetController.h"
@@ -57,6 +58,23 @@ void UMyAbilitySystemComponent::AddEventReceiver(TSubclassOf<UGameplayAbility> E
 	GiveAbilityAndActivateOnce(AbilitySpec);
 }
 
+void UMyAbilitySystemComponent::UpgradeAbility(const FGameplayTag AbilityToUpgrade,
+	const int32 UpgradePoints)
+{
+	if (!GetAvatarActor()->HasAuthority()) return;
+	
+	ABILITYLIST_SCOPE_LOCK()
+	FGameplayAbilitySpec* AbilitySpecToUpgrade = GetGameplayAbilitySpecFromTag(AbilityToUpgrade);
+	if (!AbilitySpecToUpgrade) return;
+	AbilitySpecToUpgrade->Level += UpgradePoints;
+	const FGameplayTag CurrentStatus = GetAbilityStatusTagFromSpec(*AbilitySpecToUpgrade);
+	if (CurrentStatus.MatchesTagExact(MyGameplayTags::Get().Ability_Availability_Unlockable))
+	{
+		ChangeAbilityStatusTagFromSpec(*AbilitySpecToUpgrade, MyGameplayTags::Get().Ability_Availability_Unlocked);
+		Client_BroadCastAbilityStatusChange(GetAbilityStatusTagFromSpec(*AbilitySpecToUpgrade), AbilityToUpgrade, AbilitySpecToUpgrade->Level);
+	}
+	MarkAbilitySpecDirty(*AbilitySpecToUpgrade);
+}
 
 void UMyAbilitySystemComponent::Client_BroadCastAbilityStatusChange_Implementation(const FGameplayTag& AbilityStatus, const FGameplayTag AbilityTag, const int32 Level)
 {
@@ -119,12 +137,26 @@ FGameplayTag UMyAbilitySystemComponent::GetAbilityStatusTagFromSpec(const FGamep
 	return FGameplayTag();
 }
 
+void UMyAbilitySystemComponent::ChangeAbilityStatusTagFromSpec(FGameplayAbilitySpec& AbilitySpec,
+	const FGameplayTag& TagToReplace)
+{
+	for (const FGameplayTag& StatusTag : AbilitySpec.DynamicAbilityTags)
+	{
+		if (StatusTag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Ability.Availability"))))
+		{
+			AbilitySpec.DynamicAbilityTags.RemoveTag(StatusTag);
+			AbilitySpec.DynamicAbilityTags.AddTag(TagToReplace);
+			return;
+		}
+	}
+}
+
 FGameplayAbilitySpec* UMyAbilitySystemComponent::GetGameplayAbilitySpecFromTag(const FGameplayTag& AbilityTag)
 {
 	ABILITYLIST_SCOPE_LOCK()
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
-		if (AbilitySpec.DynamicAbilityTags.HasTagExact(AbilityTag))
+		if (AbilitySpec.Ability->AbilityTags.HasTagExact(AbilityTag))
 			return &AbilitySpec;
 	}
 	return nullptr;
