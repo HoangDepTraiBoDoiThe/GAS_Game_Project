@@ -155,7 +155,6 @@ void MyGameplayTags::InitNativeGameplayTags()
 		FName("Effects.OnHitReact"),
 		FString("OnHitReact"));
 
-
 	/*
 	 *	Ability Availability Status Tags
 	 */
@@ -172,4 +171,13 @@ void MyGameplayTags::InitNativeGameplayTags()
 		FName("Ability.Availability.Equipped"),
 		FString(""));
 
+	/*
+	 *	Ability Availability Status Tags
+	 */
+	GameplayTags.Ability_Projectile_FireBall = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Ability.Projectile.FireBall"),
+		FString(""));
+	GameplayTags.Ability_Projectile_LightingBall = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Ability.Projectile.LightingBall"),
+		FString(""));
 }

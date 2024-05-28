@@ -25,7 +25,5 @@ void USpellMenuWidgetController::SpendSpellPoint(const int32 PointsToSpend)
 
 void USpellMenuWidgetController::UnlockAbility(const FGameplayTag& AbilityToUnlock)
 {
-	TSubclassOf<UGameplayAbility> AbilityClass = PlayerState->GetPlayerCharacter()->GetAbilityUIInfoDataAsset()->GetAbilityClass(AbilityToUnlock);
-	PlayerState->GetPlayerCharacter()->GetAbilityUIInfoDataAsset()->ChangeAbilityStatus(AbilityToUnlock, MyGameplayTags::Get().Ability_Availability_Unlocked);
-	AbilitySystemComponent->UnlockAbility(AbilityClass);
+	
 }

@@ -19,34 +19,21 @@ void UMyAbilitySystemComponent::BindCallBackToDependencies()
 	BindGameplayAttrValChangeCallback();
 }
 
-void UMyAbilitySystemComponent::AddAbilities(TArray<TSubclassOf<UGameplayAbility>> Abilities, const float Level)
+void UMyAbilitySystemComponent::AddAbilities(TArray<TSubclassOf<UBaseGameplayAbility>> Abilities, const FGameplayTag AbilityStatus, const float Level)
 {
-	for (const TSubclassOf<UGameplayAbility>& Ability : Abilities)
+	for (const TSubclassOf<UBaseGameplayAbility>& Ability : Abilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, Level);
-		if (const UBaseGameplayAbility* BaseGameplayAbility = CastChecked<
-			UBaseGameplayAbility>(AbilitySpec.Ability.Get()); BaseGameplayAbility->AbilityStartupTag.IsValid())
+		const UBaseGameplayAbility* BaseGameplayAbility = Cast<UBaseGameplayAbility>(AbilitySpec.Ability.Get());
+		if (BaseGameplayAbility->AbilityStartupTag.IsValid())
 		{
 			AbilitySpec.DynamicAbilityTags.AddTag(BaseGameplayAbility->AbilityStartupTag);
 		}
+		AbilitySpec.DynamicAbilityTags.AddTag(AbilityStatus);
 
 		GiveAbility(AbilitySpec);
 		Client_ActivatableAbilitiesAdded();
 	}
-}
-
-void UMyAbilitySystemComponent::UnlockAbility(TSubclassOf<UGameplayAbility> AbilityToUnlock)
-{
-	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityToUnlock, 1);
-	const UBaseGameplayAbility* BaseGameplayAbility = CastChecked<UBaseGameplayAbility>(AbilitySpec.Ability.Get());
-	if (BaseGameplayAbility->AbilityStartupTag.IsValid())
-	{
-		AbilitySpec.DynamicAbilityTags.AddTag(BaseGameplayAbility->AbilityStartupTag);
-		AbilitySpec.DynamicAbilityTags.AddTag(MyGameplayTags::Get().Ability_Availability_Unlocked);
-	}
-
-	GiveAbility(AbilitySpec);
-	Client_ActivatableAbilitiesAdded();
 }
 
 void UMyAbilitySystemComponent::AddEventReceiver(TSubclassOf<UGameplayAbility> EventReceiverAbilityClass, int32 Level)

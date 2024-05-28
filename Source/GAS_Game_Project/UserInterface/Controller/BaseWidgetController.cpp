@@ -40,24 +40,21 @@ void UBaseWidgetController::BroadCastAbilityInfoToDependencies()
 
 void UBaseWidgetController::AfterAbilitiesAddedToPlayer(const UAbilitySystemComponent* ASC)
 {
-	IPlayerInterface* PlayerInterface = Cast<IPlayerInterface>(AbilitySystemComponent->GetAvatarActor());
-	UAbilityUIInfoDataAsset* UIInfoDataAsset = PlayerInterface->GetAbilityUIInfoDataAsset();
 	for (const FGameplayAbilitySpec& AbilitySpec : ASC->GetActivatableAbilities())
 	{
-		const UBaseGameplayAbility* Ability = Cast<UBaseGameplayAbility>(AbilitySpec.Ability);
-		if (Ability && Ability->AbilityStartupTag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Input"))) && AbilitySystemComponent->GetAvatarActor()->Implements<UPlayerInterface>())
+		if (AbilitySystemComponent->GetAvatarActor()->Implements<UPlayerInterface>())
 		{
-			const FAbilityUIInfoStruct AbilityUIInfoStruct = UIInfoDataAsset->GetAbilityUIInfoStructByInputTag(Cast<UBaseGameplayAbility>(AbilitySpec.Ability)->AbilityStartupTag);
-			AbilityUIInfoToViewSignature.Broadcast(AbilityUIInfoStruct);
-		}
-		else
-		{
-			for (auto& AbilityTag : AbilitySpec.DynamicAbilityTags)
+			for (auto& AbilityStatusTag : AbilitySpec.DynamicAbilityTags)
 			{
-				if (AbilityTag.MatchesTagExact(MyGameplayTags::Get().Ability_Availability_NotUnlockable))
-					continue;
-				const FAbilityUIInfoStruct AbilityUIInfoStruct = UIInfoDataAsset->GetAbilityUIInfoStructByInputTag(AbilityTag);
-				AbilityUIInfoToViewSignature.Broadcast(AbilityUIInfoStruct);
+				if (AbilityStatusTag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Ability.Availability"))))
+				{
+					FGameplayTag AbilityTag = AbilitySpec.Ability->AbilityTags.First();
+					IPlayerInterface* PlayerInterface = Cast<IPlayerInterface>(AbilitySystemComponent->GetAvatarActor());
+					UAbilityUIInfoDataAsset* UIInfoDataAsset = PlayerInterface->GetAbilityUIInfoDataAsset();
+					FAbilityUIInfoStruct AbilityUIInfoStruct = UIInfoDataAsset->GetAbilityUIInfoStructByAbilityTag(AbilityTag);
+					AbilityUIInfoStruct.AbilityAvailabilityStatus = AbilityStatusTag;
+					AbilityUIInfoToViewSignature.Broadcast(AbilityUIInfoStruct);
+				}
 			}
 		}
 	}

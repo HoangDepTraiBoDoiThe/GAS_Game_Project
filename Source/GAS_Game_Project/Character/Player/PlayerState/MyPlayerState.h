@@ -58,6 +58,7 @@ public:
 	
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	void UnLockAbilities(const int32 CurrentLevel);
 	UFUNCTION()
 	void RepNotify_CharacterXP(int32 OldXPValue);
 	UFUNCTION()

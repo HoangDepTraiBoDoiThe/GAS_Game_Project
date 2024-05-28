@@ -24,7 +24,7 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
-	AbilitySystemComponent->AddAbilities(AbilitiesToActive);
+	AbilitySystemComponent->AddAbilities(StartupAbilities, MyGameplayTags::Get().Ability_Availability_Equipped);
 	AbilitySystemComponent->AddEventReceiver(EventReceiver, GetCharacterLevel());
 }
 

@@ -55,7 +55,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UGameplayAbility> EventReceiver;
 	UPROPERTY(EditAnywhere)
-	TArray<TSubclassOf<UGameplayAbility>> AbilitiesToActive;
+	TArray<TSubclassOf<UBaseGameplayAbility>> StartupAbilities;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributesClass;
 	UPROPERTY(EditAnywhere)

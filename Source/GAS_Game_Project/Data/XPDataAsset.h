@@ -6,6 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "XPDataAsset.generated.h"
 
+class UBaseGameplayAbility;
 /**
  * 
  */
@@ -22,7 +23,9 @@ struct FXPInfoStruct
 
 	UPROPERTY(EditDefaultsOnly)
 	int32 AttributePoint{1};
-	
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TSubclassOf<UBaseGameplayAbility>> AbilityClasses;
 };
 
 UCLASS()
@@ -32,7 +35,7 @@ class GAS_GAME_PROJECT_API UXPDataAsset : public UDataAsset
 
 public:
 	int32 GetLevelByXP(const int32 XP, const int32 CurrentLevel = 1);
-	void GetRewards(int32& OutAttributePoint, int32& OutAbilityPoint, const int32 RewardAtLevel = 1);
+	void GetRewards(int32& OutAttributePoint, int32& OutAbilityPoint, TArray<TSubclassOf<UBaseGameplayAbility>>& OutAbilityClasses, const int32 RewardAtLevel = 1);
 	int32 GetXPRequirementForCurrentLevel(const int32 Level);
 
 	// This Array's indexes will be using as Level. Ignore the first index as it will not be use.

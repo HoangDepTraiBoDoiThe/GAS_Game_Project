@@ -22,6 +22,25 @@ FAbilityUIInfoStruct UAbilityUIInfoDataAsset::GetAbilityUIInfoStructByInputTag(
 	return FAbilityUIInfoStruct();
 }
 
+FAbilityUIInfoStruct UAbilityUIInfoDataAsset::GetAbilityUIInfoStructByAbilityTag(const FGameplayTag& AbilityTag,
+	bool bShouldNotifyIfNotFound)
+{
+	for (FAbilityUIInfoStruct& AbilityUIInfoStruct : AbilityUIInfoStructs)
+	{
+		if (AbilityUIInfoStruct.AbilityTag.MatchesTagExact(AbilityTag))
+		{
+			return AbilityUIInfoStruct;
+		}
+	}
+	if (bShouldNotifyIfNotFound)
+	{
+		UE_LOG(LogTemp, Error,
+			   TEXT("My Message | UAbilityUIInfoDataAsset | Not Crucial | Cant get [FAbilityUIInfoStruct] in [%S]"),
+			   __FUNCTION__)
+	}
+	return FAbilityUIInfoStruct();
+}
+
 void UAbilityUIInfoDataAsset::ChangeAbilityStatus(const FGameplayTag& AbilityToChange_Tag,
                                                   const FGameplayTag& StatusTag)
 {
@@ -53,38 +72,3 @@ void UAbilityUIInfoDataAsset::ChangeAbilityInputTag(const FGameplayTag& AbilityT
 	}
 }
 
-void UAbilityUIInfoDataAsset::MakeAbilitiesUnlockableOnLeveling(const int32 CharacterLevel, TArray<FAbilityUIInfoStruct>& OUTAbilityUIInfos)
-{
-	for (FAbilityUIInfoStruct AbilityUIInfoStruct : AbilityUIInfoStructs)
-	{
-		if (AbilityUIInfoStruct.LevelRequireToUnlock <= CharacterLevel && AbilityUIInfoStruct.AbilityAvailabilityStatus == MyGameplayTags::Get().Ability_Availability_NotUnlockable)
-		{
-			AbilityUIInfoStruct.AbilityAvailabilityStatus = MyGameplayTags::Get().Ability_Availability_Unlockable;
-			OUTAbilityUIInfos.AddUnique(AbilityUIInfoStruct);
-		}
-	}
-}
-
-int32 UAbilityUIInfoDataAsset::GetAbilityLevelRequirement(const FGameplayTag& AbilityTag)
-{
-	for (FAbilityUIInfoStruct& AbilityUIInfoStruct : AbilityUIInfoStructs)
-	{
-		if (AbilityUIInfoStruct.AbilityTag.MatchesTagExact(AbilityTag))
-		{
-			return AbilityUIInfoStruct.LevelRequireToUnlock;
-		}
-	}
-	return 0;
-}
-
-TSubclassOf<UGameplayAbility> UAbilityUIInfoDataAsset::GetAbilityClass(const FGameplayTag& AbilityTag)
-{
-	for (FAbilityUIInfoStruct& AbilityUIInfoStruct : AbilityUIInfoStructs)
-	{
-		if (AbilityUIInfoStruct.AbilityTag.MatchesTagExact(AbilityTag))
-		{
-			return AbilityUIInfoStruct.AbilityClass;
-		}
-	}
-	return nullptr;
-}

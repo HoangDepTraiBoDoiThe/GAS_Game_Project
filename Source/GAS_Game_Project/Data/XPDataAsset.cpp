@@ -18,10 +18,11 @@ int32 UXPDataAsset::GetLevelByXP(const int32 XP, const int32 CurrentLevel)
 	return 1;
 }
 
-void UXPDataAsset::GetRewards(int32& OutAttributePoint, int32& OutAbilityPoint, const int32 RewardAtLevel)
+void UXPDataAsset::GetRewards(int32& OutAttributePoint, int32& OutAbilityPoint, TArray<TSubclassOf<UBaseGameplayAbility>>& OutAbilityClasses, const int32 RewardAtLevel)
 {
 	OutAttributePoint = XPInfos[RewardAtLevel].AttributePoint;
 	OutAbilityPoint = XPInfos[RewardAtLevel].AbilityPoint;
+	OutAbilityClasses = XPInfos[RewardAtLevel].AbilityClasses;
 }
 
 int32 UXPDataAsset::GetXPRequirementForCurrentLevel(const int32 Level)

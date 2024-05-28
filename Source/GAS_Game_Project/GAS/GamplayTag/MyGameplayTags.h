@@ -90,7 +90,9 @@ public:
  /*
   *	Ability  Tags
   */
- 
+ FGameplayTag Ability_Projectile_FireBall;
+ FGameplayTag Ability_Projectile_LightingBall;
+
  /*
  * Other 
  */
