@@ -10,7 +10,7 @@ class UBaseUserWidget;
 /**
  * 
  */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNotifySpellPointChangeSignature, const FGameplayTag, StatusTag);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FSelectedSpellGlobeSignature, const bool, bShouldEnableEquip, const bool, bShouldEnableSpendSpellPoint, const FString, CurrentLevelDes, const FString, NextLvelDes);
 
 UCLASS()
 class GAS_GAME_PROJECT_API USpellMenuWidgetController : public UBaseWidgetController
@@ -36,8 +36,14 @@ public:
 	int32 GetSpellPoint();
 
 	UPROPERTY(BlueprintAssignable)
-	FNotifySpellPointChangeSignature NotifySpellPointChangeDelegate;
+	FSelectedSpellGlobeSignature SelectedSpellGlobeDelegate;
 
+
+protected:
+	UFUNCTION(BlueprintCallable)
+	void SelectSpellGlobe();
+	void ShouldEnableButtons(bool& OutEquipButton, bool& OutSpendSpellPointButton);
+	
 private:
 	FGameplayTag SelectedSpellButtonTag = FGameplayTag();
 	FGameplayTag SelectedSpellStatus = FGameplayTag();
