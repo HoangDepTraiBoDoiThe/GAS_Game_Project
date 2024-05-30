@@ -71,8 +71,8 @@ void UMyAbilitySystemComponent::UpgradeAbility(const FGameplayTag AbilityToUpgra
 	if (CurrentStatus.MatchesTagExact(MyGameplayTags::Get().Ability_Availability_Unlockable))
 	{
 		ChangeAbilityStatusTagFromSpec(*AbilitySpecToUpgrade, MyGameplayTags::Get().Ability_Availability_Unlocked);
-		Client_BroadCastAbilityStatusChange(GetAbilityStatusTagFromSpec(*AbilitySpecToUpgrade), AbilityToUpgrade, AbilitySpecToUpgrade->Level);
 	}
+	Client_BroadCastAbilityStatusChange(GetAbilityStatusTagFromSpec(*AbilitySpecToUpgrade), AbilityToUpgrade, AbilitySpecToUpgrade->Level);
 	MarkAbilitySpecDirty(*AbilitySpecToUpgrade);
 }
 

@@ -34,3 +34,16 @@ int32 UXPDataAsset::GetXPRequirementForCurrentLevel(const int32 Level)
 	return XPInfos[Level-1].XPRequirementForNextLevel;
 }
 
+int32 UXPDataAsset::FindAbilityRequireLevelByTag(const FGameplayTag& AbilityTag, const int32 CharacterCurrentLevel)
+{
+	for (int32 i = CharacterCurrentLevel; i < XPInfos.Num(); i++)
+	{
+		for (auto& Pair : XPInfos[i].AbilityClasses)
+		{
+			if (Pair.Key.MatchesTagExact(AbilityTag))
+				return i;
+		}
+	}
+	return 0;
+}
+

@@ -43,6 +43,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void SelectSpellGlobe();
 	void ShouldEnableButtons(bool& OutEquipButton, bool& OutSpendSpellPointButton);
+	static FName GetDamageTypeNamesByTag(const FGameplayTag DamageType);
 	
 private:
 	FGameplayTag SelectedSpellButtonTag = FGameplayTag();

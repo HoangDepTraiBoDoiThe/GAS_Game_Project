@@ -16,7 +16,8 @@ class GAS_GAME_PROJECT_API UDamageGameplayAbility : public UBaseGameplayAbility
 	GENERATED_BODY()
 
 public:
-	FORCEINLINE TMap<FGameplayTag, FScalableFloat> GetAbilityDamages() {return AbilityDamages;}
+	FORCEINLINE TMap<FGameplayTag, FScalableFloat> GetAbilityDamageTypes() {return AbilityDamages;}
+	TMap<FGameplayTag, float> GetAbilityDamagesAtLevel(const int32 Level = 1);
 	
 protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

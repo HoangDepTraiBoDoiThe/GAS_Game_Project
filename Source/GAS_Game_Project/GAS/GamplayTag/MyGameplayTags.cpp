@@ -107,6 +107,11 @@ void MyGameplayTags::InitNativeGameplayTags()
 	GameplayTags.EnumToGameTag_DamageTypes.
 	             Add(EDamageType::EDT_Water, MyGameplayTags::Get().DamageType_Elemental_Water);
 	GameplayTags.EnumToGameTag_DamageTypes.Add(EDamageType::EDT_Wind, MyGameplayTags::Get().DamageType_Elemental_Wind);
+	GameplayTags.DamageTypeNames.Add(MyGameplayTags::Get().DamageType_Elemental_Physical, FName("Physical"));
+	GameplayTags.DamageTypeNames.Add(MyGameplayTags::Get().DamageType_Elemental_Fire, FName("Fire"));
+	GameplayTags.DamageTypeNames.Add(MyGameplayTags::Get().DamageType_Elemental_Water, FName("Water"));
+	GameplayTags.DamageTypeNames.Add(MyGameplayTags::Get().DamageType_Elemental_Wind, FName("Wind"));
+
 
 	MyGameplayTags::GameplayTags.Attribute_Resistance_Elemental_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attribute.Resistance.Elemental.Fire"),

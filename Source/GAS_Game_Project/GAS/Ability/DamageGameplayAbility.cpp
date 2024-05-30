@@ -6,7 +6,6 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "GAS_Game_Project/Interface/CombatInterface.h"
-#include "Kismet/GameplayStatics.h"
 
 void UDamageGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                              const FGameplayAbilityActorInfo* ActorInfo,
@@ -47,6 +46,17 @@ void UDamageGameplayAbility::MakeSphereHitChecker(TArray<AActor*>& OverlapTarget
 			continue;
 		OverlapTargetActors.AddUnique(Overlap.GetActor());
 	}
+}
+
+TMap<FGameplayTag, float> UDamageGameplayAbility::GetAbilityDamagesAtLevel(const int32 Level)
+{
+	TMap<FGameplayTag, float> Damages;
+	for (const TTuple<FGameplayTag, FScalableFloat>& Pair : AbilityDamages)
+	{
+		const float Damage = Pair.Value.GetValueAtLevel(Level);
+		Damages.Add(Pair.Key, Damage);
+	}
+	return Damages;
 }
 
 void UDamageGameplayAbility::AppliedMyGameplayEffectToTarget(UAbilitySystemComponent* TargetASC)

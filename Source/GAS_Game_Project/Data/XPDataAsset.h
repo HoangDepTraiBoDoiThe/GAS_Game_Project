@@ -38,6 +38,7 @@ public:
 	int32 GetLevelByXP(const int32 XP, const int32 CurrentLevel = 1);
 	void GetRewards(int32& OutAttributePoint, int32& OutAbilityPoint, TMap<FGameplayTag, TSubclassOf<UBaseGameplayAbility>>& OutAbilityClasses, const int32 RewardAtLevel = 1);
 	int32 GetXPRequirementForCurrentLevel(const int32 Level);
+	int32 FindAbilityRequireLevelByTag(const FGameplayTag& AbilityTag, const int32 CharacterCurrentLevel = 1);
 
 	// This Array's indexes will be using as Level. Ignore the first index as it will not be use.
 	UPROPERTY(EditDefaultsOnly)

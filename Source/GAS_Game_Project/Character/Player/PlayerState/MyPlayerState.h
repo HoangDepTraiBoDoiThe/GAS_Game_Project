@@ -32,9 +32,9 @@ public:
 	FORCEINLINE int32 GetCharacterXP() const {return CharacterXP;}
 	FORCEINLINE int32 GetAbilityPoint() const {return AbilityPoint;}
 	FORCEINLINE int32 GetSpellPoint() const {return SpellPoint;}
+	UXPDataAsset* GeXPDataAsset() const;
 	FORCEINLINE UBaseAttributeSet* GetAttributeSet() const {return AttributeSet;}
 	FORCEINLINE UAttributeInfo* GetAttributeInfo () const {return AttributeInfo;}
-	UXPDataAsset* GeXPDataAsset() const;
 	APlayerCharacter* GetPlayerCharacter();
 	void BroadCastCharacterExperience();
 	UFUNCTION(BlueprintCallable, Server, Reliable)

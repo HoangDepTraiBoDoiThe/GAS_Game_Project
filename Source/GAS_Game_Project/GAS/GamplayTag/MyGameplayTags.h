@@ -52,6 +52,7 @@ public:
  FGameplayTag DamageType_Elemental_Fire;
  FGameplayTag DamageType_Elemental_Water;
  FGameplayTag DamageType_Elemental_Wind;
+ TMap<FGameplayTag, FName> DamageTypeNames;
 
  FGameplayTag Attribute_Resistance_Physical;
  FGameplayTag Attribute_Resistance_Elemental_Fire;

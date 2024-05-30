@@ -4,7 +4,9 @@
 #include "SpellMenuWidgetController.h"
 
 #include "GAS_Game_Project/Character/Player/PlayerCharacter.h"
+#include "GAS_Game_Project/Data/XPDataAsset.h"
 #include "GAS_Game_Project/GAS/MyAbilitySystemComponent.h"
+#include "GAS_Game_Project/GAS/Ability/DamageGameplayAbility.h"
 
 void USpellMenuWidgetController::BroadCastToDependencies()
 {
@@ -37,8 +39,38 @@ void USpellMenuWidgetController::SelectSpellGlobe()
 	bool bShouldEnableEquip = false;
 	bool bShouldEnableSpendSpellPoint = false;
 	ShouldEnableButtons(bShouldEnableEquip, bShouldEnableSpendSpellPoint);
-	SelectedSpellGlobeDelegate.Broadcast(bShouldEnableEquip, bShouldEnableSpendSpellPoint, FString("Test"), FString("Test"));
+	
+	FString CurrentLevelDescription = FString();
+	FString NextLevelDescription = FString();
+	FGameplayAbilitySpec* AbilitySpecSelectedGlobe = AbilitySystemComponent->GetGameplayAbilitySpecFromTag(GetSelectedSpellButtonTag());
+	if (!AbilitySpecSelectedGlobe || SelectedSpellStatus.MatchesTagExact(MyGameplayTags::Get().Ability_Availability_NotUnlockable) || SelectedSpellStatus.MatchesTagExact(MyGameplayTags::Get().Ability_Availability_Unlockable))
+	{
+		const int32 LevelToUnlock = PlayerState->GeXPDataAsset()->FindAbilityRequireLevelByTag(SelectedSpellButtonTag);
+		CurrentLevelDescription = FString::Printf(TEXT("Unlock this spell when you character reached level: <Level>%d</>"), LevelToUnlock);
+		NextLevelDescription = FString("Unlock this ability to know more.");
+	}
+	else
+	{
+		UDamageGameplayAbility* DamageGameplayAbility = CastChecked<UDamageGameplayAbility>(AbilitySpecSelectedGlobe->Ability.Get());
+		const TMap<FGameplayTag, float> Damages = DamageGameplayAbility->GetAbilityDamagesAtLevel(AbilitySpecSelectedGlobe->Level);
+		const TMap<FGameplayTag, float> DamagesAtNextLevel = DamageGameplayAbility->GetAbilityDamagesAtLevel(AbilitySpecSelectedGlobe->Level + 1);
+		CurrentLevelDescription = FString("Damages of the spell at this level:");
+		NextLevelDescription = FString("Damages of the spell at next level:");
+		for (const auto& Pair : Damages)
+		{
+			CurrentLevelDescription += FString::Printf(TEXT("\n<%s>%s: %f</>"), *GetDamageTypeNamesByTag(Pair.Key).ToString(), *GetDamageTypeNamesByTag(Pair.Key).ToString(), Pair.Value);
+		}
+		for (const auto& Pair : DamagesAtNextLevel)
+		{
+			NextLevelDescription += FString::Printf(TEXT("\n<%s>%s: %f</>"), *GetDamageTypeNamesByTag(Pair.Key).ToString(), *GetDamageTypeNamesByTag(Pair.Key).ToString(), Pair.Value);
+		}
+	}
+	SelectedSpellGlobeDelegate.Broadcast(bShouldEnableEquip, bShouldEnableSpendSpellPoint, CurrentLevelDescription, NextLevelDescription);
+}
 
+FName USpellMenuWidgetController::GetDamageTypeNamesByTag(const FGameplayTag DamageType)
+{
+	return *MyGameplayTags::Get().DamageTypeNames.Find(DamageType);
 }
 
 void USpellMenuWidgetController::ShouldEnableButtons(bool& OutEquipButton, bool& OutSpendSpellPointButton)
