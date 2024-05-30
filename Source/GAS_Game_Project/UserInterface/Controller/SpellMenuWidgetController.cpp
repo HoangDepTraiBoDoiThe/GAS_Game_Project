@@ -32,7 +32,7 @@ void USpellMenuWidgetController::BroadCastToDependencies()
 		);
 }
 
-void USpellMenuWidgetController::	SelectSpellGlobe()
+void USpellMenuWidgetController::SelectSpellGlobe()
 {
 	bool bShouldEnableEquip = false;
 	bool bShouldEnableSpendSpellPoint = false;
